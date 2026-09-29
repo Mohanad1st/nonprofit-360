@@ -2,6 +2,10 @@
 
 # nonprofit-360
 
+![nonprofit-360: تقييم 360 عادل وسري للمؤسسات غير الربحية](docs/images/banner.png)
+
+[![tests](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/ci.yml) [![code scanning](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/codeql.yml) [![licence: MIT](https://img.shields.io/badge/licence-MIT-1f5f8b.svg)](LICENSE) ![languages](https://img.shields.io/badge/languages-English%20%C2%B7%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-35b0d8.svg) ![runs on Google Workspace](https://img.shields.io/badge/runs%20on-Google%20Workspace-4285F4.svg)
+
 > النص العربي مسودة بمساعدة الذكاء الاصطناعي؛ نرحّب بملاحظاتكم لتحسينه.
 
 **تقييم أداء 360 درجة مجاني ومفتوح المصدر للمؤسسات غير الربحية — بالعربية والإنجليزية، ويعمل داخل حساب Google الخاص بكم.**

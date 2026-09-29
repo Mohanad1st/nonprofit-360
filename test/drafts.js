@@ -43,10 +43,10 @@ window.google = { script: { run: (function mk(ok, fail) { return {
   }, 4800);
 }, 100);</script>`;
   const file = path.join(OUT, 'drafts-' + L + '.html');
-  fs.writeFileSync(file, ctx.__html.replace('<script>var DATA', stub + '<script>var DATA').replace('</body>', steps + '</body>'));
+  fs.writeFileSync(file, ctx.__html.replace(/<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>/g, '').replace('<script>var DATA', stub + '<script>var DATA').replace('</body>', steps + '</body>')); // no web fonts: tests must not wait on the network
   let dom = '';
   try {
-    dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--user-data-dir=' + path.join(OUT, 'p' + L).replace(/\\/g, '/'),
+    dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage', '--no-first-run', '--disable-extensions', '--disable-background-networking', '--user-data-dir=' + path.join(OUT, 'p' + L).replace(/\\/g, '/'),
       '--virtual-time-budget=12000', '--dump-dom', pathToFileURL(file).href], { encoding: 'utf8', timeout: 90000 });
   } catch (e) { dom = String(e.stdout || ''); }
   const lines = ((dom.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || 'FAIL no result from the browser').replace(/&amp;/g, '&').split(' || ');

@@ -1,5 +1,9 @@
 # nonprofit-360
 
+![nonprofit-360: fair, confidential 360° evaluations for nonprofits](docs/images/banner.png)
+
+[![tests](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/ci.yml) [![code scanning](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/codeql.yml) [![licence: MIT](https://img.shields.io/badge/licence-MIT-1f5f8b.svg)](LICENSE) ![languages](https://img.shields.io/badge/languages-English%20%C2%B7%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-35b0d8.svg) ![runs on Google Workspace](https://img.shields.io/badge/runs%20on-Google%20Workspace-4285F4.svg)
+
 **A free, open-source 360-degree performance evaluation for nonprofits — in English and Arabic, running in your own Google account.**
 
 [العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md) · [Product document](docs/PRD.md)

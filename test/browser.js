@@ -136,10 +136,10 @@ window.google = { script: { run: (function mk(okf, failf) { return {
       okf({ ok: true, data: DATA }); }, 10); } }; })() } };</script>`;
     const page = html.replace('<script>var DATA', server + '<script>var DATA').replace('</body>', '<script>' + BOT + '</script></body>');
     const file = path.join(OUT, L + '-' + TEAM.indexOf(p) + '.html');
-    fs.writeFileSync(file, page);
+    fs.writeFileSync(file, page.replace(/<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>/g, '')); // no web fonts: tests must not wait on the network
     let dom = '';
     try {
-      dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--user-data-dir=' + path.join(OUT, 'profile').replace(/\\/g, '/'), '--window-size=412,915',
+      dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage', '--no-first-run', '--disable-extensions', '--disable-background-networking', '--user-data-dir=' + path.join(OUT, 'profile').replace(/\\/g, '/'), '--window-size=412,915',
         '--virtual-time-budget=120000', '--dump-dom', pathToFileURL(file).href], { encoding: 'utf8', timeout: 180000, maxBuffer: 64 * 1024 * 1024 });
     } catch (e) { dom = String(e.stdout || ''); }
     const m = dom.match(/<pre id="qa-out">([\s\S]*?)<\/pre>/);
