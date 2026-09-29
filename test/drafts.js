@@ -3,11 +3,12 @@
 'use strict';
 const fs = require('fs'), path = require('path'), os = require('os'), vm = require('vm'), { execFileSync } = require('child_process'), { pathToFileURL } = require('url');
 const { load } = require('../tools/lib');
-const chrome = [process.env.CHROME, 'C:/Program Files/Google/Chrome/Application/chrome.exe', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'].filter(Boolean).find(p => fs.existsSync(p));
+const { runPage, chromePath } = require('../tools/chrome');
+const chrome = chromePath();
 if (!chrome) { console.log('SKIP drafts test: Chrome not found (set CHROME=/path/to/chrome).'); process.exit(process.env.CI ? 1 : 0); }
 const OUT = fs.mkdtempSync(path.join(os.tmpdir(), 'np360d-'));
 let fails = 0;
+(async () => {
 for (const L of ['en', 'ar']) {
   const ctx = load(); ctx.useSettings_({ LANGUAGE: L, ORG_NAME: 'Example Foundation' });
   ctx.__team = ctx.testTeam_(); ctx.__asg = ctx.generateAssignments_(ctx.__team, ctx.exampleLinks_(L), []);
@@ -44,15 +45,14 @@ window.google = { script: { run: (function mk(ok, fail) { return {
 }, 100);</script>`;
   const file = path.join(OUT, 'drafts-' + L + '.html');
   fs.writeFileSync(file, ctx.__html.replace(/<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>/g, '').replace('<script>var DATA', stub + '<script>var DATA').replace('</body>', steps + '</body>')); // no web fonts: tests must not wait on the network
-  let dom = '';
-  try {
-    dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage', '--no-first-run', '--disable-extensions', '--disable-background-networking', '--user-data-dir=' + path.join(OUT, 'p' + L).replace(/\\/g, '/'),
-      '--virtual-time-budget=12000', '--dump-dom', pathToFileURL(file).href], { encoding: 'utf8', timeout: 90000 });
-  } catch (e) { dom = String(e.stdout || ''); }
-  const lines = ((dom.match(/<title>([\s\S]*?)<\/title>/) || [])[1] || 'FAIL no result from the browser').replace(/&amp;/g, '&').split(' || ');
+  let title = '';
+  try { title = await runPage(file, { width: 900, height: 900, timeoutMs: 60000, until: "/^(PASS|FAIL)/.test(document.title) && document.title" }); }
+  catch (e) { title = 'FAIL [' + L + '] ' + e.message; }
+  const lines = title.split(' || ');
   lines.forEach(l => console.log(l));
   fails += lines.filter(l => !l.startsWith('PASS')).length;
 }
 try { fs.rmSync(OUT, { recursive: true, force: true }); } catch (e) {}
 console.log(fails ? fails + ' FAILED' : 'DRAFTS OK');
 process.exit(fails ? 1 : 0);
+})();

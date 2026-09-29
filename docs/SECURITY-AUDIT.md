@@ -116,7 +116,7 @@ answers, or see who rated them.
 - Per-answer text is capped so one answer fits in a Google cell.
 - The test run now asks first when real answers exist.
 - The Arabic tab name is now «نتائج_الأفراد».
-- Community files added: PR template, issue template config, `.gitignore` for personal editor and assistant files, Node ≥ 20.
+- Community files added: PR template, issue template config, `.gitignore` for personal editor and assistant files, Node ≥ 22.
 
 ### Accepted by design (documented)
 - **Anyone who can edit the evaluation sheet is effectively an admin.** They can also edit the bound script. `SECURITY.md` says to keep the sheet private and share individual report files instead.

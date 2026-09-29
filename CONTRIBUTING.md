@@ -9,7 +9,7 @@ bug fixes, and new features.
 - **Bug reports**. Always use the made-up example team; never paste real names or answers.
 
 ## How to work on the code
-1. `git clone` the project. You need Node 20 or newer and Google Chrome for the browser tests.
+1. `git clone` the project. You need Node 22 or newer and Google Chrome for the browser tests.
 2. Change files in `src/`, never `dist/Code.gs` (it is generated).
 3. `npm run test:fast` while you work. Before a pull request, run `npm test` and `npm run build`, and commit the updated `dist/Code.gs`.
 4. **Every word people see** goes in both `src/Strings.en.gs` and `src/Strings.ar.gs`, in the same change. `test/i18n.js` checks it.

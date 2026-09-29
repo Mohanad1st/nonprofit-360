@@ -6,10 +6,9 @@
 'use strict';
 const fs = require('fs'), path = require('path'), os = require('os'), vm = require('vm'), { execFileSync } = require('child_process'), { pathToFileURL } = require('url');
 const { load, read, PURE } = require('../tools/lib');
+const { runPage, chromePath } = require('../tools/chrome');
 
-const CANDIDATES = [process.env.CHROME, 'C:/Program Files/Google/Chrome/Application/chrome.exe', 'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
-  '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome', '/usr/bin/google-chrome-stable', '/usr/bin/chromium', '/usr/bin/chromium-browser'].filter(Boolean);
-const chrome = CANDIDATES.find(p => fs.existsSync(p));
+const chrome = chromePath();
 if (!chrome) { console.log('SKIP browser test: Chrome not found (set CHROME=/path/to/chrome).'); process.exit(process.env.CI ? 1 : 0); }
 const OUT = fs.mkdtempSync(path.join(os.tmpdir(), 'np360-'));
 const safe = s => s.replace(/<\/(script)/gi, '<\\/$1');
@@ -103,6 +102,7 @@ const BOT = String.raw`
 })();`;
 
 let fails = 0, views = 0, total = 0;
+(async () => {
 for (const L of ['en', 'ar']) {
   const ctx = load();
   ctx.useSettings_({ LANGUAGE: L, ORG_NAME: 'Example Foundation', DEADLINE: '2026-12-01', TAGLINE: L === 'ar' ? ctx.tr_('ar', 'default.tagline') : 'Growing together' });
@@ -137,14 +137,10 @@ window.google = { script: { run: (function mk(okf, failf) { return {
     const page = html.replace('<script>var DATA', server + '<script>var DATA').replace('</body>', '<script>' + BOT + '</script></body>');
     const file = path.join(OUT, L + '-' + TEAM.indexOf(p) + '.html');
     fs.writeFileSync(file, page.replace(/<link[^>]*fonts\.(googleapis|gstatic)\.com[^>]*>/g, '')); // no web fonts: tests must not wait on the network
-    let dom = '';
-    try {
-      dom = execFileSync(chrome, ['--headless=new', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage', '--no-first-run', '--disable-extensions', '--disable-background-networking', '--user-data-dir=' + path.join(OUT, 'profile').replace(/\\/g, '/'), '--window-size=412,915',
-        '--virtual-time-budget=120000', '--dump-dom', pathToFileURL(file).href], { encoding: 'utf8', timeout: 180000, maxBuffer: 64 * 1024 * 1024 });
-    } catch (e) { dom = String(e.stdout || ''); }
-    const m = dom.match(/<pre id="qa-out">([\s\S]*?)<\/pre>/);
-    if (!m) { console.log('FAIL [' + L + '] ' + p.name + ': no result from the browser'); fails++; continue; }
-    const R = JSON.parse(m[1].replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&'));
+    let out = null;
+    try { out = await runPage(file, { width: 412, height: 915, until: "document.getElementById('qa-out') && document.getElementById('qa-out').textContent" }); }
+    catch (e) { console.log('FAIL [' + L + '] ' + p.name + ': ' + e.message); fails++; continue; }
+    const R = JSON.parse(out);
     const bad = R.checks.filter(c => !c.startsWith('PASS')).concat(R.errors.map(e => 'FAIL ' + e));
     fails += bad.length; views += R.views; total += R.checks.length; all.push(...R.recs);
     console.log((bad.length ? '✗ ' : '✓ ') + '[' + L + '] ' + p.name + (paper ? ' (paper)' : '') + ' — ' + R.checks.length + ' checks, ' + R.views + ' screens, ' + R.recs.length + ' answers');
@@ -161,3 +157,4 @@ window.google = { script: { run: (function mk(okf, failf) { return {
 console.log('\n' + views + ' screens · ' + total + ' checks · ' + (fails ? fails + ' FAILED' : 'ALL PASSED'));
 try { fs.rmSync(OUT, { recursive: true, force: true }); } catch (e) {}
 process.exit(fails ? 1 : 0);
+})();
