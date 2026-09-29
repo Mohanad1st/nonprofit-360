@@ -1,0 +1,13 @@
+name,email,department,job_title,manager,included,note
+Nadia Rahman,nadia@example.org,Leadership,Executive Director,,yes,
+Khaled Nour,khaled@example.org,Finance,Finance Manager,nadia@example.org,yes,
+Saeed Amin,saeed@example.org,Finance,Accountant,khaled@example.org,yes,
+Mona Fawzy,mona@example.org,Finance,Accountant,khaled@example.org,yes,
+Rami Wahba,rami@example.org,Finance,Procurement Officer,khaled@example.org,yes,
+Samir Lotfy,,Finance,Office Assistant,khaled@example.org,yes,"No work email: rated online, rates others on paper"
+Hala Kamel,hala@example.org,Programs,Programs Manager,nadia@example.org,yes,
+Karim Zaki,karim@example.org,Programs,Program Coordinator,hala@example.org,yes,
+Yasmin Farid,yasmin@example.org,Programs,Program Coordinator,hala@example.org,yes,
+Tarek Salem,tarek@example.org,Programs,Field Officer,hala@example.org,yes,
+Omar Haddad,omar@example.org,Communications,Communications Lead,nadia@example.org,yes,
+Laila Aziz,laila@example.org,Communications,Content Officer,omar@example.org,yes,

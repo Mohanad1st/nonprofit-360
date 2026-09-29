@@ -1,0 +1,16 @@
+{
+  "name": "nonprofit-360",
+  "version": "1.0.0",
+  "description": "A free, open-source 360-degree performance evaluation for nonprofits, in English and Arabic, on Google Sheets.",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "build": "node tools/build.js",
+    "build:org": "node tools/build.js --org",
+    "check:org": "node tools/check-org.js",
+    "test": "node test/unit.js && node test/i18n.js && node test/smoke.js && node test/leaks.js && node test/drafts.js && node test/browser.js",
+    "test:fast": "node test/unit.js && node test/i18n.js && node test/smoke.js && node test/leaks.js",
+    "examples": "node tools/make-examples.js"
+  },
+  "engines": { "node": ">=20" }
+}

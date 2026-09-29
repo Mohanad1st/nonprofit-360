@@ -1,0 +1,12 @@
+rater,ratee,reason,both_directions
+karim@example.org,rami@example.org,Purchase requests for program supplies,yes
+yasmin@example.org,mona@example.org,Program payments and receipts,yes
+tarek@example.org,saeed@example.org,Field advances and settlements,yes
+saeed@example.org,mona@example.org,Same finance team: payments and records,yes
+karim@example.org,yasmin@example.org,Same programs team: shared activities,yes
+tarek@example.org,karim@example.org,Field activities and visits,yes
+laila@example.org,karim@example.org,Program photos and stories from the field,yes
+Samir Lotfy,saeed@example.org,Office petty cash and receipts,yes
+laila@example.org,yasmin@example.org,Program stories and photos,yes
+hala@example.org,khaled@example.org,Program budgets and payments,no
+Samir Lotfy,rami@example.org,Same office: purchases and errands,yes

@@ -1,0 +1,13 @@
+name,email,department,job_title,manager,included,note
+نادية رحمن,nadia@example.org,القيادة,المديرة التنفيذية,,نعم,
+خالد نور,khaled@example.org,المالية,مدير المالية,nadia@example.org,نعم,
+سعيد أمين,saeed@example.org,المالية,محاسب,khaled@example.org,نعم,
+منى فوزي,mona@example.org,المالية,محاسبة,khaled@example.org,نعم,
+رامي وهبة,rami@example.org,المالية,مسؤول المشتريات,khaled@example.org,نعم,
+سمير لطفي,,المالية,مساعد إداري,khaled@example.org,نعم,بلا بريد عمل: يُقيَّم إلكترونيًا ويقيّم الآخرين ورقيًا
+هالة كامل,hala@example.org,البرامج,مديرة البرامج,nadia@example.org,نعم,
+كريم زكي,karim@example.org,البرامج,منسق برامج,hala@example.org,نعم,
+ياسمين فريد,yasmin@example.org,البرامج,منسقة برامج,hala@example.org,نعم,
+طارق سالم,tarek@example.org,البرامج,مسؤول ميداني,hala@example.org,نعم,
+عمر حداد,omar@example.org,الاتصال,قائد فريق الاتصال,nadia@example.org,نعم,
+ليلى عزيز,laila@example.org,الاتصال,مسؤولة المحتوى,omar@example.org,نعم,

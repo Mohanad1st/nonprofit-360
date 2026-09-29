@@ -1,0 +1,12 @@
+rater,ratee,reason,both_directions
+karim@example.org,rami@example.org,طلبات شراء مستلزمات البرامج,نعم
+yasmin@example.org,mona@example.org,مدفوعات البرامج وإيصالاتها,نعم
+tarek@example.org,saeed@example.org,السلف الميدانية وتسويتها,نعم
+saeed@example.org,mona@example.org,نفس فريق المالية: المدفوعات والسجلات,نعم
+karim@example.org,yasmin@example.org,نفس فريق البرامج: أنشطة مشتركة,نعم
+tarek@example.org,karim@example.org,الأنشطة والزيارات الميدانية,نعم
+laila@example.org,karim@example.org,صور البرامج وقصصها من الميدان,نعم
+سمير لطفي,saeed@example.org,العهدة النثرية والإيصالات في المكتب,نعم
+laila@example.org,yasmin@example.org,قصص البرامج وصورها,نعم
+hala@example.org,khaled@example.org,موازنات البرامج ومدفوعاتها,لا
+سمير لطفي,rami@example.org,نفس المكتب: المشتريات والمشاوير,نعم
