@@ -8,7 +8,7 @@
 
 [العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md) · [Product document](docs/PRD.md)
 
-| | |
+| At a glance | |
 |---|---|
 | **For** | Nonprofits of about 5–100 staff that use **Google Workspace** (work emails on your own domain, managed by Google) |
 | **Cost** | The tool is free. The optional Claude Code helper needs a paid Claude plan; setting up by hand costs nothing. |
