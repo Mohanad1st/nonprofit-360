@@ -43,6 +43,23 @@ in the new language, delete the Questions tab and run the setup again.
 - O_START and O_KEEP are the notes.
 You can reword all of these, but keep them in use.
 
+## Questions for different kinds of work (role questions)
+The Questions tab already holds ready-made **role questions**, switched off (In use = no):
+- **Field team:** respect for the people we serve; safety and care in the field.
+- **Finance and admin:** accurate, complete records; helpful service to colleagues.
+- **Management:** planning and follow-through; responsible use of resources.
+- **Volunteers:** reliability; representing us well.
+
+To use a set:
+1. In the **Only for departments** column, write your department names exactly as in the Team tab (for example
+   "Programs, Field"). Several names are separated by commas.
+2. Set **In use** to "yes".
+3. Run **2) Check my team and links**: it warns you if a department name matches nobody.
+
+Everyone who rates a person in those departments answers the role questions too, and so does the person in their
+self-evaluation. Role scores appear in that person's reports and in the last column of «Results by person». They are
+kept apart from the 8 core questions, so everyone is still compared on the same core questions.
+
 ## Rules (Settings tab)
 | Setting | Default | Effect |
 |---|---|---|

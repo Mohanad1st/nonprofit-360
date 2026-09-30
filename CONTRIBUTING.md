@@ -14,13 +14,13 @@ bug fixes, and new features.
 3. `npm run test:fast` while you work. Before a pull request, run `npm test` and `npm run build`, and commit the updated `dist/Code.gs`.
 4. **Every word people see** goes in both `src/Strings.en.gs` and `src/Strings.ar.gs`, in the same change. `test/i18n.js` checks it.
 5. **Every public function** (no trailing `_`) must start with `requireOwner_()`, unless it is `doGet`, `submitEval`,
-   `saveDraft` or `onOpen`. The personal page runs with the admin's rights. `test/smoke.js` checks it.
+   `saveDraft`, `submitLinks` or `onOpen`. The personal page runs with the admin's rights. `test/smoke.js` checks it.
 6. **Values the analysis compares** are codes (`WEEKLY`, `SET_NO`, `KEEP`), never translated labels.
 7. **No real data, ever.** Tests and examples use `@example.org`. `test/leaks.js` refuses real-looking emails, Google ids and secrets.
 8. Arabic output must be truly right-to-left. For Google Docs, never set RIGHT alignment on RTL paragraphs: in RTL, "right" means "end".
 9. **Pictures in the docs** are made by scripts, never by hand, so they only ever show the made-up example organisation:
    `node tools/screenshots.js` (the staff page), `node tools/guide-images.js` (the admin steps) and `node tools/banner.js`
-   (the banner). Run them after changing any wording they show.
+   (the banner) and `node tools/demo.js` (the public try-it demo in `docs/demo/`). Run them after changing any wording they show.
 10. **Before publishing a fork** with your own changes, `node tools/leak-scan.js --denylist <file>` checks every file and
     the whole history for words from a private list you keep outside the project (names, emails, ids).
 

@@ -15,6 +15,7 @@ function onOpen() {
   ui.createMenu(t_('menu.title'))
     .addItem(t_('menu.setup'), 'openSetup')
     .addItem(t_('menu.check'), 'checkSetup')
+    .addItem(t_('menu.askManagers'), 'askManagers')
     .addItem(t_('menu.pairs'), 'makePairings')
     .addItem(t_('menu.publish'), 'publishGuide')
     .addSeparator()
@@ -26,6 +27,8 @@ function onOpen() {
     .addItem(t_('menu.reports'), 'makeReports')
     .addItem(t_('menu.paper'), 'makePaperForms')
     .addItem(t_('menu.paperEntry'), 'enterPaperAnswers')
+    .addSeparator()
+    .addItem(t_('menu.followUp'), 'followUpActions')
     .addSeparator()
     .addItem(t_('menu.testRun'), 'runTest')
     .addItem(t_('menu.testClear'), 'clearTest')
@@ -161,7 +164,7 @@ function buildTabs_(loadExample) {
   }
   if (!sheet_('QUESTIONS') || sheet_('QUESTIONS').getLastRow() < 2) {
     resetBank_();
-    writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_()));
+    writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_(), true));
     resetBank_();
   }
   readDecisions_();
@@ -208,7 +211,7 @@ function guideTab_() {
   var g = sheet_('GUIDE', true);
   g.clear();
   var lines = [[t_('guide.title', { org: orgName_() })], [t_('guide.private')], ['']];
-  for (var i = 1; i <= 12; i++) { var s = t_('guide.step' + i); if (s !== 'guide.step' + i) lines.push([s]); }
+  for (var i = 1; i <= 13; i++) { var s = t_('guide.step' + i); if (s !== 'guide.step' + i) lines.push([s]); }
   lines.push(['']); lines.push([t_('guide.help')]);
   g.getRange(1, 1, lines.length, 1).setValues(lines).setWrap(true);
   g.getRange(1, 1).setFontSize(16).setFontWeight('bold').setFontColor(colors_().primary);

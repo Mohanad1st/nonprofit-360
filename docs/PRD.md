@@ -1,6 +1,6 @@
 # nonprofit-360 — Product requirements
 
-**Status:** version 1.1 · **Licence:** MIT · **Languages:** English, Arabic (right-to-left)
+**Status:** version 1.2 · **Licence:** MIT · **Languages:** English, Arabic (right-to-left)
 
 ## 1. The problem
 Small and medium nonprofits want fair, evidence-based performance conversations. They usually cannot afford HR software,
@@ -38,7 +38,7 @@ have no IT staff, and often work in Arabic as well as English. What they end up 
    - quiet stars.
 6. **Bilingual.** Every word exists in English and Arabic. Arabic is truly right-to-left in the page, the emails, the sheet, the reports and the paper forms.
 
-## 4. Non-goals (version 1)
+## 4. Non-goals
 - Payroll, contracts or automatic decisions: the tool gives evidence for a human conversation.
 - Organisations without Google Workspace. Personal Gmail accounts cannot be told apart safely; secret-link sign-in is on the future list.
 - Real-time dashboards for managers. Only the admin sees results.
@@ -76,6 +76,12 @@ have no IT staff, and often work in Arabic as well as English. What they end up 
 - **Work links** add the people who really work together, with the reason the rater sees. "Never pair" removes a pair in
   both directions.
 - **The result is a list the admin can read and edit** before inviting anyone.
+- **Asking managers** (optional): one email per manager opens a short page where they list, for each person in their
+  team, the colleagues outside the team they work with and on what. Answers are added to Work links, marked with the
+  manager's name. Only a manager, only for their own team.
+- **Role questions** (optional): ready-made rated questions for field teams, finance and admin, management and
+  volunteers, off by default. When the admin switches them on for some departments, everyone rating a person there
+  answers them too. They are reported for that person and kept apart from the core questions, so comparisons stay fair.
 
 ### 5.3 The personal page
 - **One address for everyone.** It knows who opened it from their Google account; nobody can pretend to be someone else.
@@ -129,6 +135,9 @@ have no IT staff, and often work in Arabic as well as English. What they end up 
   - the employee copy;
   - the organisation report.
   - Charts in each.
+- **After the results:** a conversation guide in the admin copy, an agreed-actions table in the employee copy, an
+  «Agreed actions» tab, a calendar reminder about 3 months later, and a follow-up email to each manager listing the
+  open actions of their team (the admin confirms first).
 
 ## 6. Privacy and safety rules
 1. Data lives only in the organisation's own Google Sheet and Drive. The project has no server, no analytics and no third party.
@@ -165,3 +174,4 @@ Run with `npm test`:
 - A comparison with the previous round per person.
 - Optional anonymous open comments to the organisation as a whole.
 - A ready template sheet ("Make a copy") so paste is not needed.
+- An automatic reminder for the follow-up (today it is a calendar reminder the admin adds in one click).

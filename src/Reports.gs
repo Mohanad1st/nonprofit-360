@@ -9,7 +9,39 @@ function makeReports() {
   var started = Date.now(), R = analyzeNow_();
   writeResults_(R, false);
   var res = makeReportsFrom_(R, false, started);
-  uiAlert_(res.complete ? t_('reports.done', { folder: res.folder.getName() }) : t_('reports.partial', { d: res.done, n: res.total, folder: res.folder.getName() }));
+  if (!res.complete) { uiAlert_(t_('reports.partial', { d: res.done, n: res.total, folder: res.folder.getName() })); return; }
+  actionsTab_(R);
+  reportsDoneDialog_(res.folder);
+}
+/** When the reports are ready: what to do next, and a one-click reminder in the admin's calendar about 3 months later. */
+function reportsDoneDialog_(folder) {
+  var when = new Date(Date.now() + 90 * 86400000), day = function (d) { return Utilities.formatDate(d, tz_(), 'yyyyMMdd'); };
+  var url = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(t_('reports.calendarTitle', { org: orgName_() })) +
+    '&dates=' + day(when) + '/' + day(new Date(when.getTime() + 86400000)) + '&details=' + encodeURIComponent(t_('reports.calendarDetails'));
+  var html = '<div dir="' + (isRtl_() ? 'rtl' : 'ltr') + '" style="font-family:Arial,sans-serif;font-size:14px;line-height:1.7">' +
+    '<p>' + esc_(t_('reports.done', { folder: folder.getName() })) + '</p><p>' + esc_(t_('reports.doneNext')) + '</p>' +
+    '<p><a target="_blank" href="' + esc_(url) + '">📅 ' + esc_(t_('reports.calendar', { date: Utilities.formatDate(when, tz_(), 'yyyy-MM-dd') })) + '</a></p></div>';
+  try { SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(480).setHeight(280), t_('menu.reports')); }
+  catch (e) { uiAlert_(t_('reports.done', { folder: folder.getName() })); }
+}
+/** The «Agreed actions» tab: one starting row per person, never overwriting what the admin already wrote. */
+function actionsTab_(R) {
+  var sh = sheet_('ACTIONS', true), head = cols_('actions', ACTION_COLS);
+  if (sh.getLastRow() < 1) { writeHeader_(sh, head); sh.getRange(1, 1).setNote(t_('note.actions')); sh.setColumnWidths(1, head.length, 170); }
+  var have = {};
+  if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().forEach(function (r) { have[String(r[0]).trim()] = 1; });
+  var byEmail = indexTeam_(readTeam_()), no = t_('word.no');
+  var rows = Object.keys(R.persons).filter(function (e) { return R.persons[e].nRaters || R.persons[e].hasSelf; }).map(function (e) {
+    var p = byEmail[e] || { name: R.persons[e].name, manager: '' };
+    return [p.name, isNoEmail_(e) ? '' : e, p.manager && !isNoEmail_(p.manager) ? p.manager : '', '', '', '', no, ''];
+  }).filter(function (r) { return !have[String(r[0]).trim()]; });
+  if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, head.length).setValues(safeRows_(rows));
+  var yn = SpreadsheetApp.newDataValidation().requireValueInList([t_('word.yes'), t_('word.no')], true).setAllowInvalid(true).build();
+  sh.getRange(2, 7, Math.max(sh.getLastRow() - 1, 1), 1).setDataValidation(yn);
+  return sh;
+}
+function actionsTable_(b) {
+  table_(b, [[t_('report.actAction'), t_('report.actSupport'), t_('report.actWhen')], ['\n', '', ''], ['\n', '', ''], ['\n', '', '']], []);
 }
 /**
  * Google stops any single run after 6 minutes, and each person's two reports take several seconds.
@@ -160,9 +192,10 @@ function employeeReport_(R, p, folder, isTest) {
   p_(b, C('report.scale'), null, { size: 9, muted: true });
   p_(b, '2. ' + C('report.byItem'), H1_());
   var rows = [[C('report.item'), C('report.yourSelf'), C('report.others')]];
-  B.CORE.forEach(function (q) { rows.push([q.title, fmt_(p.scores[q.id].self), fmt_(others(q.id))]); });
+  var mineCore = B.CORE.concat(roleOf_(p));
+  mineCore.forEach(function (q) { rows.push([q.title, fmt_(p.scores[q.id].self), fmt_(others(q.id))]); });
   table_(b, rows, [1, 2]);
-  if (B.CORE.some(function (q) { return !enough(q.id) && p.scores[q.id].n > 0; })) p_(b, C('report.itemTooFew', { n: min }), null, { size: 9, muted: true });
+  if (mineCore.some(function (q) { return !enough(q.id) && p.scores[q.id].n > 0; })) p_(b, C('report.itemTooFew', { n: min }), null, { size: 9, muted: true });
   p_(b, '3. ' + C('report.strengthsDev'), H1_());
   p_(b, C('report.strengthsYou'), null, { bold: true });
   p.strengths.filter(enough).forEach(function (q) { li_(b, titleOf_(q) + ' – ' + fmt_(p.scores[q].others)); });
@@ -193,7 +226,7 @@ function employeeReport_(R, p, folder, isTest) {
     texts.forEach(function (t) { li_(b, t); });
   });
   var ex = [];
-  B.CORE.concat(leadRaters >= min ? B.LEAD : []).forEach(function (q) { p.ratings.forEach(function (x) { var t = String(x.evidence[q.id] || '').trim(); if (t) ex.push(q.title + ': «' + t + '»'); }); });
+  B.CORE.concat(roleOf_(p).filter(function (q) { return enough(q.id); }), leadRaters >= min ? B.LEAD : []).forEach(function (q) { p.ratings.forEach(function (x) { var t = String(x.evidence[q.id] || '').trim(); if (t) ex.push(q.title + ': «' + t + '»'); }); });
   if (ex.length) { p_(b, C('report.examples'), null, { bold: true }); sortedTexts_(ex).forEach(function (t) { li_(b, t); }); }
   if (p.recogFrom.length) {
     p_(b, (n++) + '. ' + C('report.recogYou'), H1_());
@@ -209,7 +242,8 @@ function employeeReport_(R, p, folder, isTest) {
   }
   p_(b, (n++) + '. ' + C('report.plan'), H1_());
   if (p.selfTexts.S_PLAN) { p_(b, C('report.planYou'), null, { bold: true }); p_(b, p.selfTexts.S_PLAN); }
-  [C('report.agreed'), C('report.reply')].forEach(function (t) { p_(b, t, null, { bold: true }); p_(b, '\n\n\n'); });
+  p_(b, C('report.agreed'), null, { bold: true }); actionsTable_(b);
+  p_(b, C('report.reply'), null, { bold: true }); p_(b, '\n\n\n');
   p_(b, C('report.signatures'));
   p_(b, C('intro.closing') + ' — ' + setting_('SIGNATURE'), null, { size: 10 });
   doc.saveAndClose();
@@ -234,7 +268,7 @@ function personReport_(R, p, folder, isTest) {
   p_(b, '2. ' + C('report.byItemWho'), H1_());
   var merged = C('report.merged');
   var rows = [[C('report.item'), C('report.self'), C('report.manager'), C('report.team'), C('report.peers'), C('report.others'), C('report.gap')]];
-  B.CORE.forEach(function (q) {
+  B.CORE.concat(roleOf_(p)).forEach(function (q) {
     var s = p.scores[q.id];
     rows.push([q.title, fmt_(s.self), fmt_(s.head), p.showTeamSeparately ? fmt_(s.team) : (s.team != null ? merged : '—'),
       p.showPeersSeparately ? fmt_(s.peers) : (s.peers != null ? merged : '—'), fmt_(s.others), fmt_(s.gap)]);
@@ -294,7 +328,7 @@ function personReport_(R, p, folder, isTest) {
 
   p_(b, '5. ' + C('report.evidence'), H1_());
   var any = false;
-  B.CORE.concat(B.LEAD, B.HEAD_ITEMS).forEach(function (q) {
+  B.CORE.concat(B.LEAD, B.HEAD_ITEMS, roleOf_(p)).forEach(function (q) {
     var ex = p.ratings.filter(function (x) { return x.evidence[q.id] && String(x.evidence[q.id]).trim(); });
     if (!ex.length) return;
     any = true;
@@ -325,8 +359,11 @@ function personReport_(R, p, folder, isTest) {
     var t = p.selfTexts[q.id]; if (!t) return;
     p_(b, q.title, null, { bold: true }); p_(b, t);
   });
-  p_(b, '9. ' + C('report.next'), H1_());
-  [C('report.nextSession'), C('report.nextReply'), C('report.nextPlan')].forEach(function (t) { p_(b, t); p_(b, '\n\n'); });
+  p_(b, '9. ' + C('report.convTitle'), H1_());
+  [1, 2, 3, 4, 5].forEach(function (i) { li_(b, C('report.conv' + i)); });
+  p_(b, '10. ' + C('report.next'), H1_());
+  [C('report.nextSession'), C('report.nextReply')].forEach(function (t) { p_(b, t); p_(b, '\n\n'); });
+  p_(b, C('report.nextPlan')); actionsTable_(b);
   p_(b, C('report.readWith'));
   p_(b, C('report.signaturesAdmin'));
   doc.saveAndClose();
@@ -393,6 +430,8 @@ function orgReport_(R, folder, isTest) {
 
 // ——— paper forms for people without an email ———
 /** One printable Google Doc per person without an email: their self-evaluation and everyone they are assigned to rate. */
+/** The role questions that apply to this person, as question objects. */
+function roleOf_(p) { var ids = p.roleItems || []; return Q_().ROLE.filter(function (q) { return ids.indexOf(q.id) >= 0; }); }
 function makePaperForms() {
   requireOwner_();
   var team = readTeam_(), byEmail = indexTeam_(team), asg = readAssignments_();
@@ -438,7 +477,7 @@ function paperForm_(p, mine, byEmail, folder) {
   p_(b, C('paper.part1'), H1_());
   p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
   p_(b, C('ui.describesSelf'), null, { size: 9, muted: true });
-  ratingTable(B.CORE);
+  ratingTable(B.CORE.concat(openFor_('ROLE', p.dept)));
   if (hasReports_(p.email, byEmail)) { ratingTable(B.LEAD); B.SELF_HEAD.forEach(function (q) { lines(q, 3); }); }
   openFor_('SELF_OPEN', p.dept).forEach(function (q) { lines(q, 3); });
   p_(b, C('paper.recog'), null, { bold: true }); lines({ title: C('ui.recogWhy'), help: '' }, 2);
@@ -450,7 +489,7 @@ function paperForm_(p, mine, byEmail, folder) {
     if (a.reason) p_(b, C('ui.whyShown') + ' ' + a.reason, null, { size: 9, muted: true });
     p_(b, C('ui.freqQ') + ' — ' + C('paper.circleOne') + '   ' + FREQ_CODES.map(function (f) { return C('freq.' + f); }).join('   ·   '), null, { bold: true });
     p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
-    ratingTable(B.CORE);
+    ratingTable(B.CORE.concat(openFor_('ROLE', t.dept)));
     if (leadAllowed_(p.email, t.email, byEmail)) { p_(b, C('ui.leadTitle') + ' — ' + C('ui.leadNa'), null, { bold: true }); ratingTable(B.LEAD); }
     if (rel === 'HEAD_TO_MEMBER') { ratingTable(B.HEAD_ITEMS); B.HEAD_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }
     if (rel === 'MEMBER_TO_HEAD') { p_(b, C('ui.memberTitle') + ': ' + C('ui.memberIntro'), null, { bold: true }); B.MEMBER_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }

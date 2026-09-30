@@ -49,9 +49,9 @@ for (const L of ['en', 'ar']) {
   const t = k => ctx.tr_(L, k), rtl = L === 'ar', dir = rtl ? 'rtl' : 'ltr';
   const tabs = ['GUIDE', 'SETTINGS', 'TEAM', 'LINKS', 'NEVER', 'DEPTLINKS', 'QUESTIONS', 'ASSIGN'].map((id, i) => `<span class="${i === 0 ? 'on' : ''}">${esc(t('tab.' + id))}</span>`).join('');
   const lines = [t('guide.title').replace('{org}', rtl ? 'مؤسسة المثال' : 'Example Foundation'), t('guide.private'), ''];
-  for (let i = 1; i <= 12; i++) lines.push(t('guide.step' + i));
+  for (let i = 1; i <= 13; i++) lines.push(t('guide.step' + i));
   const guide = lines.map((s, i) => `<div style="height:26px;line-height:26px;padding:0 8px;white-space:nowrap;overflow:hidden;${i === 0 ? 'font-weight:bold;font-size:16px;color:#1f5f8b' : i === 1 ? 'color:#b00020;font-weight:bold' : ''}">${esc(s)}</div>`).join('');
-  const items = [['menu.setup'], ['menu.check'], ['menu.pairs'], ['menu.publish'], null, ['menu.preview'], ['menu.invite'], null, ['menu.update'], ['menu.remind'], ['menu.reports'], ['menu.paper'], ['menu.paperEntry'], null, ['menu.testRun'], ['menu.testClear'], null, ['menu.newRound']];
+  const items = [['menu.setup'], ['menu.check'], ['menu.askManagers'], ['menu.pairs'], ['menu.publish'], null, ['menu.preview'], ['menu.invite'], null, ['menu.update'], ['menu.remind'], ['menu.reports'], ['menu.paper'], ['menu.paperEntry'], null, ['menu.followUp'], null, ['menu.testRun'], ['menu.testClear'], null, ['menu.newRound']];
   const drop = items.map(x => x ? `<div>${esc(t(x[0]))}</div>` : '<hr>').join('');
   const side = rtl ? 'right' : 'left';
   shot('admin-menu-' + L, BASE + `
@@ -59,7 +59,12 @@ for (const L of ['en', 'ar']) {
 <div class="menus"><span>File</span><span>Edit</span><span>View</span><span>Insert</span><span>Format</span><span>Data</span><span>Tools</span><span>Extensions</span><span>Help</span><span class="on hl">${esc(t('menu.title'))}</span></div>
 <div class="grid" dir="${dir}" style="background:#fff">${guide}</div>
 <div class="drop" dir="${dir}" style="top:92px;left:${rtl ? 380 : 560}px;width:430px">${drop}</div>
-<div class="tabs" dir="${dir}">${tabs}</div></div></body></html>`, 1200, 720);
+<div class="tabs" dir="${dir}">${tabs}</div></div></body></html>`, 1200, 830);
+
+  // the managers' short page (?view=links), rendered from the real code with the example team
+  ctx.__team = ctx.testTeam_(); ctx.__links = ctx.exampleLinks_(L);
+  vm.runInContext('readTeam_ = function () { return __team; }; readLinks_ = function () { return __links; };', ctx);
+  shot('manager-page-' + L, ctx.linksPageHtml_('hala@example.org'), 540, 900);
 
   // the side panel: the real wizard page with the example organisation filled in
   vm.runInContext(`sheet_ = function () { return null; }; Session = { getActiveUser: function () { return { getEmail: function () { return 'admin@example.org'; } }; } };

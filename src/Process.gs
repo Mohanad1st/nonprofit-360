@@ -77,12 +77,12 @@ function writeResults_(R, isTest) {
   writeTab_('FLAGS', f, isTest, [70, 200, 150, 150, 520, 220, 220]);
 
   // people
-  var rows = [cols_('people', ['name', 'dept', 'manages', 'raters', 'head', 'team', 'peers', 'others', 'self', 'gap', 'lead', 'strengths', 'dev', 'blind', 'releasable'])];
+  var rows = [cols_('people', ['name', 'dept', 'manages', 'raters', 'head', 'team', 'peers', 'others', 'self', 'gap', 'lead', 'strengths', 'dev', 'blind', 'releasable', 'role'])];
   emails.forEach(function (e) {
     var p = P[e];
     rows.push([p.name, p.dept, p.isHead ? yes : '', p.nRaters, p.nByGroup.HEAD, p.nByGroup.TEAM, p.nByGroup.PEERS,
       v_(p.coreOthers), v_(p.coreSelf), p.coreSelf != null && p.coreOthers != null ? round2_(p.coreSelf - p.coreOthers) : '',
-      v_(p.leadTeam), titles_(p.strengths), titles_(p.devAreas), titles_(p.blindOver), p.releasable ? yes : C('results.notReleasable', { n: min })]);
+      v_(p.leadTeam), titles_(p.strengths), titles_(p.devAreas), titles_(p.blindOver), p.releasable ? yes : C('results.notReleasable', { n: min }), v_(p.roleOthers)]);
   });
   var sh = writeTab_('PEOPLE', rows, isTest, [150, 130]);
   if (rows.length > 1) { colorScale_(sh.getRange(3, 8, rows.length - 1, 2)); colorScale_(sh.getRange(3, 11, rows.length - 1, 1)); }
@@ -350,4 +350,49 @@ function sendReminders() {
     catch (e) { Logger.log('reminder not sent: ' + e); break; }
   }
   ui.alert(sent < pending.length ? t_('remind.partial', { n: sent, left: pending.length - sent }) : t_('remind.sent', { n: sent }));
+}
+
+/** A plain message: greeting, paragraphs, a list, and an optional button — { text, html }, right-to-left in Arabic. */
+function listEmail_(p, paras, items, button) {
+  var col = colors_(), dir = isRtl_() ? 'rtl' : 'ltr', align = isRtl_() ? 'right' : 'left';
+  var pad = isRtl_() ? 'padding-right:22px;padding-left:0' : 'padding-left:22px;padding-right:0';
+  var text = t_('email.hello', { name: p.name || '' }) + '\n\n' + paras.join('\n\n') + '\n\n' + items.map(function (t) { return '- ' + t; }).join('\n') +
+    (button ? '\n\n' + button.label + ':\n' + button.url : '') + '\n\n' + t_('intro.closing') + '\n' + setting_('SIGNATURE');
+  var html = '<div dir="' + dir + '" lang="' + lang_() + '" style="direction:' + dir + ';text-align:' + align + ';font-family:Tahoma,Arial,sans-serif;font-size:15px;line-height:1.8;color:' + col.ink + ';max-width:600px;margin:0 auto">' +
+    '<div style="font-weight:bold;font-size:17px;color:' + col.primary + ';margin-bottom:10px">' + esc_(orgName_()) + '</div>' +
+    '<p style="margin:0 0 10px">' + esc_(t_('email.hello', { name: p.name || '' })) + '</p>' +
+    paras.map(function (t) { return '<p style="margin:0 0 10px">' + esc_(t) + '</p>'; }).join('') +
+    (items.length ? '<ul style="margin:0 0 12px;' + pad + '">' + items.map(function (t) { return '<li style="margin:4px 0">' + esc_(t) + '</li>'; }).join('') + '</ul>' : '') +
+    (button ? '<p style="margin:20px 0;text-align:center"><a href="' + esc_(button.url) + '" style="background:' + col.primary + ';color:#fff;text-decoration:none;padding:12px 26px;border-radius:8px;font-weight:bold;display:inline-block">' + esc_(button.label) + '</a></p>' : '') +
+    '<p>' + esc_(t_('intro.closing')) + '<br>' + esc_(setting_('SIGNATURE')) + '</p></div>';
+  return { text: text, html: html };
+}
+/** Emails each manager the agreed actions of their team that are not done yet — asks first. */
+function followUpActions() {
+  requireOwner_();
+  var sh = sheet_('ACTIONS');
+  if (!sh || sh.getLastRow() < 2) { uiAlert_(t_('followUp.none')); return; }
+  var team = readTeam_(), byEmail = indexTeam_(team), admin = adminEmail_(), groups = {}, rowsFor = {};
+  var data = sh.getRange(2, 1, sh.getLastRow() - 1, ACTION_COLS.length).getValues();
+  data.forEach(function (r, i) {
+    var action = String(r[3] || '').trim();
+    if (!action || yes_(r[6])) return;
+    var person = byEmail[lower_(r[1])], mgr = lower_(r[2]) || (person && person.manager) || '';
+    if (!mgr || isNoEmail_(mgr) || !byEmail[mgr]) mgr = admin;
+    var due = r[5] instanceof Date ? Utilities.formatDate(r[5], tz_(), 'yyyy-MM-dd') : String(r[5] || '').trim();
+    (groups[mgr] = groups[mgr] || []).push(String(r[0]).trim() + ': ' + action + (due ? ' (' + t_('followUp.by', { date: due }) + ')' : ''));
+    (rowsFor[mgr] = rowsFor[mgr] || []).push(i + 2);
+  });
+  var managers = Object.keys(groups);
+  if (!managers.length) { uiAlert_(t_('followUp.none')); return; }
+  var ui = SpreadsheetApp.getUi();
+  if (ui.alert(t_('followUp.confirm', { n: managers.length }), ui.ButtonSet.YES_NO) !== ui.Button.YES) return;
+  var sent = 0, today = Utilities.formatDate(new Date(), tz_(), 'yyyy-MM-dd');
+  managers.forEach(function (m) {
+    var p = byEmail[m] || { name: '', email: m };
+    if (send_(m, t_('followUp.subject', { org: orgName_() }), listEmail_(p, [t_('followUp.intro'), t_('followUp.ask')], groups[m], null))) {
+      sent++; rowsFor[m].forEach(function (row) { sh.getRange(row, 8).setValue(today); });
+    }
+  });
+  uiAlert_(t_('followUp.sent', { n: sent }));
 }

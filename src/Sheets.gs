@@ -96,7 +96,7 @@ function writeQuestionsTab_(bank) {
   SECTIONS.forEach(function (s) {
     bank[s].forEach(function (q) {
       rows.push([q.id, t_('section.' + s), q.title, q.help, q.kind === 'rating' ? t_('word.yes') : q.requiredIfLow ? t_('word.ifLow') : q.required ? t_('word.yes') : t_('word.no'),
-        (q.depts || []).join(', '), t_('word.yes')]);
+        (q.depts || []).join(', '), q.off ? t_('word.no') : t_('word.yes')]);
     });
   });
   sh.getRange(1, 1, rows.length, head.length).setValues(safeRows_(rows)).setWrap(true).setVerticalAlignment('top');

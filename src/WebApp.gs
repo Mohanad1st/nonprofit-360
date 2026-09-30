@@ -6,6 +6,7 @@
 
 function doGet(e) {
   var email = lower_(Session.getActiveUser().getEmail());
+  if (e && e.parameter && e.parameter.view === 'links') return page_(linksPageHtml_(email)); // a manager listing who their team works with
   var asParam = e && e.parameter ? e.parameter.as : '';
   var as = paperTarget_(email, asParam);
   if (asParam && !as) return page_(messagePageHtml_(t_('err.notAllowed')));
@@ -93,11 +94,11 @@ function clientData_(email, paper) {
     me: { name: T.me.name, dept: T.me.dept }, deadline: deadlineText_(), drafts: drafts, done: T.done, total: T.total, as: paper ? email : null,
     selfDone: T.selfDone, selfPrev: T.selfPrev, isHead: T.isHead,
     persons: T.persons.map(function (x) {
-      return { key: x.person.email, name: x.person.name, dept: x.person.dept, relCode: x.rel, reason: x.reason || '', showLead: x.showLead, done: x.done, prev: x.prev };
+      return { key: x.person.email, name: x.person.name, dept: x.person.dept, relCode: x.rel, reason: x.reason || '', showLead: x.showLead, role: roleIdsFor_(x.person.dept), done: x.done, prev: x.prev };
     }),
     depts: T.depts.map(function (x) { return { name: x.dept, done: x.done, prev: x.prev }; }),
     colleagues: team.filter(function (p) { return p.active !== false && p.email !== email; }).map(function (p) { return { key: p.email, name: p.name, dept: p.dept }; }),
-    core: B.CORE.map(item), lead: B.LEAD.map(item), dept: B.DEPT.map(item), headItems: B.HEAD_ITEMS.map(item),
+    core: B.CORE.map(item), lead: B.LEAD.map(item), dept: B.DEPT.map(item), headItems: B.HEAD_ITEMS.map(item), role: B.ROLE.map(item), myRole: roleIdsFor_(T.me.dept),
     selfOpen: openFor_('SELF_OPEN', T.me.dept).map(open), selfHead: B.SELF_HEAD.map(open), personOpen: B.PERSON_OPEN.map(open),
     headOpen: B.HEAD_OPEN.map(open), memberOpen: B.MEMBER_OPEN.map(open),
     freq: FREQ_CODES, minEv: Number(cfg_().EVIDENCE_MIN_CHARS)
@@ -270,19 +271,24 @@ var APP_JS = [
   '  var c0 = el("div", { cls: "card" }, [el("div", { cls: "field", "data-t": "freq" }, [el("label", { text: T("ui.freqQ") + " *" }), el("div", { cls: "mute", text: T("ui.freqHelp") }), freqChips(F)])]); w.appendChild(c0);',
   '  var c1 = el("div", { cls: "card" }); DATA.core.forEach(function (it) { c1.appendChild(ratingBlock(it, F)); }); w.appendChild(c1);',
   '  if (p.showLead) { var c2 = el("div", { cls: "card" }, [el("h2", { text: T("ui.leadTitle") }), el("div", { cls: "mute", text: T("ui.leadSub") + " " + T("ui.leadNa") })]); DATA.lead.forEach(function (it) { c2.appendChild(ratingBlock(it, F)); }); w.appendChild(c2); }',
+  '  roleCard(w, p.role, F);',
   '  if (isHeadOf) { var ch = el("div", { cls: "card" }, [el("h2", { text: T("ui.headTitle") }), el("div", { cls: "mute", text: T("ui.headIntro") })]);',
   '    DATA.headItems.forEach(function (it) { ch.appendChild(ratingBlock(it, F)); }); extraFields(extra, F, ch); w.appendChild(ch); }',
   '  if (isMemberOf) { var cm = el("div", { cls: "card" }, [el("h2", { text: T("ui.memberTitle") }), el("div", { cls: "mute", text: T("ui.memberIntro") })]); extraFields(extra, F, cm); w.appendChild(cm); }',
   '  var c3 = el("div", { cls: "card" }, [el("h2", { text: T("ui.notesTitle") })]); DATA.personOpen.forEach(function (q) { c3.appendChild(textField(q.id, q.title, q.help, q.required, F, 2)); }); w.appendChild(c3);',
-  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(p.showLead ? DATA.lead.map(function (x) { return x.id; }) : [], isHeadOf ? DATA.headItems.map(function (x) { return x.id; }) : []);',
+  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(p.showLead ? DATA.lead.map(function (x) { return x.id; }) : [], isHeadOf ? DATA.headItems.map(function (x) { return x.id; }) : [], p.role || []);',
   '    if (!F.freq) { c0.classList.add("bad"); c0.scrollIntoView({ behavior: "smooth", block: "center" }); toast(T("ui.needFreq")); return; } c0.classList.remove("bad");',
   '    if (!check(w, F, ids, reqIds(DATA.personOpen)) || !checkExtra(w, F, extra)) return; send("PERSON", { ratee: p.key, freq: F.freq, scores: F.scores, evidence: F.evidence, texts: F.texts }, btn); }); }',
+  // questions for the kind of work this person does (only when the admin switched them on for their department)
+  'function roleCard(w, ids, F) { var qs = (DATA.role || []).filter(function (q) { return (ids || []).indexOf(q.id) >= 0; }); if (!qs.length) return;',
+  '  var c = el("div", { cls: "card" }, [el("h2", { text: T("ui.roleTitle") }), el("div", { cls: "mute", text: T("ui.roleSub", { na: T("ui.na") }) })]); qs.forEach(function (it) { c.appendChild(ratingBlock(it, F)); }); w.appendChild(c); }',
   // self-evaluation
   'function selfView(a) { var F = startForm("SELF", DATA.selfPrev); var w = el("div", { cls: "wrap" }); a.appendChild(w);',
   '  header(w, T("ui.selfRow"), T("ui.describesSelf")); restoredNote(w);',
   '  var c1 = el("div", { cls: "card" }); DATA.core.forEach(function (it) { c1.appendChild(ratingBlock(it, F)); }); w.appendChild(c1);',
   '  if (DATA.isHead) { var c2 = el("div", { cls: "card" }, [el("h2", { text: T("ui.selfLead") })]); DATA.lead.forEach(function (it) { c2.appendChild(ratingBlock(it, F)); });',
   '    DATA.selfHead.forEach(function (q) { c2.appendChild(textField(q.id, q.title, q.help, q.required, F, 3)); }); w.appendChild(c2); }',
+  '  roleCard(w, DATA.myRole, F);',
   '  var c3 = el("div", { cls: "card" }, [el("h2", { text: T("ui.selfReview") }), el("div", { cls: "mute", text: T("ui.selfReviewSub") })]);',
   '  DATA.selfOpen.forEach(function (q) { c3.appendChild(textField(q.id, q.title, q.help, q.required, F, 3)); }); w.appendChild(c3);',
   '  var c4 = el("div", { cls: "card" }, [el("h2", { text: T("ui.recogTitle") }), el("div", { cls: "mute", text: T("ui.recogSub") })]);',
@@ -290,7 +296,7 @@ var APP_JS = [
   '    DATA.colleagues.forEach(function (c) { var o = el("option", { value: c.key, text: c.name + " — " + c.dept }); if (F.recog[i] === c.key) o.selected = true; s.appendChild(o); });',
   '    s.addEventListener("change", function () { F.recog[i] = s.value; S.dirty = true; }); c4.appendChild(el("div", { cls: "field" }, [s])); });',
   '  c4.appendChild(textField("R_WHY", T("ui.recogWhy"), T("ui.recogWhyHelp"), false, F, 2)); w.appendChild(c4);',
-  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(DATA.isHead ? DATA.lead.map(function (x) { return x.id; }) : []);',
+  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(DATA.isHead ? DATA.lead.map(function (x) { return x.id; }) : [], DATA.myRole || []);',
   '    var req = reqIds(DATA.selfOpen).concat(DATA.isHead ? reqIds(DATA.selfHead) : []);',
   '    if (!check(w, F, ids, req)) return; send("SELF", { scores: F.scores, evidence: F.evidence, texts: F.texts, recog: F.recog.filter(Boolean) }, btn); }); }',
   // rating a department

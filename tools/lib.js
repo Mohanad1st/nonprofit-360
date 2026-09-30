@@ -6,7 +6,7 @@ const ROOT = path.join(__dirname, '..');
 const SRC = path.join(ROOT, 'src');
 /** Order matters: later files use what earlier files define. The build joins them in this order too. */
 const ORDER = ['Strings.en.gs', 'Strings.ar.gs', 'I18n.gs', 'Settings.gs', 'Bank.gs', 'Logic.gs', 'Checks.gs', 'TestData.gs',
-  'Sheets.gs', 'Setup.gs', 'Process.gs', 'Reports.gs', 'WebApp.gs'];
+  'Sheets.gs', 'Setup.gs', 'Process.gs', 'Reports.gs', 'Managers.gs', 'WebApp.gs'];
 /** Files with no Google services at load time or in the functions the local tools call. */
 const PURE = ['Strings.en.gs', 'Strings.ar.gs', 'I18n.gs', 'Settings.gs', 'Bank.gs', 'Logic.gs', 'Checks.gs', 'TestData.gs'];
 

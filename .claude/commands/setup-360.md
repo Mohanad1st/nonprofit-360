@@ -49,6 +49,8 @@ in `org/work-links.csv` with a short reason the rater will see (e.g. "Purchase r
 whether it goes both ways. Also ask: "Is there anyone who should never rate a particular person?" (for example a close
 family relationship or an open dispute) → `org/never-pair.csv`.
 Optional: which departments rate which → `org/department-links.csv` (or turn department ratings off).
+If they do not know who works with whom, do not guess: tell them that once the sheet is live, the menu «Ask managers who
+works with whom» emails each manager a short page to fill in, and the answers land in the «Work links» tab.
 
 ## Stage 5 — Check and review together
 Run `node tools/check-org.js`. Fix what you can yourself. For each warning, explain it in one plain sentence and ask what

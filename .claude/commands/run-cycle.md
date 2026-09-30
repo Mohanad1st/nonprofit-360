@@ -39,4 +39,8 @@ Ask where they are, then help with that stage.
 - Never tell anyone who said what. Do not guess raters aloud.
 - For managers, the "how you handled weaknesses in your team" part is for a supportive conversation: what support they
   gave, what they will do differently.
-- Offer to draft a short, kind conversation guide for their managers (in their language).
+- Offer to draft a short, kind conversation guide for their managers (in their language). Each admin copy already ends
+  with one.
+- **After the conversations:** they write the agreed actions in the «Agreed actions» tab (one row per action; "yes" under
+  Done when finished). The window shown when the reports are ready adds a calendar reminder for about 3 months later.
+  On that day, menu «Follow up agreed actions» emails each manager the open actions of their team, after they confirm.

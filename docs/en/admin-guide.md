@@ -66,6 +66,17 @@ Nothing is shared with anyone. You decide, person by person.
 
 **Large teams:** Google stops any single run after 6 minutes, and each person takes a few seconds. If the message says reports were made for only some people so far, choose **Make the reports** again: it continues in the same folder where it stopped.
 
+## After the results: conversations, actions and follow-up
+1. **Prepare.** Each admin copy ends with a short conversation guide. Read it before each conversation.
+2. **Hold one conversation per person**, with their employee copy. It ends with a table for two or three agreed
+   actions: what, the support they need, and by when.
+3. **Write the agreed actions** in the **Agreed actions** tab. It is made with the reports, with one starting row per
+   person; add a row for each extra action. Write "yes" under **Done** when an action is finished.
+4. **Put the follow-up in your calendar.** When the reports are ready, the window offers **Add a reminder to my Google
+   Calendar** for about 3 months later. One click, and it opens your calendar with the reminder filled in.
+5. **Follow up.** On that day, choose **Follow up agreed actions**. After you confirm, each manager gets one email with
+   the actions of their team that are not done yet. Actions for someone without a manager come to you.
+
 ## After changing the code or the questions
 If you (or Claude) changed the code, publish a new version so people see it:
 1. **Extensions → Apps Script → Deploy → Manage deployments.**

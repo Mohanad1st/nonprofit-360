@@ -107,6 +107,13 @@ organisation, use route B.
 - **Department links tab** (optional): which departments rate which. A department with no row rates all the others.
 - **Questions tab:** the questions everyone will answer. You may reword them now; see [Customising](customizing.md).
 
+**Ask your managers instead of chasing them (optional).** Publish the personal page first (step 5; it sends nothing to
+anyone), then **360 evaluation → Ask managers who works with whom**. Each manager gets one email with a link to a short
+page: for each person in their team, they pick the colleagues outside the team that person works with, and say on what.
+Their answers appear in the **Work links** tab, marked "Suggested by" and their name. Read them, then continue below.
+
+![The short page a manager fills in](../images/manager-page-en.png)
+
 ### 4. Check and make the pairings
 1. **360 evaluation → 2) Check my team and links.** Fix anything it lists; it explains each problem in plain words.
 2. **360 evaluation → 3) Make the pairings (who rates whom).** Read the **Who rates whom** tab: every row has its
