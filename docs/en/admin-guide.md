@@ -18,8 +18,8 @@
 
 ## Paper forms
 1. **Make paper forms for people without email** creates one Google Doc per person, in a new folder. Print them.
-2. When they come back in sealed envelopes: open your page address with `?as=` and the person's name at the end, for
-   example `https://script.google.com/…/exec?as=Samir Lotfy`. Only the admin can open this.
+2. When they come back in sealed envelopes: **Enter answers from paper forms** opens a window with one link per person.
+   Click the name. Only the admin can open these links.
 3. Type the answers exactly as written and send. The answer is marked as entered by you.
 
 ## Reading the results (admin only)

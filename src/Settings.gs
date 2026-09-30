@@ -160,6 +160,7 @@ function sheet_(id, create) {
     for (var i = 0; i < all.length; i++) if (String(all[i].getSheetId()) === known) { sh = all[i]; break; }
   }
   if (!sh) ['en', 'ar'].forEach(function (L) { if (!sh) sh = ss.getSheetByName(tr_(L, 'tab.' + id)); });
+  if (!sh) sh = ss.getSheetByName(tr_('ar', 'tab.' + id).replace(/ /g, '_')); // version 1.0.0 used underscores in Arabic tab names
   if (!sh && create) sh = ss.insertSheet(tabName_(id));
   if (sh && props && String(sh.getSheetId()) !== known) props.setProperty('TAB_' + id, String(sh.getSheetId()));
   if (sh && create) dirSheet_(sh);

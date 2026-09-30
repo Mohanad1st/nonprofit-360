@@ -25,6 +25,7 @@ function onOpen() {
     .addItem(t_('menu.remind'), 'sendReminders')
     .addItem(t_('menu.reports'), 'makeReports')
     .addItem(t_('menu.paper'), 'makePaperForms')
+    .addItem(t_('menu.paperEntry'), 'enterPaperAnswers')
     .addSeparator()
     .addItem(t_('menu.testRun'), 'runTest')
     .addItem(t_('menu.testClear'), 'clearTest')

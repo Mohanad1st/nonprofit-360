@@ -22,6 +22,9 @@ A 360 evaluation is only as good as the trust people have in it. These rules are
 
 ## The admin's own responsibilities
 - **Keep the sheet private.** Do not share it, and do not add editors. Anyone with edit access can see every answer.
+- **Know who else could look.** Your organisation's Google Workspace super administrators can technically open any
+  file in your domain, this one included. If the admin of this evaluation is not also the Workspace administrator,
+  tell staff honestly who could see what.
 - **Do not guess raters aloud**, even to be helpful.
 - **Read flags as questions, not verdicts.** The "manager may be blaming the team" signal is a reason to read the
   examples and talk, not a conclusion.
