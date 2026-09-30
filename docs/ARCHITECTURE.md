@@ -37,7 +37,7 @@ Everything in `Logic.gs`, `Checks.gs`, `Bank.gs` and the string files runs in No
   `SET_NO`, `DISC_DOC`, `KEEP`, `HIGH`). Labels come from the word lists only when shown. Switching language never breaks data.
 - **Tabs are found by a remembered id.** Their names follow the language, and renaming a tab by hand is safe.
 - **The personal page runs as the admin.** Google lets a page call any public function, so every public function except
-  `doGet`, `submitEval` and `saveDraft` begins with `requireOwner_()`. A test enforces this.
+  `doGet`, `submitEval`, `saveDraft` and `onOpen` (which only builds the menu) begins with `requireOwner_()`. A test enforces this.
   - `submitEval` and `saveDraft` accept only the signed-in person's own tasks. The one exception is a paper entry by the admin.
 - **Validation happens on the server.** Nothing the browser sends is trusted: people, frequency, choices, scores and
   example lengths are all checked again.

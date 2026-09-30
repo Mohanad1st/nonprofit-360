@@ -6,7 +6,7 @@
 
 **A free, open-source 360-degree performance evaluation for nonprofits — in English and Arabic, running in your own Google account.**
 
-[العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md) · [Product document](docs/PRD.md)
+[العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md)
 
 | At a glance | |
 |---|---|
@@ -60,7 +60,8 @@ no IT staff and no budget for HR software.
 1. Install the [Claude desktop app](https://claude.com/download) and sign in. Also install [Node.js](https://nodejs.org)
    (the button marked "LTS"); Claude uses it to check and build your copy.
 2. Download this project: on this page press the green **Code** button → **Download ZIP**. In your Downloads folder,
-   right-click the file → **Extract All**, and move the folder to Documents.
+   right-click the file → **Extract All**, and move the folder to Documents (use the folder that has `README.md`
+   directly inside it).
 3. In the Claude app open **Code**, choose that folder, type **`/setup-360`** in the message box and press Enter.
    Claude asks before each step it runs on your computer: read its one-line reason and press **Allow**.
 4. Answer its questions in plain words: your team, who works with whom, your values and your deadline. Claude prepares
@@ -88,7 +89,7 @@ Personal Gmail accounts are not supported in this version.
 - The source is in [`src/`](src/) (Google Apps Script). `npm run build` joins it into [`dist/Code.gs`](dist/Code.gs).
 - Tests: `npm test`. They check the analysis, both languages, the whole flow against fake Google services, the leak
   rules, stop-and-continue, and a real-browser run of every example person in both languages.
-- See [Architecture](docs/ARCHITECTURE.md), [Contributing](CONTRIBUTING.md), [Security](SECURITY.md) and the [security and readiness audit](docs/SECURITY-AUDIT.md).
+- See the [product document](docs/PRD.md), [Architecture](docs/ARCHITECTURE.md), [Contributing](CONTRIBUTING.md), [Security](SECURITY.md) and the [security review](docs/SECURITY-AUDIT.md).
 
 ## Need help?
 Type `/fix-360` in Claude Code, read [Troubleshooting](docs/en/troubleshooting.md), or open an issue on GitHub

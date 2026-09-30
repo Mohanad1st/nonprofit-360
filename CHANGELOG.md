@@ -10,6 +10,8 @@ Easier for people who are not technical.
 - **Privacy:** says plainly that editors of the sheet and Workspace super administrators can see answers.
 - **Arabic tab names** use spaces instead of underscores. Sheets set up with 1.0.0 are still found, and are renamed the next time you save the setup.
 - The publish window's steps now match the guide's numbering.
+- **First-time path:** tell the team first (the ready announcement now says to open the invitation with the work account), how to know the invitations went out, which folder to choose after unzipping, Git listed up front on Windows, the "Select all" box on Google's permission screen, and the new sheet's link printed after the automatic upload.
+- **Tidier docs:** one Arabic note on AI-drafted wording, the product document moved to the developer links, the security review kept as a dated record, and the picture scripts documented for contributors.
 
 ## 1.0.0 — 2026-09-29
 First public release.

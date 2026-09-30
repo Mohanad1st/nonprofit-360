@@ -15,7 +15,7 @@ data never leaves the organisation's own Google account.
   - It identifies each person from their Google account; people cannot choose who they are.
 - **The admin check.**
   - Google lets a published page call any public function, so every public function except `doGet`, `submitEval` and
-    `saveDraft` starts with `requireOwner_()`. A test enforces this.
+    `saveDraft` and `onOpen` (which only builds the menu) starts with `requireOwner_()`. A test enforces this.
   - `submitEval` and `saveDraft` accept only the signed-in person's own tasks. They validate everything on the server.
 - **Confidentiality.**
   - Each person's page receives only their own tasks and answers.
@@ -36,7 +36,7 @@ data never leaves the organisation's own Google account.
 ## Keeping it safe (for the admin)
 - **Anyone who can edit the evaluation sheet can also change its script and make themselves admin.** Keep the sheet
   private to the admin; share results by sharing individual report files, never the sheet.
-- Do not share the control sheet or add editors. Anyone who can edit it can read every answer.
+- Do not share the evaluation sheet or add editors. Anyone who can edit it can read every answer.
 - Keep the published page on "anyone within the organisation", never "anyone".
 - Use a work account with two-step verification.
 - If you used Claude Code: the `org/` folder holds your team list. It is ignored by git. Delete it when you no longer need it.

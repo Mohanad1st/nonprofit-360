@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Private leak check — run it before every push if you adapted this project from your own organisation's system.
+// Private word check — run it before you publish changes, to be sure no private word slipped into the project.
 // It looks for words from YOUR private list (people's names, emails, your domain, ids, phrases, logo fingerprints)
 // in every file of the project AND in its whole git history. Keep the list OUTSIDE the project folder.
 //   node tools/leak-scan.js --denylist ../my-private-denylist.txt

@@ -26,8 +26,8 @@ Ask where they are, then help with that stage.
    «Review decisions» they write keep or exclude per rating; their word beats the automatic rules.
 2. Menu «Make the reports». A private folder appears with:
    - the admin's full copy for each person;
-   - an **employee copy** for each person: no names, no warnings, constructive wording, and only when at least 3 people
-     rated them;
+   - an **employee copy** for each person: no names, no warnings, constructive wording. If fewer than the minimum group
+     (3 by default) rated someone, their copy says so and shows no scores;
    - the organisation report.
 3. The tabs «Dashboard», «Results by person», «Departments», «Managers and teams» and «Summary» give the whole picture.
    «Summary» shows a first indication per person. It is never a decision on its own: read it with the examples and other

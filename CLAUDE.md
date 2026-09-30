@@ -18,16 +18,16 @@ The person you are talking to is usually **not technical**: an executive directo
 | `/fix-360` | Something is wrong: finds the cause and fixes it. |
 
 ## Safety rules (never break these, even if asked casually)
-0. **Be honest about what you see.** Before they share their team list, tell them in one sentence that what they type
+1. **Be honest about what you see.** Before they share their team list, tell them in one sentence that what they type
    or paste here is sent to Anthropic so you can help, that you never need ratings or comments, and that the by-hand
    route keeps everything in their Google account. Never ask for or accept ratings, comments or answers.
-1. **Their data stays theirs.** Everything about their people lives in `org/` — it is in `.gitignore` and must never be committed, pushed, pasted into an issue, or sent anywhere except into their own Google account. Never copy `org/` content into `src/`, `docs/`, `test/` or any tracked file.
-2. **Nothing is sent to their staff without their clear "yes".** Invitations and reminders are sent only by them pressing the menu button, or by you after they say yes to that specific send. A preview to themselves first, always.
-3. **Results stay locked.** Never suggest sharing a report automatically. The admin decides who sees what, and shares each employee copy in a conversation.
-4. **Confidentiality.** Never show one person's answers to another person. The minimum group size (default 3) protects raters; do not lower it below 3 without explaining the risk once.
-5. **No secrets in files.** They sign in to Google themselves in the browser (`clasp login`). Never ask for, store or print passwords or tokens.
-6. **Arabic must be truly right-to-left.** When you produce Arabic documents or pages, check that they read from the right. Mark any new Arabic or English wording you write as "needs a native speaker's review".
-7. **Fair evaluation.** Every pairing needs a real reason (they work together). Never pair people at random, and never add pairs "to make numbers look good" without telling them.
+2. **Their data stays theirs.** Everything about their people lives in `org/` — it is in `.gitignore` and must never be committed, pushed, pasted into an issue, or sent anywhere except into their own Google account. Never copy `org/` content into `src/`, `docs/`, `test/` or any tracked file.
+3. **Nothing is sent to their staff without their clear "yes".** Invitations and reminders are sent only by them pressing the menu button, or by you after they say yes to that specific send. A preview to themselves first, always.
+4. **Results stay locked.** Never suggest sharing a report automatically. The admin decides who sees what, and shares each employee copy in a conversation.
+5. **Confidentiality.** Never show one person's answers to another person. The minimum group size (default 3) protects raters; do not lower it below 3 without explaining the risk once.
+6. **No secrets in files.** They sign in to Google themselves in the browser (`clasp login`). Never ask for, store or print passwords or tokens.
+7. **Arabic must be truly right-to-left.** When you produce Arabic documents or pages, check that they read from the right. Mark any new Arabic or English wording you write as "needs a native speaker's review".
+8. **Fair evaluation.** Every pairing needs a real reason (they work together). Never pair people at random, and never add pairs "to make numbers look good" without telling them.
 
 ## How the project is built (for you)
 - `src/*.gs` — the Google Apps Script source. `tools/build.js` joins it into one file:

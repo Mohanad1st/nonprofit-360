@@ -4,13 +4,12 @@
 
 ![nonprofit-360: تقييم 360 عادل وسري للمؤسسات غير الربحية](docs/images/banner.png)
 
-[![tests](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/ci.yml) [![code scanning](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/codeql.yml/badge.svg)](https://github.com/Mohanad1st/nonprofit-360/actions/workflows/codeql.yml) [![licence: MIT](https://img.shields.io/badge/licence-MIT-1f5f8b.svg)](LICENSE) ![languages](https://img.shields.io/badge/languages-English%20%C2%B7%20%D8%A7%D9%84%D8%B9%D8%B1%D8%A8%D9%8A%D8%A9-35b0d8.svg) ![runs on Google Workspace](https://img.shields.io/badge/runs%20on-Google%20Workspace-4285F4.svg)
 
-> النص العربي مسودة بمساعدة الذكاء الاصطناعي؛ نرحّب بملاحظاتكم لتحسينه.
+> صيغ النص العربي بمساعدة الذكاء الاصطناعي. اطلبوا من متحدث أصلي أن يقرأه قبل دورتكم الأولى، والتحسينات مرحّب بها.
 
 **تقييم أداء 360 درجة مجاني ومفتوح المصدر للمؤسسات غير الربحية — بالعربية والإنجليزية، ويعمل داخل حساب Google الخاص بكم.**
 
-[English](README.md) · [دليل الإعداد](docs/ar/setup-guide.md) · [إدارة التقييم](docs/ar/admin-guide.md) · [الأخلاقيات والخصوصية](docs/ar/ethics-and-privacy.md) · [الأسئلة الشائعة](docs/ar/faq.md) · [وثيقة المنتج](docs/PRD.md)
+[English](README.md) · [دليل الإعداد](docs/ar/setup-guide.md) · [إدارة التقييم](docs/ar/admin-guide.md) · [الأخلاقيات والخصوصية](docs/ar/ethics-and-privacy.md) · [الأسئلة الشائعة](docs/ar/faq.md)
 
 | نظرة سريعة | |
 |---|---|
@@ -62,7 +61,8 @@
 1. ثبّتوا [تطبيق Claude لسطح المكتب](https://claude.com/download) وسجّلوا الدخول. ثبّتوا أيضًا [Node.js](https://nodejs.org)
    (الزر المكتوب عليه **LTS**)؛ يستخدمه Claude لفحص نسختكم وبنائها.
 2. نزّلوا هذا المشروع: في هذه الصفحة اضغطوا الزر الأخضر **Code** ثم **Download ZIP** (تنزيل ملف مضغوط). في مجلد التنزيلات
-   اضغطوا على الملف بزر الفأرة الأيمن ثم **Extract All** (استخراج الكل)، وانقلوا المجلد إلى المستندات.
+   اضغطوا على الملف بزر الفأرة الأيمن ثم **Extract All** (استخراج الكل)، وانقلوا المجلد إلى المستندات (استخدموا المجلد الذي فيه
+   `README.md` مباشرةً).
 3. في تطبيق Claude افتحوا **Code**، واختاروا ذلك المجلد، واكتبوا **`/setup-360`** في مربع الرسالة، ثم اضغطوا Enter.
    يستأذنكم Claude قبل كل خطوة يشغّلها على حاسوبكم: اقرؤوا سببه في سطر واحد، ثم اضغطوا **السماح** (`Allow`).
 4. أجيبوا عن أسئلته بكلمات بسيطة: فريقكم، ومن يعمل مع من، وقيمكم، وآخر موعد. يجهّز Claude كل شيء، ويضعه في حساب
@@ -91,15 +91,11 @@ Claude الرد عليكم. لا يحتاج Claude إلى التقييمات و�
 - الكود المصدري في [`src/`](src/) (Google Apps Script). الأمر `npm run build` يضمّه في [`dist/Code.gs`](dist/Code.gs).
 - الاختبارات: `npm test`. تفحص التحليل، واللغتين، والمسار كله على خدمات Google وهمية، وقواعد منع التسرب،
   والتوقف والمتابعة، وتشغيلًا حقيقيًا في المتصفح لكل شخص من الفريق التجريبي بكلتا اللغتين.
-- راجعوا [البنية](docs/ARCHITECTURE.md) و[المساهمة](CONTRIBUTING.md) و[الأمان](SECURITY.md).
+- راجعوا [وثيقة المنتج](docs/PRD.md) و[البنية](docs/ARCHITECTURE.md) و[المساهمة](CONTRIBUTING.md) و[الأمان](SECURITY.md).
 
 ## تحتاجون مساعدة؟
 اكتبوا `/fix-360` في Claude Code، أو اقرؤوا [حل المشكلات](docs/ar/troubleshooting.md)، أو افتحوا بلاغًا (issue) على GitHub
 (حساب مجاني؛ ولا تضعوا فيه أبدًا أسماء حقيقية أو إجابات).
-
-## ملاحظة عن الكلمات
-صيغ النص العربي والإنجليزي بمساعدة الذكاء الاصطناعي. من فضلكم اطلبوا من متحدث أصلي أن يقرأه قبل دورتكم الأولى؛
-والتحسينات مرحّب بها جدًا في صورة طلبات سحب (pull requests).
 
 ## الرخصة
 [MIT](LICENSE). حرّ في الاستخدام والتعديل والمشاركة، بما في ذلك للمؤسسات الأخرى.

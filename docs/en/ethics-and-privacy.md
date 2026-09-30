@@ -50,4 +50,4 @@ A 360 evaluation is only as good as the trust people have in it. These rules are
 > by our manager and the colleagues we work with, so we see our work from every side. It is confidential: only
 > [admin] sees individual answers, and nobody will know who wrote what. Please be honest, fair and kind, with real
 > examples. It takes about 10 minutes for yourself and 3 minutes per colleague, and your answers save as you go.
-> Thank you.
+> Please open the invitation with your **work** email account (on your phone too), not a personal Gmail. Thank you.

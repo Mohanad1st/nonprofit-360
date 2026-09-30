@@ -21,7 +21,7 @@ function clasp(args) {
   const r = process.platform === 'win32'
     ? spawnSync('npx ' + all.map(quote).join(' '), { cwd: build, stdio: 'inherit', shell: true })
     : spawnSync('npx', all, { cwd: build, stdio: 'inherit' });
-  if (r.status !== 0) { console.error('\nclasp stopped (exit ' + r.status + '). See docs/en/troubleshooting.md → "clasp".'); process.exit(r.status || 1); }
+  if (r.status !== 0) { console.error('\nclasp stopped (exit ' + r.status + '). See docs/en/troubleshooting.md → "Automatic upload with Claude Code".'); process.exit(r.status || 1); }
 }
 // The sheet's name: the organisation name, keeping only letters, numbers, spaces and simple punctuation
 const title = String(org.settings.ORG_NAME || 'Our organisation').replace(/[^\p{L}\p{N} .,'()_-]/gu, ' ').replace(/'/g, '').trim() + ' - 360 evaluation';
@@ -32,7 +32,9 @@ if (cmd === 'create') {
   ['Code.js', 'code.js'].forEach(f => { const p = path.join(build, f); if (fs.existsSync(p)) fs.unlinkSync(p); });
   fs.copyFileSync(path.join(ROOT, 'appsscript.json'), path.join(build, 'appsscript.json'));
   clasp(['push', '--force']);
-  console.log('\nDone. A new Google Sheet "' + title + '" is in your Drive with the script inside. Next: open it, reload, and choose «360 → Start setup».');
+  let link = '';
+  try { const id = JSON.parse(fs.readFileSync(path.join(build, '.clasp.json'), 'utf8')).parentId; if (id) link = 'https://docs.google.com/spreadsheets/d/' + (Array.isArray(id) ? id[0] : id) + '/edit'; } catch (e) {}
+  console.log('\nDone. A new Google Sheet "' + title + '" is in your Drive with the script inside.' + (link ? '\nOpen it: ' + link : '') + '\nNext: reload it, and choose «360 → Start setup».');
 } else if (cmd === 'update') {
   clasp(['push', '--force']);
   console.log('\nCode updated. If the personal page is already published, publish a new version: see docs/en/admin-guide.md → "After changing the code".');

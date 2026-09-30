@@ -1,13 +1,11 @@
-# nonprofit-360 — Security and production-readiness audit (2026-09-29)
+# nonprofit-360 — Security review of version 1.0.0 (2026-09-29)
 
-## Verdict
-**GO for public release**, once the repository settings listed at the end are switched on after publishing.
+A record of the review done before the first public release. Later changes are listed in the [changelog](../CHANGELOG.md).
 
 **How it was checked:**
 - Five independent reviews: access control and confidentiality; injection; correctness and robustness; repository and
   CI hardening against OpenSSF Scorecard and GitHub community standards; beginner documentation.
 - A clean install in a real Google Workspace account.
-- The private leak scan over every file and the whole git history.
 
 **What was found and fixed:**
 - One high-severity security issue: spreadsheet formula injection.
@@ -115,7 +113,6 @@ answers, or see who rated them.
 - Duplicate-name warning added; dedupe on a timestamp tie now keeps the latest.
 - Per-answer text is capped so one answer fits in a Google cell.
 - The test run now asks first when real answers exist.
-- The Arabic tab name is now «نتائج_الأفراد».
 - Community files added: PR template, issue template config, `.gitignore` for personal editor and assistant files, Node ≥ 22.
 
 ### Accepted by design (documented)
@@ -131,7 +128,6 @@ answers, or see who rated them.
 | Whole flow against fake Google services (both languages), including the new injection, leak, resume, copy and new-round checks | 193 / 193 |
 | Word lists: every key in English and Arabic, no hard-coded words | 775 keys each, 0 problems |
 | Public leak rules (real emails, Google ids, secrets, big files) | clean |
-| Private leak scan over files and full history (the origin organisation's names, emails, ids and logo) | 0 matches |
 | gitleaks, working tree and history | no leaks |
 | Real browser, every example person in both languages | 988 / 988 checks, 232 screens |
 | Stop and continue (same device and another device) | 12 / 12 |
@@ -141,14 +137,9 @@ answers, or see who rated them.
 - The automatic clasp upload path. It needs the organisation's own Google sign-in; the copy-and-paste path was verified.
 - The date direction fix inside the Arabic page (verified locally).
 
-## Fix backlog
-All items above are done. Settings to switch on right after publishing:
-- [ ] Repository description and topics
-- [ ] Private vulnerability reporting (Security → Advisories). `SECURITY.md` and `CODE_OF_CONDUCT.md` rely on it.
-- [ ] Secret scanning and push protection
-- [ ] Dependabot alerts
-- [ ] A ruleset on `main`: block force-pushes and deletion, and require the `tests` and `code scanning` checks
-- [ ] Labels `bug`, `enhancement`, `wording`
+## Repository settings
+Private vulnerability reporting, secret scanning with push protection, Dependabot alerts and security updates are on,
+and a ruleset on `main` blocks force-pushes and deletion.
 
 ## Out of scope / not re-audited
 - Google's own services (Apps Script runtime, MailApp, Docs rendering).

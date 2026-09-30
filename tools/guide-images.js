@@ -88,8 +88,10 @@ ${card(`<div style="font-size:22px;margin-bottom:14px">⚠️ Google hasn’t ve
 <span style="flex:1"></span><span class="btn pri">BACK TO SAFETY</span></div>
 <div style="margin-top:16px;display:flex;align-items:center;gap:10px"><span class="badge">2</span><span class="hl" style="color:#0b57d0;font-size:14px;text-decoration:underline;padding:2px 4px">Go to 360 evaluation 2026 (unsafe)</span></div>`, 'left:24px;top:50px;width:560px')}
 ${card(`<div style="font-size:20px;margin-bottom:10px">360 evaluation 2026 wants to access your Google Account</div>
-<div class="note" style="font-size:14px;line-height:1.7">admin@example.org<br>This will allow it to:<br>• See, edit, create and delete your spreadsheets<br>• Create and edit your documents, in your Drive<br>• Send email as you<br>• …</div>
-<div style="margin-top:18px;display:flex;align-items:center;gap:10px;justify-content:flex-end"><span class="btn sec">Cancel</span><span class="badge">3</span><span class="btn pri hl">Allow</span></div>`, 'left:612px;top:50px;width:564px')}
+<div class="note" style="font-size:14px;line-height:1.7">admin@example.org</div>
+<div style="display:flex;align-items:center;gap:10px;margin:8px 0"><span class="badge">3</span><span class="hl" style="font-size:14px;padding:2px 6px">☑ Select all</span><span class="note">if you see boxes, tick them all</span></div>
+<div class="note" style="font-size:14px;line-height:1.7">☑ See, edit, create and delete your spreadsheets<br>☑ Create and edit your documents, in your Drive<br>☑ Send email as you<br>☑ …</div>
+<div style="margin-top:14px;display:flex;align-items:center;gap:10px;justify-content:flex-end"><span class="btn sec">Cancel</span><span class="badge">4</span><span class="btn pri hl">Allow</span></div>`, 'left:612px;top:50px;width:564px')}
 <div style="position:absolute;left:24px;right:24px;bottom:16px;font-size:13px;color:#3c4043;line-height:1.5">
 Why it is safe: the script is in <b>your</b> sheet, runs in <b>your</b> account, and is not sent anywhere else. Google shows “unsafe” for any script it has not reviewed itself.
 If your organisation’s Google administrator has blocked scripts, you will see “blocked” instead: see Troubleshooting.</div>
@@ -108,15 +110,13 @@ ${card(`<div style="font-size:18px;margin-bottom:14px">New deployment</div>
 <div style="display:flex;align-items:center;gap:10px"><span class="badge">3</span><div class="hl" style="flex:1;border:1px solid #c4c7c5;padding:8px;font-size:14px">Anyone within Example Foundation</div></div>
 <div style="margin-top:18px;text-align:right"><span class="btn sec">Cancel</span> <span class="btn pri hl">Deploy</span></div>`, 'left:390px;top:24px;width:400px;height:300px')}
 ${card(`<div style="font-size:18px;margin-bottom:14px">New deployment</div>
+<div style="display:flex;align-items:center;gap:10px;font-size:13px;margin-bottom:10px"><span class="badge">4</span>If Google asks again: your account → Allow</div>
 <div style="font-size:14px;color:#188038;margin-bottom:12px">✓ Deployment successfully created.</div>
 <div style="font-size:13px;color:#5f6368">Web app — URL</div>
 <div style="display:flex;align-items:center;gap:10px;margin-top:4px"><div style="flex:1;border:1px solid #c4c7c5;padding:8px;font-size:12px;overflow:hidden;white-space:nowrap">https://script.google.com/macros/s/…/exec</div></div>
 <div style="display:flex;align-items:center;gap:10px;margin-top:10px"><span class="badge">5</span><span class="btn sec hl">Copy</span></div>
 <div class="note" style="margin-top:14px;line-height:1.5">Paste it in the box in the sheet’s window and press «Save the address».</div>`, 'left:816px;top:24px;width:360px')}
-${card(`<div style="font-size:16px;margin-bottom:10px"><span class="badge">6</span> Later, after any change to the code: <b>Deploy → Manage deployments</b></div>
-<div style="display:flex;align-items:center;gap:12px;font-size:14px">✏️ <span class="hl" style="padding:0 4px">pencil</span> → Version: <div class="hl" style="border:1px solid #c4c7c5;padding:6px 10px">New version</div> → <span class="btn pri">Deploy</span>
-<span class="note" style="font-size:13px">Check that the number goes up. If it still shows the old number, the page did not change. The address stays the same.</span></div>`, 'left:24px;top:350px;right:24px')}
-</body></html>`, 1200, 510);
+</body></html>`, 1200, 350);
 shotDeploy();
 
 try { fs.rmSync(tmp, { recursive: true, force: true }); } catch (e) {}

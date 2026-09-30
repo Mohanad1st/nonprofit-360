@@ -67,7 +67,8 @@ Choose the path with them. Recommend A; B always works.
      that, then wait.
   2. Run `npx --yes @google/clasp@3.4.1 login`. A browser window opens; they choose their work account and allow. Explain
      it only lets this computer upload the script to their own Google account.
-  3. Run `node tools/push.js create`. It makes a new Google Sheet in their Drive with everything inside.
+  3. Run `node tools/push.js create`. It makes a new Google Sheet in their Drive with everything inside, and prints its
+     link: give them that link to click.
   If any step fails, explain the message in plain words and switch to B.
 - **B. Copy and paste:**
   1. They create a new blank Google Sheet.

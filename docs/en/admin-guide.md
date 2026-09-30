@@ -26,7 +26,7 @@
 | Tab | What it tells you |
 |---|---|
 | **Flags** | Ratings worth a second look, with the rater's name. See below. |
-| **Review decisions** | Your word on a doubtful rating: rater email, rated email, **keep** or **exclude**. It beats the automatic rules and is never cleared. |
+| **Review decisions** | Your word on a doubtful rating: rater email, rated email, **keep** or **exclude**. It beats the automatic rules. «Update results» never clears it; only «Start a new round» does. |
 | **Results by person** | Averages from others and from self, the gap, strengths, areas to develop, and whether results can be shared (at least the minimum group). |
 | **Heat map** | Everyone × every item, coloured. |
 | **Departments** | How each department is seen by the others, plus the department matrix. |

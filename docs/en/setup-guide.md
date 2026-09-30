@@ -20,7 +20,8 @@ page for every staff member.
     [Google for Nonprofits](https://www.google.com/nonprofits/). Approval can take days to weeks, so start early.
   - Staff without a work email can still take part, on paper.
 - **One admin.** Decide who the admin is: the only person who will see results. Use that person's work account for
-  everything below.
+  everything below. If you are setting it up for your director, agree now which of you it is: it is hard to switch
+  later.
 - **Your team.** Have your team list ready: name, work email, department, job title, and direct manager.
 - **Who works with whom.** The slow part is not the computer: it is asking managers who works closely with whom
   outside their own team. Ask them a few days before you start.
@@ -28,15 +29,15 @@ page for every staff member.
 ---
 
 ## A. With Claude Code
-1. **Install two programs** (once):
+1. **Install these programs** (once), each with the default choices:
    - the [Claude desktop app](https://claude.com/download); sign in;
-   - [Node.js](https://nodejs.org): press the button marked "LTS" and install it with the default choices. Claude uses it to check and build your copy.
+   - [Node.js](https://nodejs.org): press the button marked "LTS". Claude uses it to check and build your copy;
+   - on Windows only: [Git for Windows](https://git-scm.com/download/win), which Claude needs to work on your computer.
 2. **Download this project.** On the project's GitHub page press the green **Code** button → **Download ZIP**. In your
-   Downloads folder right-click the file → **Extract All**, and move the folder to Documents.
+   Downloads folder right-click the file → **Extract All**, and move the folder to Documents. Windows often makes a
+   folder inside a folder with the same name: use the one that has `README.md` directly inside it.
 3. **Start.** In the Claude app open **Code**, choose that folder, type **`/setup-360`** in the message box and press Enter.
-   - Claude asks before it runs each step on your computer. Read its one-line reason and press **Allow**.
-   - On Windows, if Claude says it needs Git, install [Git for Windows](https://git-scm.com/download/win) with the
-     default choices and start again.
+   Claude asks before it runs each step on your computer. Read its one-line reason and press **Allow**.
 4. **Answer Claude's questions**, one at a time:
    - language;
    - organisation name;
@@ -75,7 +76,8 @@ organisation, use route B.
 1. Choose **360 → Start setup · ابدأ الإعداد**. Google asks for permission the first time, once:
    - choose your account;
    - if it says "Google hasn't verified this app", press **Advanced**, then **Go to (your project) (unsafe)**;
-   - press **Allow**.
+   - if you see boxes to tick, tick **Select all**: the tool needs every one;
+   - press **Allow** (or **Continue**).
 
    ![Google's permission screens: Advanced, Go to (unsafe), Allow](../images/google-permission.png)
 
@@ -92,10 +94,6 @@ organisation, use route B.
 3. **Reload the sheet.** The menu is now called **360 evaluation**, and a **Start here** tab lists every step.
 
    ![The 360 evaluation menu and the Start here tab](../images/admin-menu-en.png)
-
-When you invite the team, this is the first page each person sees:
-
-![The welcome page every person sees first](../images/page-welcome-en.png)
 
 ### 3. Fill in your team
 - **Team tab:** one row per person.
@@ -117,17 +115,17 @@ When you invite the team, this is the first page each person sees:
 ### 5. Publish the personal page
 The "personal page" is what your staff open to fill in their evaluation; Google calls it a **web app**.
 You do this once; it takes about 3 minutes. **360 evaluation → 4) Publish the personal page** opens a window with
-these six steps, numbered like the picture:
+these steps, numbered like the picture:
 
 ![Publishing the personal page, step by step](../images/publish-page.png)
 
-1. In the sheet's menu: **Extensions → Apps Script**. Then, at the top right, **Deploy → New deployment**.
+1. In the sheet's menu: **Extensions → Apps Script**. Then, at the top of the page, **Deploy → New deployment**.
 2. Click the gear next to "Select type" → **Web app**.
 3. **Execute as: Me.** **Who has access: Anyone within (your organisation).** Then **Deploy**.
 4. Google may ask for permission again: choose your account → **Allow**.
 5. Copy the **Web app** address (it ends in `/exec`), paste it in the box in the window, and press **Save the address**.
-6. Later, after any change to the code: **Deploy → Manage deployments** → pencil → Version: **New version** → **Deploy**.
-   Check that it shows a new version number; the address stays the same.
+
+The window's step 6 is for later, only if the code changes: see [After changing the code](admin-guide.md#after-changing-the-code-or-the-questions).
 
 ### 6. Try it, then preview
 1. **360 evaluation → Try it: run a test with made-up people.** Look at the tabs, the dashboard and the reports folder.
@@ -136,9 +134,18 @@ these six steps, numbered like the picture:
 
 ![The personal page](../images/page-list-en.png)
 
-### 7. Invite the team
-**360 evaluation → 6) Send the invitations to the team.** It tells you how many people will be invited and asks you to confirm.
-If anyone has no email: **Make paper forms for people without email**, and print them. When they come back,
-**Enter answers from paper forms** shows one link per person.
+### 7. Tell the team, then invite them
+1. **Tell them first**, in your team chat or a meeting, a day or two before: what it is, that it is confidential, and to
+   open the invitation with their **work** email account. A ready message: [suggested announcement](ethics-and-privacy.md#a-suggested-announcement-adapt-it).
+2. **360 evaluation → 6) Send the invitations to the team.** It tells you how many people will be invited and asks you to
+   confirm.
+3. **How you know it worked:** a message says how many invitations were sent, they are in your Gmail **Sent** folder, and
+   **Update results** fills the **Progress** tab as people start.
+4. If anyone has no email: **Make paper forms for people without email**, and print them. When they come back,
+   **Enter answers from paper forms** shows one link per person.
+
+This is the first page each person sees:
+
+![The welcome page every person sees first](../images/page-welcome-en.png)
 
 Next: [Running the evaluation](admin-guide.md).

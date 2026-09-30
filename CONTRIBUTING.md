@@ -18,6 +18,11 @@ bug fixes, and new features.
 6. **Values the analysis compares** are codes (`WEEKLY`, `SET_NO`, `KEEP`), never translated labels.
 7. **No real data, ever.** Tests and examples use `@example.org`. `test/leaks.js` refuses real-looking emails, Google ids and secrets.
 8. Arabic output must be truly right-to-left. For Google Docs, never set RIGHT alignment on RTL paragraphs: in RTL, "right" means "end".
+9. **Pictures in the docs** are made by scripts, never by hand, so they only ever show the made-up example organisation:
+   `node tools/screenshots.js` (the staff page), `node tools/guide-images.js` (the admin steps) and `node tools/banner.js`
+   (the banner). Run them after changing any wording they show.
+10. **Before publishing a fork** with your own changes, `node tools/leak-scan.js --denylist <file>` checks every file and
+    the whole history for words from a private list you keep outside the project (names, emails, ids).
 
 ## Pull requests
 - One change per pull request, with a plain description of what it does for users.

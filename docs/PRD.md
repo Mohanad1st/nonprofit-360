@@ -1,6 +1,6 @@
 # nonprofit-360 — Product requirements
 
-**Status:** version 1.0 · **Licence:** MIT · **Languages:** English, Arabic (right-to-left)
+**Status:** version 1.1 · **Licence:** MIT · **Languages:** English, Arabic (right-to-left)
 
 ## 1. The problem
 Small and medium nonprofits want fair, evidence-based performance conversations. They usually cannot afford HR software,
