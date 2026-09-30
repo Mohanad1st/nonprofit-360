@@ -377,7 +377,9 @@ function followUpActions() {
   data.forEach(function (r, i) {
     var action = String(r[3] || '').trim();
     if (!action || yes_(r[6])) return;
-    var person = byEmail[lower_(r[1])], mgr = lower_(r[2]) || (person && person.manager) || '';
+    var person = byEmail[resolvePerson_(r[1], team)] || byEmail[resolvePerson_(r[0], team)];
+    var mgr = resolvePerson_(r[2], team);
+    if (!byEmail[mgr] || isNoEmail_(mgr)) mgr = person && person.manager ? lower_(person.manager) : '';
     if (!mgr || isNoEmail_(mgr) || !byEmail[mgr]) mgr = admin;
     var due = r[5] instanceof Date ? Utilities.formatDate(r[5], tz_(), 'yyyy-MM-dd') : String(r[5] || '').trim();
     (groups[mgr] = groups[mgr] || []).push(String(r[0]).trim() + ': ' + action + (due ? ' (' + t_('followUp.by', { date: due }) + ')' : ''));

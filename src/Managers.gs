@@ -37,10 +37,12 @@ function linksPageHtml_(email) {
   var team = readTeam_(), byEmail = indexTeam_(team), me = byEmail[lower_(email)];
   var mine = me && me.active !== false ? teamOf_(me.email, team) : [];
   if (!mine.length) return messagePageHtml_(t_('links.notManager'));
-  var links = readLinks_(team), name = function (e) { return byEmail[e] ? byEmail[e].name : e; };
+  var links = readLinks_(team);
   var members = mine.map(function (p) {
-    var already = links.filter(function (l) { return l.rater === p.email || l.ratee === p.email; }).map(function (l) {
-      var other = l.rater === p.email ? l.ratee : l.rater; return name(other) + (l.reason ? ' — ' + l.reason : '');
+    var already = [];
+    links.forEach(function (l) {
+      var other = l.rater === p.email ? l.ratee : l.ratee === p.email ? l.rater : '';
+      if (other && byEmail[other] && already.indexOf(byEmail[other].name) < 0) already.push(byEmail[other].name);
     });
     // teammates and their manager are paired automatically, so they are not offered
     var auto = {}; auto[p.email] = 1; auto[lower_(p.manager)] = 1;
@@ -116,6 +118,7 @@ function submitLinks(items) {
     readLinks_(team).forEach(function (l) { have[l.rater + '>' + l.ratee] = 1; have[l.ratee + '>' + l.rater] = 1; });
     var show = function (e) { return isNoEmail_(e) ? byEmail[e].name : e; };
     var sh = sheet_('LINKS', true), rows = [];
+    if (sh.getLastRow() < 1) writeHeader_(sh, cols_('links', ['rater', 'ratee', 'reason', 'both', 'note']));
     clean.forEach(function (x) {
       if (have[x.m + '>' + x.c]) return;
       have[x.m + '>' + x.c] = have[x.c + '>' + x.m] = 1;

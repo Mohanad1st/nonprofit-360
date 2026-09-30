@@ -128,6 +128,8 @@ var STR_EN = {
   'check.linkSelf': 'Work links row {row}: a person cannot rate themselves.',
   'check.linkNoReason': 'Work links row {row}: add a reason; the rater sees it.',
   'check.neverUnknown': 'Never pair row {row}: someone is not in the Team tab.',
+  'col.actions.round': 'Round',
+  'check.roleNoDept': 'Questions tab: the role question «{q}» is in use but lists no department, so nobody gets it. Write the departments it is for.',
   'check.roleDeptUnknown': 'Questions tab: «{q}» is for the department «{dept}», but nobody in the Team tab is in it. Write the department name exactly as in the Team tab.',
   'check.deptUnknown': 'Department links: "{dept}" is not a department in the Team tab.',
   'check.adminNotInTeam': 'The admin ({email}) is not in the Team tab. That is fine if the admin is not being evaluated.',

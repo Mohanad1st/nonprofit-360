@@ -226,11 +226,19 @@ for (const L of ['en', 'ar']) {
   ok(acts && acts.data.length >= 11 && acts.data[0][3] === ctx.tr_(L, 'col.actions.action'), tag + 'an «Agreed actions» tab is made, one starting row per person');
   const before = acts.data.length; ctx.actionsTab_(R);
   ok(acts.data.length === before, tag + '…and making the reports again does not add the same people twice');
+  ctx.setSetting_('CYCLE_NAME', '2027'); ctx.resetCfg_(); ctx.actionsTab_(R);
+  ok(acts.data.length > before && acts.data[acts.data.length - 1][8] === '2027', tag + '…a new round adds its own starting rows');
+  acts.data.splice(before); ctx.setSetting_('CYCLE_NAME', '2026'); ctx.resetCfg_();
   const withMgr = acts.data.findIndex((r, i) => i > 0 && r[2]);
   acts.data[withMgr][3] = 'Share the weekly plan every Monday'; acts.data[withMgr][5] = '2027-01-15';
   state.mail = []; state.alerts = []; ctx.followUpActions();
   ok(state.mail.length === 1 && state.mail[0].to === acts.data[withMgr][2] && state.mail[0].text.indexOf('Share the weekly plan every Monday') >= 0, tag + 'the follow-up emails the manager the open action of their team, and nobody else');
   ok(acts.data[withMgr][7], tag + '…and records the date of the follow-up');
+  const kz = team.find(p => p.email === 'karim@example.org');
+  acts.data.push([kz.name, '', '', 'An extra action added by hand', '', '', ctx.tr_(L, 'word.no'), '', '2026']);
+  state.mail = []; state.alerts = []; ctx.followUpActions();
+  ok(state.mail.some(m => m.to === kz.manager && m.text.indexOf('An extra action added by hand') >= 0), tag + 'a row added by hand with only a name still reaches the right manager');
+  acts.data.pop();
   acts.data[withMgr][6] = ctx.tr_(L, 'word.yes'); state.mail = []; state.alerts = []; ctx.followUpActions();
   ok(state.mail.length === 0 && state.alerts[0] === ctx.tr_(L, 'followUp.none'), tag + 'an action marked done is not sent again');
   const docs = Object.keys(state.docs);
@@ -297,6 +305,8 @@ for (const L of ['en', 'ar']) {
   const HM = 'hala@example.org', KZ = 'karim@example.org', LZ = 'laila@example.org', MO = 'mona@example.org';
   state.user = HM; let lp = ctx.linksPageHtml_(HM);
   ok(lp.indexOf(ctx.tr_(L, 'links.title')) >= 0 && lp.indexOf(team.find(p => p.email === KZ).name) >= 0, tag + 'a manager sees the short page with their own team');
+  const someReason = ctx.readLinks_(team).find(l => l.rater === KZ || l.ratee === KZ).reason;
+  ok(lp.indexOf(someReason) < 0, tag + 'the short page names who is already listed, but never what anyone wrote about them');
   ok(ctx.linksPageHtml_(KZ).indexOf(ctx.esc_(ctx.tr_(L, 'links.notManager'))) >= 0, tag + 'someone who manages nobody gets a plain message instead');
   const linksBefore = tab('LINKS').data.length;
   let lr = ctx.submitLinks([{ member: KZ, colleague: MO, reason: 'Monthly newsletter stories from the field' }]);
@@ -315,6 +325,10 @@ for (const L of ['en', 'ar']) {
   state.user = 'nadia@example.org'; state.mail = []; state.alerts = []; ctx.askManagers();
   const mgrs = team.filter(p => p.active !== false && p.email && !ctx.isNoEmail_(p.email) && team.some(q => q.manager === p.email && q.active !== false));
   ok(state.mail.length === mgrs.length && state.mail.every(m => m.text.indexOf('?view=links') >= 0), tag + 'asking managers emails each manager once, with the link to their short page');
+  const qs = tab('QUESTIONS'), qBefore = qs.data.length;
+  qs.data = qs.data.filter(r => !/^R[FAMV][12]$/.test(String(r[0])));
+  ctx.addMissingRoleRows_();
+  ok(qs.data.length === qBefore && qs.data.filter(r => /^R[FAMV][12]$/.test(String(r[0]))).every(r => r[6] === ctx.tr_(L, 'word.no')), tag + 'a sheet from an older version gets the ready-made role questions, switched off');
   ctx.rememberControlSheet_();
 
   // only the admin

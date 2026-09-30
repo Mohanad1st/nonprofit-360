@@ -75,7 +75,8 @@ Nothing is shared with anyone. You decide, person by person.
 4. **Put the follow-up in your calendar.** When the reports are ready, the window offers **Add a reminder to my Google
    Calendar** for about 3 months later. One click, and it opens your calendar with the reminder filled in.
 5. **Follow up.** On that day, choose **Follow up agreed actions**. After you confirm, each manager gets one email with
-   the actions of their team that are not done yet. Actions for someone without a manager come to you.
+   the actions of their team that are not done yet. Actions for someone without a manager come to you. Actions stay in
+   the tab across rounds until they are marked done; each round adds its own starting rows (the **Round** column).
 
 ## After changing the code or the questions
 If you (or Claude) changed the code, publish a new version so people see it:

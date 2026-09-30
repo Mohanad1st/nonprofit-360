@@ -28,13 +28,14 @@ function reportsDoneDialog_(folder) {
 function actionsTab_(R) {
   var sh = sheet_('ACTIONS', true), head = cols_('actions', ACTION_COLS);
   if (sh.getLastRow() < 1) { writeHeader_(sh, head); sh.getRange(1, 1).setNote(t_('note.actions')); sh.setColumnWidths(1, head.length, 170); }
+  var round = String(setting_('CYCLE_NAME') || ''), key = function (email, name, rnd) { return (lower_(email) || String(name).trim()) + '|' + String(rnd).trim(); };
   var have = {};
-  if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().forEach(function (r) { have[String(r[0]).trim()] = 1; });
+  if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, head.length).getValues().forEach(function (r) { have[key(r[1], r[0], r[8])] = 1; });
   var byEmail = indexTeam_(readTeam_()), no = t_('word.no');
   var rows = Object.keys(R.persons).filter(function (e) { return R.persons[e].nRaters || R.persons[e].hasSelf; }).map(function (e) {
     var p = byEmail[e] || { name: R.persons[e].name, manager: '' };
-    return [p.name, isNoEmail_(e) ? '' : e, p.manager && !isNoEmail_(p.manager) ? p.manager : '', '', '', '', no, ''];
-  }).filter(function (r) { return !have[String(r[0]).trim()]; });
+    return [p.name, isNoEmail_(e) ? '' : e, p.manager && !isNoEmail_(p.manager) ? p.manager : '', '', '', '', no, '', round];
+  }).filter(function (r) { return !have[key(r[1], r[0], r[8])]; });
   if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, head.length).setValues(safeRows_(rows));
   var yn = SpreadsheetApp.newDataValidation().requireValueInList([t_('word.yes'), t_('word.no')], true).setAllowInvalid(true).build();
   sh.getRange(2, 7, Math.max(sh.getLastRow() - 1, 1), 1).setDataValidation(yn);
@@ -477,7 +478,7 @@ function paperForm_(p, mine, byEmail, folder) {
   p_(b, C('paper.part1'), H1_());
   p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
   p_(b, C('ui.describesSelf'), null, { size: 9, muted: true });
-  ratingTable(B.CORE.concat(openFor_('ROLE', p.dept)));
+  ratingTable(B.CORE.concat(roleFor_(p.dept)));
   if (hasReports_(p.email, byEmail)) { ratingTable(B.LEAD); B.SELF_HEAD.forEach(function (q) { lines(q, 3); }); }
   openFor_('SELF_OPEN', p.dept).forEach(function (q) { lines(q, 3); });
   p_(b, C('paper.recog'), null, { bold: true }); lines({ title: C('ui.recogWhy'), help: '' }, 2);
@@ -489,7 +490,7 @@ function paperForm_(p, mine, byEmail, folder) {
     if (a.reason) p_(b, C('ui.whyShown') + ' ' + a.reason, null, { size: 9, muted: true });
     p_(b, C('ui.freqQ') + ' — ' + C('paper.circleOne') + '   ' + FREQ_CODES.map(function (f) { return C('freq.' + f); }).join('   ·   '), null, { bold: true });
     p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
-    ratingTable(B.CORE.concat(openFor_('ROLE', t.dept)));
+    ratingTable(B.CORE.concat(roleFor_(t.dept)));
     if (leadAllowed_(p.email, t.email, byEmail)) { p_(b, C('ui.leadTitle') + ' — ' + C('ui.leadNa'), null, { bold: true }); ratingTable(B.LEAD); }
     if (rel === 'HEAD_TO_MEMBER') { ratingTable(B.HEAD_ITEMS); B.HEAD_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }
     if (rel === 'MEMBER_TO_HEAD') { p_(b, C('ui.memberTitle') + ': ' + C('ui.memberIntro'), null, { bold: true }); B.MEMBER_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }

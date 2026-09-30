@@ -133,6 +133,8 @@ var STR_EN = {
   'check.linkSelf': 'Work links row {row}: a person cannot rate themselves.',
   'check.linkNoReason': 'Work links row {row}: add a reason; the rater sees it.',
   'check.neverUnknown': 'Never pair row {row}: someone is not in the Team tab.',
+  'col.actions.round': 'Round',
+  'check.roleNoDept': 'Questions tab: the role question «{q}» is in use but lists no department, so nobody gets it. Write the departments it is for.',
   'check.roleDeptUnknown': 'Questions tab: «{q}» is for the department «{dept}», but nobody in the Team tab is in it. Write the department name exactly as in the Team tab.',
   'check.deptUnknown': 'Department links: "{dept}" is not a department in the Team tab.',
   'check.adminNotInTeam': 'The admin ({email}) is not in the Team tab. That is fine if the admin is not being evaluated.',
@@ -637,6 +639,8 @@ var STR_AR = {
   'check.linkSelf': 'روابط العمل، الصف {row}: لا يقيّم الشخص نفسه.',
   'check.linkNoReason': 'روابط العمل، الصف {row}: أضف السبب؛ فالمقيّم يراه.',
   'check.neverUnknown': 'تبويب «لا يقيّم أحدهما الآخر»، الصف {row}: أحد الشخصين غير موجود في «الفريق».',
+  'col.actions.round': 'الدورة',
+  'check.roleNoDept': 'تبويب «الأسئلة»: سؤال الدور «{q}» مستخدم لكنه لا يذكر أي إدارة، فلن يصل إلى أحد. اكتبوا الإدارات المقصودة.',
   'check.roleDeptUnknown': 'تبويب «الأسئلة»: السؤال «{q}» مخصص لإدارة «{dept}»، لكن لا أحد في تبويب «الفريق» ينتمي إليها. اكتبوا اسم الإدارة كما هو في تبويب «الفريق» تمامًا.',
   'check.deptUnknown': 'روابط الإدارات: «{dept}» ليست إدارة في تبويب «الفريق».',
   'check.adminNotInTeam': 'مسؤول التقييم ({email}) غير موجود في «الفريق». لا مشكلة إن لم يكن مشمولًا في التقييم.',
@@ -1075,7 +1079,7 @@ var SETTING_DEFAULT_KEY = { CYCLE_NAME: 'default.cycle', TAGLINE: 'default.tagli
 /** Tabs by stable id. Their shown names follow the language; the tool finds them by an internal id, so renaming a tab is safe. */
 var TABS = ['GUIDE', 'SETTINGS', 'TEAM', 'LINKS', 'NEVER', 'DEPTLINKS', 'QUESTIONS', 'ASSIGN', 'DECISIONS', 'RESPONSES', 'DRAFTS',
   'COMPLETION', 'FLAGS', 'PEOPLE', 'HEAT', 'DEPTS', 'STARS', 'BLAME', 'ACCOUNT', 'SUMMARY', 'DASH', 'ACTIONS'];
-var ACTION_COLS = ['name', 'email', 'manager', 'action', 'support', 'due', 'done', 'checked'];
+var ACTION_COLS = ['name', 'email', 'manager', 'action', 'support', 'due', 'done', 'checked', 'round'];
 
 var __CFG = null;       // settings of this run (read once)
 var __BOOK = null;      // the control spreadsheet
@@ -1557,7 +1561,8 @@ function openFor_(section, dept) {
   return Q_()[section].filter(function (q) { return !q.depts || !q.depts.length || q.depts.indexOf(dept) >= 0; });
 }
 /** Role questions that apply to someone in this department (rated by everyone who rates them, and by themselves). */
-function roleIdsFor_(dept) { return openFor_('ROLE', dept).map(function (q) { return q.id; }); }
+function roleFor_(dept) { return Q_().ROLE.filter(function (q) { return q.depts && q.depts.length && q.depts.indexOf(dept) >= 0; }); }
+function roleIdsFor_(dept) { return roleFor_(dept).map(function (q) { return q.id; }); }
 
 function indexTeam_(team) {
   var byEmail = {};
@@ -2140,7 +2145,7 @@ function checkOrg_(team, links, never, deptLinks, opts) {
     (deptLinks[d] || []).forEach(function (x) { if (!depts[x]) warn('deptUnknown', { dept: x }); });
   });
   // a role question switched on for a department that nobody is in reaches nobody
-  try { Q_().ROLE.forEach(function (q) { (q.depts || []).forEach(function (d) { if (!depts[d]) warn('roleDeptUnknown', { q: q.title, dept: d }); }); }); } catch (e) {}
+  try { Q_().ROLE.forEach(function (q) { if (!(q.depts || []).length) warn('roleNoDept', { q: q.title }); (q.depts || []).forEach(function (d) { if (!depts[d]) warn('roleDeptUnknown', { q: q.title, dept: d }); }); }); } catch (e) {}
   if (opts.admin && !by[lower_(opts.admin)]) warn('adminNotInTeam', { email: opts.admin });
   if (!opts.deadline) warn('noDeadline');
   // how many ratings each person gets and gives (a fair evaluation needs enough raters; a heavy list tires people)
@@ -2603,7 +2608,7 @@ function buildTabs_(loadExample) {
     resetBank_();
     writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_(), true));
     resetBank_();
-  }
+  } else { addMissingRoleRows_(); resetBank_(); }
   readDecisions_();
   responsesSheet_();
   draftSheet_();
@@ -2622,16 +2627,26 @@ function fit_(r, n) { r = (r || []).slice(0, n); while (r.length < n) r.push('')
 function exampleTeamRows_() {
   return exampleTeam_(lang_()).map(function (p) { return [p.name, isNoEmail_(p.email) ? '' : p.email, p.dept, p.title, p.manager, t_('word.yes'), isNoEmail_(p.email) ? t_('note.paperPerson') : '']; });
 }
-/** Seed questions arrive as rows [code, section, question, help, required, depts]. */
+/** Seed questions arrive as rows [code, section, question, help, required, depts, in use]. Role questions start off unless marked in use. */
 function seedBank_(rows) {
   var out = {}; SECTIONS.forEach(function (s) { out[s] = []; });
   var seen = {};
   rows.forEach(function (r) {
     var id = String(r[0] || '').trim().toUpperCase(), sec = sectionOf_(r[1]);
     if (!sec || seen[id] || !/^[A-Z][A-Z0-9_]{0,15}$/.test(id)) return;
-    seen[id] = 1; out[sec].push(makeQuestion_(sec, [id, r[2], r[3], r[4], r[5]]));
+    var off = no_(r[6]) || (sec === 'ROLE' && !yes_(r[6]));
+    seen[id] = 1; out[sec].push(makeQuestion_(sec, [id, r[2], r[3], r[4], r[5], off ? 'off' : '']));
   });
-  return out.CORE.length ? out : defaultBank_(lang_());
+  return out.CORE.length ? out : defaultBank_(lang_(), true);
+}
+/** Sheets set up before the role questions existed get the ready-made ones added, switched off. */
+function addMissingRoleRows_() {
+  var sh = sheet_('QUESTIONS'); if (!sh || sh.getLastRow() < 2) return;
+  var have = {}; sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().forEach(function (r) { have[String(r[0]).trim().toUpperCase()] = 1; });
+  var rows = defaultBank_(lang_(), true).ROLE.filter(function (q) { return !have[q.id]; }).map(function (q) {
+    return [q.id, t_('section.ROLE'), q.title, q.help, t_('word.yes'), (q.depts || []).join(', '), t_('word.no')];
+  });
+  if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, 7).setValues(safeRows_(rows));
 }
 /** After a language change, tabs take their names in the new language. */
 function renameTabs_() {
@@ -3127,7 +3142,9 @@ function followUpActions() {
   data.forEach(function (r, i) {
     var action = String(r[3] || '').trim();
     if (!action || yes_(r[6])) return;
-    var person = byEmail[lower_(r[1])], mgr = lower_(r[2]) || (person && person.manager) || '';
+    var person = byEmail[resolvePerson_(r[1], team)] || byEmail[resolvePerson_(r[0], team)];
+    var mgr = resolvePerson_(r[2], team);
+    if (!byEmail[mgr] || isNoEmail_(mgr)) mgr = person && person.manager ? lower_(person.manager) : '';
     if (!mgr || isNoEmail_(mgr) || !byEmail[mgr]) mgr = admin;
     var due = r[5] instanceof Date ? Utilities.formatDate(r[5], tz_(), 'yyyy-MM-dd') : String(r[5] || '').trim();
     (groups[mgr] = groups[mgr] || []).push(String(r[0]).trim() + ': ' + action + (due ? ' (' + t_('followUp.by', { date: due }) + ')' : ''));
@@ -3178,13 +3195,14 @@ function reportsDoneDialog_(folder) {
 function actionsTab_(R) {
   var sh = sheet_('ACTIONS', true), head = cols_('actions', ACTION_COLS);
   if (sh.getLastRow() < 1) { writeHeader_(sh, head); sh.getRange(1, 1).setNote(t_('note.actions')); sh.setColumnWidths(1, head.length, 170); }
+  var round = String(setting_('CYCLE_NAME') || ''), key = function (email, name, rnd) { return (lower_(email) || String(name).trim()) + '|' + String(rnd).trim(); };
   var have = {};
-  if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().forEach(function (r) { have[String(r[0]).trim()] = 1; });
+  if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, head.length).getValues().forEach(function (r) { have[key(r[1], r[0], r[8])] = 1; });
   var byEmail = indexTeam_(readTeam_()), no = t_('word.no');
   var rows = Object.keys(R.persons).filter(function (e) { return R.persons[e].nRaters || R.persons[e].hasSelf; }).map(function (e) {
     var p = byEmail[e] || { name: R.persons[e].name, manager: '' };
-    return [p.name, isNoEmail_(e) ? '' : e, p.manager && !isNoEmail_(p.manager) ? p.manager : '', '', '', '', no, ''];
-  }).filter(function (r) { return !have[String(r[0]).trim()]; });
+    return [p.name, isNoEmail_(e) ? '' : e, p.manager && !isNoEmail_(p.manager) ? p.manager : '', '', '', '', no, '', round];
+  }).filter(function (r) { return !have[key(r[1], r[0], r[8])]; });
   if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, head.length).setValues(safeRows_(rows));
   var yn = SpreadsheetApp.newDataValidation().requireValueInList([t_('word.yes'), t_('word.no')], true).setAllowInvalid(true).build();
   sh.getRange(2, 7, Math.max(sh.getLastRow() - 1, 1), 1).setDataValidation(yn);
@@ -3627,7 +3645,7 @@ function paperForm_(p, mine, byEmail, folder) {
   p_(b, C('paper.part1'), H1_());
   p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
   p_(b, C('ui.describesSelf'), null, { size: 9, muted: true });
-  ratingTable(B.CORE.concat(openFor_('ROLE', p.dept)));
+  ratingTable(B.CORE.concat(roleFor_(p.dept)));
   if (hasReports_(p.email, byEmail)) { ratingTable(B.LEAD); B.SELF_HEAD.forEach(function (q) { lines(q, 3); }); }
   openFor_('SELF_OPEN', p.dept).forEach(function (q) { lines(q, 3); });
   p_(b, C('paper.recog'), null, { bold: true }); lines({ title: C('ui.recogWhy'), help: '' }, 2);
@@ -3639,7 +3657,7 @@ function paperForm_(p, mine, byEmail, folder) {
     if (a.reason) p_(b, C('ui.whyShown') + ' ' + a.reason, null, { size: 9, muted: true });
     p_(b, C('ui.freqQ') + ' — ' + C('paper.circleOne') + '   ' + FREQ_CODES.map(function (f) { return C('freq.' + f); }).join('   ·   '), null, { bold: true });
     p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
-    ratingTable(B.CORE.concat(openFor_('ROLE', t.dept)));
+    ratingTable(B.CORE.concat(roleFor_(t.dept)));
     if (leadAllowed_(p.email, t.email, byEmail)) { p_(b, C('ui.leadTitle') + ' — ' + C('ui.leadNa'), null, { bold: true }); ratingTable(B.LEAD); }
     if (rel === 'HEAD_TO_MEMBER') { ratingTable(B.HEAD_ITEMS); B.HEAD_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }
     if (rel === 'MEMBER_TO_HEAD') { p_(b, C('ui.memberTitle') + ': ' + C('ui.memberIntro'), null, { bold: true }); B.MEMBER_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }
@@ -3692,10 +3710,12 @@ function linksPageHtml_(email) {
   var team = readTeam_(), byEmail = indexTeam_(team), me = byEmail[lower_(email)];
   var mine = me && me.active !== false ? teamOf_(me.email, team) : [];
   if (!mine.length) return messagePageHtml_(t_('links.notManager'));
-  var links = readLinks_(team), name = function (e) { return byEmail[e] ? byEmail[e].name : e; };
+  var links = readLinks_(team);
   var members = mine.map(function (p) {
-    var already = links.filter(function (l) { return l.rater === p.email || l.ratee === p.email; }).map(function (l) {
-      var other = l.rater === p.email ? l.ratee : l.rater; return name(other) + (l.reason ? ' — ' + l.reason : '');
+    var already = [];
+    links.forEach(function (l) {
+      var other = l.rater === p.email ? l.ratee : l.ratee === p.email ? l.rater : '';
+      if (other && byEmail[other] && already.indexOf(byEmail[other].name) < 0) already.push(byEmail[other].name);
     });
     // teammates and their manager are paired automatically, so they are not offered
     var auto = {}; auto[p.email] = 1; auto[lower_(p.manager)] = 1;
@@ -3771,6 +3791,7 @@ function submitLinks(items) {
     readLinks_(team).forEach(function (l) { have[l.rater + '>' + l.ratee] = 1; have[l.ratee + '>' + l.rater] = 1; });
     var show = function (e) { return isNoEmail_(e) ? byEmail[e].name : e; };
     var sh = sheet_('LINKS', true), rows = [];
+    if (sh.getLastRow() < 1) writeHeader_(sh, cols_('links', ['rater', 'ratee', 'reason', 'both', 'note']));
     clean.forEach(function (x) {
       if (have[x.m + '>' + x.c]) return;
       have[x.m + '>' + x.c] = have[x.c + '>' + x.m] = 1;

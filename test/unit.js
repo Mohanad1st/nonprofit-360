@@ -147,6 +147,12 @@ for (const L of ['en', 'ar']) {
   ok(RR.persons['rami@example.org'].coreOthers === RR0.persons['rami@example.org'].coreOthers, tag + '…apart from the core average, so everyone is still compared on the same questions');
   rb.ROLE = [ctx.makeQuestion_('ROLE', ['RA1', 'Accurate records', 'Help', '', 'No such department'])];
   ok(ctx.checkOrg_(team, [], [], {}, {}).some(x => x.msg.indexOf('No such department') >= 0), tag + 'the check warns when a role question names a department nobody is in');
+  rb.ROLE = [ctx.makeQuestion_('ROLE', ['RA1', 'Accurate records', 'Help', '', ''])];
+  ok(ctx.roleIdsFor_(rDept).length === 0 && ctx.checkOrg_(team, [], [], {}, {}).some(x => x.msg.indexOf('Accurate records') >= 0), tag + 'a role question with no department reaches nobody, and the check says so');
+  ctx.resetBank_();
+  const sb = ctx.seedBank_([['C1', 'CORE', 'Replies fast', '', 'yes', ''], ['RV1', 'ROLE', 'Reliability', '', '', 'Volunteers'], ['RV2', 'ROLE', 'Representing us', '', '', 'Volunteers', 'yes']]);
+  ok(sb.ROLE.find(q => q.id === 'RV1').off && !sb.ROLE.find(q => q.id === 'RV2').off, tag + 'seeded role questions start off unless marked in use');
+  ok(ctx.seedBank_([['X', 'NOPE', '', '', '', '']]).ROLE.length === 8, tag + 'the fallback bank keeps the ready-made role questions');
   ctx.resetBank_();
   ctx.useSettings_({ LANGUAGE: L, ORG_TARGETS: 'Target: 500 families' });
   ok(ctx.Q_().SELF_OPEN.find(q => q.id === 'S_CONTRIB').help.indexOf('500 families') >= 0, tag + 'organisation targets appear in the contribution question');

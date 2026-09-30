@@ -51,7 +51,8 @@ function openFor_(section, dept) {
   return Q_()[section].filter(function (q) { return !q.depts || !q.depts.length || q.depts.indexOf(dept) >= 0; });
 }
 /** Role questions that apply to someone in this department (rated by everyone who rates them, and by themselves). */
-function roleIdsFor_(dept) { return openFor_('ROLE', dept).map(function (q) { return q.id; }); }
+function roleFor_(dept) { return Q_().ROLE.filter(function (q) { return q.depts && q.depts.length && q.depts.indexOf(dept) >= 0; }); }
+function roleIdsFor_(dept) { return roleFor_(dept).map(function (q) { return q.id; }); }
 
 function indexTeam_(team) {
   var byEmail = {};
