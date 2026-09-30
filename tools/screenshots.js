@@ -4,7 +4,7 @@
 'use strict';
 const fs = require('fs'), path = require('path'), os = require('os'), vm = require('vm'), { execFileSync } = require('child_process');
 const { ROOT, load } = require('./lib');
-const chrome = [process.env.CHROME, 'C:/Program Files/Google/Chrome/Application/chrome.exe', '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', '/usr/bin/google-chrome'].filter(Boolean).find(p => fs.existsSync(p));
+const chrome = require('./chrome').chromePath();
 if (!chrome) { console.error('Chrome not found (set CHROME=/path/to/chrome).'); process.exit(1); }
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'np360s-'));
 const fwd = p => p.replace(/\\/g, '/');

@@ -48,7 +48,7 @@ Yes, fully right-to-left: the page, emails, sheet, reports and paper forms. The 
 a native speaker read it before your first round.
 
 **Can we use it with personal Gmail accounts?**
-Not in version 1. The page relies on Google Workspace to know safely who is who. Signing in with secret personal links is on the future list.
+Not yet. The page relies on Google Workspace to know safely who is who. Signing in with secret personal links is on the future list.
 
 **How many emails can it send?**
 Google limits emails per day: about 1,500 for Workspace accounts, and fewer for new accounts. For a small team it is never a problem.

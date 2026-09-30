@@ -6,13 +6,13 @@
 
 **A free, open-source 360-degree performance evaluation for nonprofits — in English and Arabic, running in your own Google account.**
 
-[العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md) · [Product document](docs/PRD.md)
+[العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md)
 
 | At a glance | |
 |---|---|
 | **For** | Nonprofits of about 5–100 staff that use **Google Workspace** (work emails on your own domain, managed by Google) |
-| **Cost** | The tool is free. The optional Claude Code helper needs a paid Claude plan; setting up by hand costs nothing. |
-| **Time** | About 2 hours to set up. Each person needs about 10 minutes, plus 3 minutes for each colleague they rate. |
+| **Cost** | The tool is free. The optional Claude Code helper needs a paid Claude plan (Pro: US$20 a month, or $17 paid yearly); setting up by hand costs nothing. |
+| **Time** | About 2 hours at the computer, plus a few days to ask managers who works with whom. Each person needs about 10 minutes, plus 3 minutes for each colleague they rate. |
 | **You get** | A private results sheet, a report per person to discuss with them, and an organisation report with charts |
 | **First step** | [Check you have Google Workspace](docs/en/faq.md#do-we-have-google-workspace), then follow the [Setup guide](docs/en/setup-guide.md) |
 
@@ -34,7 +34,7 @@ no IT staff and no budget for HR software.
   - "I don't know" never counts against anyone.
   - A manager who gives a low score is asked what they did to help.
 - **Confidential by design.**
-  - Only the admin sees individual answers.
+  - Only the admin sees individual answers (and anyone the admin gives edit access to the sheet).
   - Nothing is shown about a group of fewer than 3 people.
   - Employee reports have no names.
   - Nothing is shared until the admin decides.
@@ -56,12 +56,14 @@ no IT staff and no budget for HR software.
 
 ## Get started
 
-### Easiest: let Claude Code do it (needs a paid Claude plan)
+### Guided: let Claude Code do it (needs a paid Claude plan)
 1. Install the [Claude desktop app](https://claude.com/download) and sign in. Also install [Node.js](https://nodejs.org)
    (the button marked "LTS"); Claude uses it to check and build your copy.
 2. Download this project: on this page press the green **Code** button → **Download ZIP**. In your Downloads folder,
-   right-click the file → **Extract All**, and move the folder to Documents.
+   right-click the file → **Extract All**, and move the folder to Documents (use the folder that has `README.md`
+   directly inside it).
 3. In the Claude app open **Code**, choose that folder, type **`/setup-360`** in the message box and press Enter.
+   Claude asks before each step it runs on your computer: read its one-line reason and press **Allow**.
 4. Answer its questions in plain words: your team, who works with whom, your values and your deadline. Claude prepares
    everything, puts it in your Google account, and guides you through the few clicks only you can do.
 
@@ -87,7 +89,7 @@ Personal Gmail accounts are not supported in this version.
 - The source is in [`src/`](src/) (Google Apps Script). `npm run build` joins it into [`dist/Code.gs`](dist/Code.gs).
 - Tests: `npm test`. They check the analysis, both languages, the whole flow against fake Google services, the leak
   rules, stop-and-continue, and a real-browser run of every example person in both languages.
-- See [Architecture](docs/ARCHITECTURE.md), [Contributing](CONTRIBUTING.md), [Security](SECURITY.md) and the [security and readiness audit](docs/SECURITY-AUDIT.md).
+- See the [product document](docs/PRD.md), [Architecture](docs/ARCHITECTURE.md), [Contributing](CONTRIBUTING.md), [Security](SECURITY.md) and the [security review](docs/SECURITY-AUDIT.md).
 
 ## Need help?
 Type `/fix-360` in Claude Code, read [Troubleshooting](docs/en/troubleshooting.md), or open an issue on GitHub

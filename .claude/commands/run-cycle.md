@@ -14,8 +14,8 @@ Ask where they are, then help with that stage.
   Suggest one reminder a few days before the deadline, not daily.
 - **Paper forms** for people without email:
   1. Menu «Make paper forms for people without email» → Google Docs in a new folder. They print them.
-  2. When the forms come back, they open the page address followed by `?as=<the person's name>` (admin only) and type
-     the answers exactly as written.
+  2. When the forms come back: menu «Enter answers from paper forms» → a window with one link per person (admin only).
+     They click the name and type the answers exactly as written.
 - **Someone cannot open the page:** see `/fix-360`. The usual causes are opening it with a personal Gmail account instead
   of the work account, or the page not being published for "anyone in the organisation".
 
@@ -26,8 +26,8 @@ Ask where they are, then help with that stage.
    «Review decisions» they write keep or exclude per rating; their word beats the automatic rules.
 2. Menu «Make the reports». A private folder appears with:
    - the admin's full copy for each person;
-   - an **employee copy** for each person: no names, no warnings, constructive wording, and only when at least 3 people
-     rated them;
+   - an **employee copy** for each person: no names, no warnings, constructive wording. If fewer than the minimum group
+     (3 by default) rated someone, their copy says so and shows no scores;
    - the organisation report.
 3. The tabs «Dashboard», «Results by person», «Departments», «Managers and teams» and «Summary» give the whole picture.
    «Summary» shows a first indication per person. It is never a decision on its own: read it with the examples and other

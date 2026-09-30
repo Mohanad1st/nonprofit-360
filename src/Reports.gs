@@ -400,7 +400,20 @@ function makePaperForms() {
   if (!paper.length) { uiAlert_(t_('paper.none')); return; }
   var folder = parentFolder_().createFolder(t_('paper.folder') + ' ' + Utilities.formatDate(new Date(), tz_(), 'yyyy-MM-dd'));
   paper.forEach(function (p) { paperForm_(p, asg.filter(function (a) { return a.rater === p.email; }), byEmail, folder); });
-  uiAlert_(t_('paper.done', { n: paper.length, folder: folder.getName(), url: portalUrl_() }));
+  uiAlert_(t_('paper.done', { n: paper.length, folder: folder.getName() }));
+}
+/** A window with one link per person without email: the admin opens it to type in the answers from their returned paper form. */
+function enterPaperAnswers() {
+  requireOwner_();
+  var paper = readTeam_().filter(function (p) { return p.active !== false && isNoEmail_(p.email); });
+  if (!paper.length) { uiAlert_(t_('paper.none')); return; }
+  var url = portalUrl_();
+  if (!url) { uiAlert_(t_('paper.noPage')); return; }
+  var html = '<div dir="' + (isRtl_() ? 'rtl' : 'ltr') + '" style="font-family:Arial,sans-serif;font-size:14px;line-height:1.8">' +
+    '<p>' + esc_(t_('paper.entryIntro')) + '</p><ul>' + paper.map(function (p) {
+      return '<li><a target="_blank" href="' + esc_(url + '?as=' + encodeURIComponent(p.name)) + '">' + esc_(p.name) + '</a></li>';
+    }).join('') + '</ul></div>';
+  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(460).setHeight(420), t_('menu.paperEntry'));
 }
 function paperForm_(p, mine, byEmail, folder) {
   var B = Q_(), C = t_;

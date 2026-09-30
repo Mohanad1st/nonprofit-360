@@ -25,7 +25,7 @@ var STR_EN = {
   'menu.start': 'Start setup', 'menu.title': '360 evaluation', 'menu.setup': '1) Setup and settings', 'menu.check': '2) Check my team and links',
   'menu.pairs': '3) Make the pairings (who rates whom)', 'menu.publish': '4) Publish the personal page', 'menu.preview': '5) Send me a preview',
   'menu.invite': '6) Send the invitations to the team', 'menu.update': 'Update results', 'menu.remind': 'Send reminders to people who have not finished',
-  'menu.reports': 'Make the reports (admin only)', 'menu.paper': 'Make paper forms for people without email',
+  'menu.reports': 'Make the reports (admin only)', 'menu.paper': 'Make paper forms for people without email', 'menu.paperEntry': 'Enter answers from paper forms',
   'menu.testRun': 'Try it: run a test with made-up people', 'menu.testClear': 'Try it: clear the test', 'menu.newRound': 'Start a new round (clears answers, keeps team and settings)',
 
   // ——— setup wizard ———
@@ -109,7 +109,7 @@ var STR_EN = {
   'guide.step9': '9) Tab «Flags»: doubtful ratings, with names, for you only. In «Review decisions» write keep or exclude; your word beats the automatic rules.',
   'guide.step10': '10) «Make the reports»: for each person, your full copy and an employee copy with no names, plus an organisation report, in a private folder.',
   'guide.step11': '11) Nobody sees any result until you decide to share it. Share each employee copy yourself, in a conversation.',
-  'guide.step12': '12) People without a work email: «Make paper forms», print them, then enter the returned answers through the page address followed by ?as=<their name>.',
+  'guide.step12': '12) People without a work email: «Make paper forms» and print them. When they come back: «Enter answers from paper forms», click the name, and type the answers.',
   'guide.help': 'Stuck? Open the project in Claude Code and type /fix-360, or read docs/troubleshooting in the project.',
 
   // ——— checks ———
@@ -144,8 +144,8 @@ var STR_EN = {
   'pairs.done': '{n} pairings made, each with its reason. Read the «Who rates whom» tab before inviting anyone.',
 
   // ——— publishing the page ———
-  'publish.step1': 'At the top of this sheet: Extensions → Apps Script.',
-  'publish.step2': 'Top right: Deploy → New deployment. Click the gear next to "Select type" and choose "Web app".',
+  'publish.step1': 'At the top of this sheet: Extensions → Apps Script. Then, top right: Deploy → New deployment.',
+  'publish.step2': 'Click the gear next to "Select type" and choose "Web app".',
   'publish.step3': 'Execute as: "Me". Who has access: "Anyone within <your organisation>". Then Deploy.',
   'publish.step4': 'Google asks for permission the first time: choose your account and allow. This lets the page save answers into this sheet.',
   'publish.step5': 'Copy the "Web app" address (it ends with /exec) and paste it below.',
@@ -392,7 +392,9 @@ var STR_EN = {
   // ——— paper forms ———
   'paper.none': 'Everyone in the Team tab has a work email, so no paper forms are needed.',
   'paper.folder': 'Paper forms –',
-  'paper.done': '{n} paper form(s) made in the folder: {folder}. Print them. When they come back, open {url}?as=<their name> and enter the answers exactly as written.',
+  'paper.done': '{n} paper form(s) made in the folder: {folder}. Print them. When they come back, choose «Enter answers from paper forms» in the menu and type the answers exactly as written.',
+  'paper.entryIntro': 'Click a name to open their page, then type the answers from their paper form exactly as written. Only you can open these links.',
+  'paper.noPage': 'Publish the personal page first: menu «4) Publish the personal page».',
   'paper.title': '360 paper form – {name}', 'paper.heading': 'Confidential 360 evaluation – {cycle}',
   'paper.opening': 'This is your paper form for the 360-degree performance evaluation.',
   'paper.howTitle': 'How do I fill in the paper form?',

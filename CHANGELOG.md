@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.1.0 — 2026-09-30
+Easier for people who are not technical.
+
+- **Pictures for every admin step:** the setup side panel, the 360 menu and Start here tab, Google's permission screens, and publishing the page (numbered like the steps).
+- **Paper forms:** a new menu item, «Enter answers from paper forms», shows one link per person. There is no more typing `?as=` onto an address.
+- **Honest guide:** Claude's price is stated; time now includes asking managers who works with whom; Claude asks before each step; Git on Windows.
+- **Troubleshooting:** what to send your Google administrator if scripts are blocked.
+- **Privacy:** says plainly that editors of the sheet and Workspace super administrators can see answers.
+- **Arabic tab names** use spaces instead of underscores. Sheets set up with 1.0.0 are still found, and are renamed the next time you save the setup.
+- The publish window's steps now match the guide's numbering.
+- **First-time path:** tell the team first (the ready announcement now says to open the invitation with the work account), how to know the invitations went out, which folder to choose after unzipping, Git listed up front on Windows, the "Select all" box on Google's permission screen, and the new sheet's link printed after the automatic upload.
+- **Tidier docs:** one Arabic note on AI-drafted wording, the product document moved to the developer links, the security review kept as a dated record, and the picture scripts documented for contributors.
+
 ## 1.0.0 — 2026-09-29
 First public release.
 

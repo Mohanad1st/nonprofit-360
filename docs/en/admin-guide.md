@@ -18,15 +18,15 @@
 
 ## Paper forms
 1. **Make paper forms for people without email** creates one Google Doc per person, in a new folder. Print them.
-2. When they come back in sealed envelopes: open your page address with `?as=` and the person's name at the end, for
-   example `https://script.google.com/…/exec?as=Samir Lotfy`. Only the admin can open this.
+2. When they come back in sealed envelopes: **Enter answers from paper forms** opens a window with one link per person.
+   Click the name. Only the admin can open these links.
 3. Type the answers exactly as written and send. The answer is marked as entered by you.
 
 ## Reading the results (admin only)
 | Tab | What it tells you |
 |---|---|
 | **Flags** | Ratings worth a second look, with the rater's name. See below. |
-| **Review decisions** | Your word on a doubtful rating: rater email, rated email, **keep** or **exclude**. It beats the automatic rules and is never cleared. |
+| **Review decisions** | Your word on a doubtful rating: rater email, rated email, **keep** or **exclude**. It beats the automatic rules. «Update results» never clears it; only «Start a new round» does. |
 | **Results by person** | Averages from others and from self, the gap, strengths, areas to develop, and whether results can be shared (at least the minimum group). |
 | **Heat map** | Everyone × every item, coloured. |
 | **Departments** | How each department is seen by the others, plus the department matrix. |

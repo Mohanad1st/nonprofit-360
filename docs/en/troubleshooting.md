@@ -9,7 +9,17 @@ With Claude Code, type `/fix-360` and describe what you see.
 
 ## "Google hasn't verified this app"
 This is normal for a script your organisation owns. Press **Advanced → Go to (your project) (unsafe) → Allow**. It runs
-only in your account.
+only in your account. There is a picture in the [setup guide](setup-guide.md#2-run-the-setup).
+
+## "This app is blocked" or "Your administrator has blocked access"
+Your organisation's Google Workspace administrator does not allow scripts. Send them this message:
+
+> I'd like to run a Google Apps Script bound to a Google Sheet I own, for our staff evaluation. It only uses our own
+> Sheets, Docs, Drive and Gmail. Could you, in the Admin console: (1) check that **Apps → Google Workspace → Additional
+> Google services → Google Apps Script** is on for me, and (2) under **Security → Access and data control → API
+> controls**, allow this script (or allow internal apps)? The script's name appears there once I have tried to open it.
+
+The menu names in the Admin console may differ slightly. After they change it, wait a few minutes and try again.
 
 ## "Not allowed: only the evaluation admin can do this"
 The person using the menu is not the **Admin email** in the Settings tab. Sign in with the admin account, or correct that row.

@@ -30,7 +30,7 @@ var STR_EN = {
   'menu.start': 'Start setup', 'menu.title': '360 evaluation', 'menu.setup': '1) Setup and settings', 'menu.check': '2) Check my team and links',
   'menu.pairs': '3) Make the pairings (who rates whom)', 'menu.publish': '4) Publish the personal page', 'menu.preview': '5) Send me a preview',
   'menu.invite': '6) Send the invitations to the team', 'menu.update': 'Update results', 'menu.remind': 'Send reminders to people who have not finished',
-  'menu.reports': 'Make the reports (admin only)', 'menu.paper': 'Make paper forms for people without email',
+  'menu.reports': 'Make the reports (admin only)', 'menu.paper': 'Make paper forms for people without email', 'menu.paperEntry': 'Enter answers from paper forms',
   'menu.testRun': 'Try it: run a test with made-up people', 'menu.testClear': 'Try it: clear the test', 'menu.newRound': 'Start a new round (clears answers, keeps team and settings)',
 
   // ——— setup wizard ———
@@ -114,7 +114,7 @@ var STR_EN = {
   'guide.step9': '9) Tab «Flags»: doubtful ratings, with names, for you only. In «Review decisions» write keep or exclude; your word beats the automatic rules.',
   'guide.step10': '10) «Make the reports»: for each person, your full copy and an employee copy with no names, plus an organisation report, in a private folder.',
   'guide.step11': '11) Nobody sees any result until you decide to share it. Share each employee copy yourself, in a conversation.',
-  'guide.step12': '12) People without a work email: «Make paper forms», print them, then enter the returned answers through the page address followed by ?as=<their name>.',
+  'guide.step12': '12) People without a work email: «Make paper forms» and print them. When they come back: «Enter answers from paper forms», click the name, and type the answers.',
   'guide.help': 'Stuck? Open the project in Claude Code and type /fix-360, or read docs/troubleshooting in the project.',
 
   // ——— checks ———
@@ -149,8 +149,8 @@ var STR_EN = {
   'pairs.done': '{n} pairings made, each with its reason. Read the «Who rates whom» tab before inviting anyone.',
 
   // ——— publishing the page ———
-  'publish.step1': 'At the top of this sheet: Extensions → Apps Script.',
-  'publish.step2': 'Top right: Deploy → New deployment. Click the gear next to "Select type" and choose "Web app".',
+  'publish.step1': 'At the top of this sheet: Extensions → Apps Script. Then, top right: Deploy → New deployment.',
+  'publish.step2': 'Click the gear next to "Select type" and choose "Web app".',
   'publish.step3': 'Execute as: "Me". Who has access: "Anyone within <your organisation>". Then Deploy.',
   'publish.step4': 'Google asks for permission the first time: choose your account and allow. This lets the page save answers into this sheet.',
   'publish.step5': 'Copy the "Web app" address (it ends with /exec) and paste it below.',
@@ -397,7 +397,9 @@ var STR_EN = {
   // ——— paper forms ———
   'paper.none': 'Everyone in the Team tab has a work email, so no paper forms are needed.',
   'paper.folder': 'Paper forms –',
-  'paper.done': '{n} paper form(s) made in the folder: {folder}. Print them. When they come back, open {url}?as=<their name> and enter the answers exactly as written.',
+  'paper.done': '{n} paper form(s) made in the folder: {folder}. Print them. When they come back, choose «Enter answers from paper forms» in the menu and type the answers exactly as written.',
+  'paper.entryIntro': 'Click a name to open their page, then type the answers from their paper form exactly as written. Only you can open these links.',
+  'paper.noPage': 'Publish the personal page first: menu «4) Publish the personal page».',
   'paper.title': '360 paper form – {name}', 'paper.heading': 'Confidential 360 evaluation – {cycle}',
   'paper.opening': 'This is your paper form for the 360-degree performance evaluation.',
   'paper.howTitle': 'How do I fill in the paper form?',
@@ -477,16 +479,16 @@ var STR_AR = {
   'default.value3.name': 'الأمانة', 'default.value3.text': 'قيّم ما رأيته بنفسك فقط. وما تكتبه أمانة عندنا: الشخص الذي تقيّمه لن يعرف أنك الكاتب، ولا يطّلع على الإجابات الفردية إلا مسؤول التقييم، وقد تصله ملاحظاتك المكتوبة دون اسمك — فاكتب بلطف ودون تفاصيل تكشف أنك الكاتب.',
   'default.value4.name': 'الشفافية', 'default.value4.text': 'قل الحق بوضوح وبلطف، كما تحب أن يُقال لك.',
 
-  'tab.GUIDE': 'ابدأ_هنا', 'tab.SETTINGS': 'الإعدادات', 'tab.TEAM': 'الفريق', 'tab.LINKS': 'روابط_العمل', 'tab.NEVER': 'لا_يقيّم_أحدهما_الآخر',
-  'tab.DEPTLINKS': 'روابط_الإدارات', 'tab.QUESTIONS': 'الأسئلة', 'tab.ASSIGN': 'من_يقيّم_من', 'tab.DECISIONS': 'قرارات_المراجعة',
-  'tab.RESPONSES': 'الردود (لا تعدّل)', 'tab.DRAFTS': 'مسودات_لم_ترسل', 'tab.COMPLETION': 'المتابعة', 'tab.FLAGS': 'التنبيهات',
-  'tab.PEOPLE': 'نتائج_الأفراد', 'tab.HEAT': 'خريطة_الأداء', 'tab.DEPTS': 'الإدارات', 'tab.STARS': 'التقدير',
-  'tab.BLAME': 'الرؤساء_وفرقهم', 'tab.ACCOUNT': 'مساءلة_الرؤساء', 'tab.SUMMARY': 'الملخص', 'tab.DASH': 'لوحة_المؤسسة',
+  'tab.GUIDE': 'ابدأ هنا', 'tab.SETTINGS': 'الإعدادات', 'tab.TEAM': 'الفريق', 'tab.LINKS': 'روابط العمل', 'tab.NEVER': 'لا يقيّم أحدهما الآخر',
+  'tab.DEPTLINKS': 'روابط الإدارات', 'tab.QUESTIONS': 'الأسئلة', 'tab.ASSIGN': 'من يقيّم من', 'tab.DECISIONS': 'قرارات المراجعة',
+  'tab.RESPONSES': 'الردود (لا تعدّل)', 'tab.DRAFTS': 'مسودات لم ترسل', 'tab.COMPLETION': 'المتابعة', 'tab.FLAGS': 'التنبيهات',
+  'tab.PEOPLE': 'نتائج الأفراد', 'tab.HEAT': 'خريطة الأداء', 'tab.DEPTS': 'الإدارات', 'tab.STARS': 'التقدير',
+  'tab.BLAME': 'الرؤساء وفرقهم', 'tab.ACCOUNT': 'مساءلة الرؤساء', 'tab.SUMMARY': 'الملخص', 'tab.DASH': 'لوحة المؤسسة',
 
   'menu.start': 'ابدأ الإعداد', 'menu.title': 'تقييم 360', 'menu.setup': '1) الإعداد والإعدادات', 'menu.check': '2) افحص الفريق والروابط',
   'menu.pairs': '3) توليد قائمة من يقيّم من', 'menu.publish': '4) نشر الصفحة الشخصية', 'menu.preview': '5) أرسل لي معاينة',
   'menu.invite': '6) إرسال الدعوات للفريق', 'menu.update': 'تحديث النتائج', 'menu.remind': 'إرسال تذكير لمن لم يكمل',
-  'menu.reports': 'إنشاء التقارير (للمسؤول فقط)', 'menu.paper': 'إنشاء نماذج ورقية لمن لا يملك بريدًا',
+  'menu.reports': 'إنشاء التقارير (للمسؤول فقط)', 'menu.paper': 'إنشاء نماذج ورقية لمن لا يملك بريدًا', 'menu.paperEntry': 'إدخال إجابات النماذج الورقية',
   'menu.testRun': 'جرّب: اختبار بأشخاص وهميين', 'menu.testClear': 'جرّب: مسح الاختبار', 'menu.newRound': 'بدء دورة جديدة (يمسح الإجابات ويحتفظ بالفريق والإعدادات)',
 
   'wiz.title': 'إعداد تقييم 360 لمؤسستك',
@@ -495,7 +497,7 @@ var STR_AR = {
   'wiz.example': 'املأ تبويب «الفريق» بفريق تجريبي وهمي لأجرّب أولًا',
   'wiz.seed': 'سيُكتب في التبويبات فريقكم وروابط العمل والأسئلة التي جهزتموها مع Claude Code.',
   'wiz.save': 'احفظ وأنشئ التبويبات', 'wiz.saving': 'جارٍ الإنشاء…',
-  'wiz.saved': 'تم. التبويبات جاهزة. التالي: املأ أو راجع تبويبي «الفريق» و«روابط_العمل»، ثم اختر «2) افحص الفريق والروابط» من القائمة.',
+  'wiz.saved': 'تم. التبويبات جاهزة. التالي: املأ أو راجع تبويبي «الفريق» و«روابط العمل»، ثم اختر «2) افحص الفريق والروابط» من القائمة.',
   'wiz.renamed': 'أسماء التبويبات أصبحت باللغة الجديدة.',
 
   'col.settings.id': 'المعرّف (لا تعدّله)', 'col.settings.name': 'الإعداد', 'col.settings.value': 'قيمتك', 'col.settings.help': 'معناه',
@@ -557,16 +559,16 @@ var STR_AR = {
   'guide.private': 'سري: هذا الملف وكل نتائجه لمسؤول التقييم فقط. لا تشاركه مع أحد.',
   'guide.step1': '1) قائمة «تقييم 360» ← «1) الإعداد والإعدادات»: اسم المؤسسة واللغة والقيم وآخر موعد. يمكنك تغييرها في أي وقت.',
   'guide.step2': '2) تبويب «الفريق»: صف لكل شخص بإدارته ورئيسه المباشر. اكتب «لا» تحت «مشمول» لمن لا يشارك.',
-  'guide.step3': '3) تبويب «روابط_العمل»: من يعمل مع من عن قرب، ولماذا. الرؤساء وفرقهم يُضافون تلقائيًا.',
+  'guide.step3': '3) تبويب «روابط العمل»: من يعمل مع من عن قرب، ولماذا. الرؤساء وفرقهم يُضافون تلقائيًا.',
   'guide.step4': '4) القائمة «2) افحص الفريق والروابط»: أي تصحيح يُشرح بكلمات بسيطة.',
-  'guide.step5': '5) القائمة «3) توليد قائمة من يقيّم من»: ثم راجع تبويب «من_يقيّم_من»؛ لكل زوج سببه.',
+  'guide.step5': '5) القائمة «3) توليد قائمة من يقيّم من»: ثم راجع تبويب «من يقيّم من»؛ لكل زوج سببه.',
   'guide.step6': '6) القائمة «4) نشر الصفحة الشخصية»: اتبع الخطوات مرة واحدة. ثم «5) أرسل لي معاينة» لترى الرسالة.',
   'guide.step7': '7) القائمة «6) إرسال الدعوات»: يصل كل شخص بريد بزر واحد يفتح صفحته الشخصية.',
   'guide.step8': '8) أثناء التقييم: «تحديث النتائج» ← تبويب «المتابعة». «إرسال تذكير» لمن لم يكمل.',
-  'guide.step9': '9) تبويب «التنبيهات»: التقييمات المشكوك فيها بأسماء أصحابها، لك وحدك. في «قرارات_المراجعة» اكتب إبقاء أو استبعاد؛ قرارك يتقدم على القواعد التلقائية.',
+  'guide.step9': '9) تبويب «التنبيهات»: التقييمات المشكوك فيها بأسماء أصحابها، لك وحدك. في «قرارات المراجعة» اكتب إبقاء أو استبعاد؛ قرارك يتقدم على القواعد التلقائية.',
   'guide.step10': '10) «إنشاء التقارير»: لكل شخص نسختك الكاملة ونسخة للموظف بلا أسماء، وتقرير للمؤسسة، في مجلد خاص.',
   'guide.step11': '11) لا يرى أحد أي نتيجة حتى تقرر مشاركتها. شارك نسخة كل موظف بنفسك، في جلسة حوار.',
-  'guide.step12': '12) من لا يملك بريد عمل: «إنشاء نماذج ورقية»، اطبعها، ثم أدخل الإجابات من عنوان الصفحة متبوعًا بـ ?as=<اسمه>.',
+  'guide.step12': '12) من لا يملك بريد عمل: «إنشاء نماذج ورقية» واطبعوها. عند عودتها: «إدخال إجابات النماذج الورقية»، اضغطوا الاسم، واكتبوا الإجابات.',
   'guide.help': 'واجهتك مشكلة؟ افتح المشروع في Claude Code واكتب /fix-360، أو اقرأ دليل حل المشكلات في المشروع.',
 
   'check.noTeam': 'تبويب «الفريق» فارغ. أضف صفًا لكل شخص.',
@@ -583,7 +585,7 @@ var STR_AR = {
   'check.linkUnknown': 'روابط العمل، الصف {row}: «{who}» غير موجود في تبويب «الفريق».',
   'check.linkSelf': 'روابط العمل، الصف {row}: لا يقيّم الشخص نفسه.',
   'check.linkNoReason': 'روابط العمل، الصف {row}: أضف السبب؛ فالمقيّم يراه.',
-  'check.neverUnknown': 'تبويب «لا_يقيّم_أحدهما_الآخر»، الصف {row}: أحد الشخصين غير موجود في «الفريق».',
+  'check.neverUnknown': 'تبويب «لا يقيّم أحدهما الآخر»، الصف {row}: أحد الشخصين غير موجود في «الفريق».',
   'check.deptUnknown': 'روابط الإدارات: «{dept}» ليست إدارة في تبويب «الفريق».',
   'check.adminNotInTeam': 'مسؤول التقييم ({email}) غير موجود في «الفريق». لا مشكلة إن لم يكن مشمولًا في التقييم.',
   'check.noDeadline': 'لا يوجد آخر موعد بعد (الإعدادات ← آخر موعد).',
@@ -597,10 +599,10 @@ var STR_AR = {
   'round.confirm': 'بدء دورة جديدة؟ سيُمسح كل إجابة ومسودة وقرار مراجعة وتكليف ونتيجة في هذا الملف. يبقى الفريق وروابط العمل والأسئلة والإعدادات. لا يمكن التراجع عن ذلك.',
   'round.done': 'الدورة الجديدة جاهزة. التالي: حدّث اسم الدورة وآخر موعد في «الإعدادات»، راجع تبويب «الفريق»، ولّد قائمة من يقيّم من، انشر الصفحة الشخصية (في نسخة من الملف يكون لها عنوان جديد)، أرسل لنفسك معاينة، ثم ادعُ الفريق.',
   'pairs.replace': 'توجد قائمة حالية لمن يقيّم من. استبدالها يحذف أي صف أضفته أو حذفته يدويًا. هل تريد المتابعة؟',
-  'pairs.done': 'تم توليد {n} تكليف تقييم، لكل منها سببه. راجع تبويب «من_يقيّم_من» قبل دعوة أي أحد.',
+  'pairs.done': 'تم توليد {n} تكليف تقييم، لكل منها سببه. راجع تبويب «من يقيّم من» قبل دعوة أي أحد.',
 
-  'publish.step1': 'أعلى هذا الملف: الإضافات (Extensions) ← Apps Script.',
-  'publish.step2': 'أعلى اليمين: نشر (Deploy) ← نشر جديد (New deployment). اضغط الترس بجوار «اختيار النوع» واختر «تطبيق ويب» (Web app).',
+  'publish.step1': 'أعلى هذا الملف: الإضافات (Extensions) ← Apps Script. ثم أعلى الشاشة: نشر (Deploy) ← نشر جديد (New deployment).',
+  'publish.step2': 'اضغط الترس بجوار «اختيار النوع» (Select type) واختر «تطبيق ويب» (Web app).',
   'publish.step3': 'التنفيذ باسم (Execute as): «أنا» (Me). من يمكنه الوصول: «أي شخص داخل مؤسستكم». ثم «نشر».',
   'publish.step4': 'تطلب Google الإذن أول مرة: اختر حسابك واسمح. هذا يتيح للصفحة حفظ الإجابات في هذا الملف.',
   'publish.step5': 'انسخ عنوان «تطبيق الويب» (ينتهي بـ /exec) والصقه بالأسفل.',
@@ -661,7 +663,7 @@ var STR_AR = {
   'flag.WEAK_EVIDENCE.detail': 'درجة {v} في «{item}» بمثال قصير أو غير مفهوم.',
   'flag.COPIED_EVIDENCE.detail': 'نفس المثال منسوخ في {n} بنود — المثال لا يخص كل بند.',
   'flag.tail.excludedByYou': ' — مستبعد من الحساب بقرارك.',
-  'flag.tail.excludedAuto': ' — مستبعد تلقائيًا (اكتب «إبقاء» في «قرارات_المراجعة» لإعادته).',
+  'flag.tail.excludedAuto': ' — مستبعد تلقائيًا (اكتب «إبقاء» في «قرارات المراجعة» لإعادته).',
   'flag.tail.keptByYou': ' — أُعيد للحساب بقرارك.',
   'flag.UNASSIGNED.detail': 'قيّم شخصًا غير مكلّف بتقييمه',
   'flag.STRAIGHT_LINE.detail': 'أعطى الدرجة {v} لكل البنود دون تمييز — احتمال تقييم انتقامي أو مجاملة',
@@ -682,7 +684,7 @@ var STR_AR = {
   'flag.LOW_COMPLETION.detail': 'أكمل {d} من {n} تقييمات مطلوبة منه.',
   'flag.LOW_COMPLETION.noSelf': 'أكمل {d} من {n} تقييمات مطلوبة منه، ولم يقدّم تقييمه الذاتي.',
 
-  'results.updated': 'تم تحديث النتائج. راجع تبويبات «المتابعة» و«التنبيهات» و«نتائج_الأفراد». لا يرى هذه النتائج أحد غيرك.',
+  'results.updated': 'تم تحديث النتائج. راجع تبويبات «المتابعة» و«التنبيهات» و«نتائج الأفراد». لا يرى هذه النتائج أحد غيرك.',
   'results.testBanner': '⚠ بيانات تجريبية بأسماء وهمية — ليست نتائج حقيقية',
   'results.banner': 'سري – لمسؤول التقييم فقط – آخر تحديث: {date}',
   'results.notReleasable': 'لا (أقل من {n} مقيّمين)',
@@ -837,7 +839,9 @@ var STR_AR = {
 
   'paper.none': 'كل من في تبويب «الفريق» لديه بريد عمل، فلا حاجة لنماذج ورقية.',
   'paper.folder': 'النماذج الورقية –',
-  'paper.done': 'تم إنشاء {n} نموذج ورقي في مجلد: {folder}. اطبعها. عند عودتها افتح {url}?as=<اسمه> وأدخل الإجابات كما كُتبت بالضبط.',
+  'paper.done': 'تم إنشاء {n} نموذج ورقي في مجلد: {folder}. اطبعها. عند عودتها اختاروا من القائمة «إدخال إجابات النماذج الورقية» واكتبوا الإجابات كما كُتبت بالضبط.',
+  'paper.entryIntro': 'اضغطوا على الاسم لفتح صفحته، ثم اكتبوا الإجابات من نموذجه الورقي كما كُتبت بالضبط. لا يفتح هذه الروابط غيركم.',
+  'paper.noPage': 'انشروا الصفحة الشخصية أولًا: القائمة «4) نشر الصفحة الشخصية».',
   'paper.title': 'تقييم 360 ورقي – {name}', 'paper.heading': 'تقييم 360 السري – {cycle}',
   'paper.opening': 'هذا نموذجك الورقي لتقييم الأداء 360 درجة.',
   'paper.howTitle': 'كيف تملأ النموذج الورقي؟',
@@ -1086,6 +1090,7 @@ function sheet_(id, create) {
     for (var i = 0; i < all.length; i++) if (String(all[i].getSheetId()) === known) { sh = all[i]; break; }
   }
   if (!sh) ['en', 'ar'].forEach(function (L) { if (!sh) sh = ss.getSheetByName(tr_(L, 'tab.' + id)); });
+  if (!sh) sh = ss.getSheetByName(tr_('ar', 'tab.' + id).replace(/ /g, '_')); // version 1.0.0 used underscores in Arabic tab names
   if (!sh && create) sh = ss.insertSheet(tabName_(id));
   if (sh && props && String(sh.getSheetId()) !== known) props.setProperty('TAB_' + id, String(sh.getSheetId()));
   if (sh && create) dirSheet_(sh);
@@ -2325,6 +2330,7 @@ function onOpen() {
     .addItem(t_('menu.remind'), 'sendReminders')
     .addItem(t_('menu.reports'), 'makeReports')
     .addItem(t_('menu.paper'), 'makePaperForms')
+    .addItem(t_('menu.paperEntry'), 'enterPaperAnswers')
     .addSeparator()
     .addItem(t_('menu.testRun'), 'runTest')
     .addItem(t_('menu.testClear'), 'clearTest')
@@ -3364,7 +3370,20 @@ function makePaperForms() {
   if (!paper.length) { uiAlert_(t_('paper.none')); return; }
   var folder = parentFolder_().createFolder(t_('paper.folder') + ' ' + Utilities.formatDate(new Date(), tz_(), 'yyyy-MM-dd'));
   paper.forEach(function (p) { paperForm_(p, asg.filter(function (a) { return a.rater === p.email; }), byEmail, folder); });
-  uiAlert_(t_('paper.done', { n: paper.length, folder: folder.getName(), url: portalUrl_() }));
+  uiAlert_(t_('paper.done', { n: paper.length, folder: folder.getName() }));
+}
+/** A window with one link per person without email: the admin opens it to type in the answers from their returned paper form. */
+function enterPaperAnswers() {
+  requireOwner_();
+  var paper = readTeam_().filter(function (p) { return p.active !== false && isNoEmail_(p.email); });
+  if (!paper.length) { uiAlert_(t_('paper.none')); return; }
+  var url = portalUrl_();
+  if (!url) { uiAlert_(t_('paper.noPage')); return; }
+  var html = '<div dir="' + (isRtl_() ? 'rtl' : 'ltr') + '" style="font-family:Arial,sans-serif;font-size:14px;line-height:1.8">' +
+    '<p>' + esc_(t_('paper.entryIntro')) + '</p><ul>' + paper.map(function (p) {
+      return '<li><a target="_blank" href="' + esc_(url + '?as=' + encodeURIComponent(p.name)) + '">' + esc_(p.name) + '</a></li>';
+    }).join('') + '</ul></div>';
+  SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(460).setHeight(420), t_('menu.paperEntry'));
 }
 function paperForm_(p, mine, byEmail, folder) {
   var B = Q_(), C = t_;
