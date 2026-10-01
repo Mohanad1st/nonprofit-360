@@ -10,11 +10,12 @@
  *   SELF_OPEN   open questions of the self-evaluation         SELF_HEAD   extra open question for managers about themselves
  *   HEAD_OPEN   the manager's own part, when rating a member  MEMBER_OPEN the mirror questions, when a member rates the manager
  *   PERSON_OPEN open notes when rating anyone
+ *   ROLE        rated only for people in the departments listed (off until the admin switches them on)
  * In the Questions tab: Required = yes / no / low (required only after a score of 1 or 2).
  * Departments (optional): limit a question to some departments, separated by commas.
  */
-var SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS', 'SELF_OPEN', 'SELF_HEAD', 'HEAD_OPEN', 'MEMBER_OPEN', 'PERSON_OPEN'];
-var RATING_SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS'];
+var SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS', 'ROLE', 'SELF_OPEN', 'SELF_HEAD', 'HEAD_OPEN', 'MEMBER_OPEN', 'PERSON_OPEN'];
+var RATING_SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS', 'ROLE'];
 
 var DEFAULT_BANK = {
   en: {
@@ -46,6 +47,16 @@ var DEFAULT_BANK = {
     ],
     HEAD_ITEMS: [
       ['X1', 'Achieving what was expected', 'Delivered what was expected since the start of the period, in the agreed quantity and quality.\nIf nothing clear was expected of them, choose "I don\'t know" — that is not their fault.']
+    ],
+    ROLE: [
+      ['RF1', 'Respect for the people we serve', 'Treats community members and the people we serve with dignity and patience.\nListens before deciding, and keeps the promises made to them.', '', 'Field team', 'off'],
+      ['RF2', 'Safety and care in the field', 'Follows the safety and safeguarding rules, and reports incidents and risks straight away.\nLooks after equipment, supplies and records in the field.', '', 'Field team', 'off'],
+      ['RA1', 'Accurate, complete records', 'Financial and administrative records are correct, complete and on time.\nEvery payment and decision has the documents to support it.', '', 'Finance and admin', 'off'],
+      ['RA2', 'Helpful service to colleagues', 'Explains procedures clearly and answers requests on time.\nHelps colleagues get it right, instead of only refusing what is wrong.', '', 'Finance and admin', 'off'],
+      ['RM1', 'Planning and follow-through', 'Turns plans into clear steps, owners and dates.\nFollows up until the work is done, and adjusts when things change.', '', 'Management', 'off'],
+      ['RM2', 'Responsible use of resources', 'Uses money, time and people wisely.\nDecisions weigh the cost against the benefit to the people we serve.', '', 'Management', 'off'],
+      ['RV1', 'Reliability', 'Comes to agreed shifts and tasks on time, or warns early when they cannot.\nFinishes what they took on.', '', 'Volunteers', 'off'],
+      ['RV2', 'Representing us well', 'Follows our code of conduct and safeguarding rules.\nSpeaks and acts in a way that builds trust in the organisation.', '', 'Volunteers', 'off']
     ],
     SELF_OPEN: [
       ['S_EXPECT', 'What was expected of you since the start of the period, as you understood it?', 'From your job description, what your manager asked, or your team plan. If nothing was written or clear, say so plainly.', 'yes'],
@@ -110,6 +121,16 @@ var DEFAULT_BANK = {
     HEAD_ITEMS: [
       ['X1', 'تحقيق المطلوب منه', 'سلّم ما طُلب منه منذ بداية الفترة بالكمية والجودة المتفق عليها.\nإن لم يكن له مطلوب واضح فاختر «لا أعرف»، فهذا ليس تقصيرًا منه.']
     ],
+    ROLE: [
+      ['RF1', 'احترام من نخدمهم', 'يعامل أفراد المجتمع ومن نخدمهم بكرامة وصبر.\nيستمع قبل أن يقرر، ويفي بما وعدهم به.', '', 'الفريق الميداني', 'off'],
+      ['RF2', 'السلامة والعناية في الميدان', 'يلتزم بقواعد السلامة والحماية، ويبلّغ عن الحوادث والمخاطر فورًا.\nيعتني بالمعدات والمستلزمات والسجلات في الميدان.', '', 'الفريق الميداني', 'off'],
+      ['RA1', 'دقة السجلات واكتمالها', 'السجلات المالية والإدارية صحيحة وكاملة وفي موعدها.\nلكل دفعة وكل قرار مستنداته.', '', 'المالية والإدارة', 'off'],
+      ['RA2', 'خدمة الزملاء بروح المساعدة', 'يشرح الإجراءات بوضوح ويرد على الطلبات في موعدها.\nيساعد الزملاء على الوصول إلى الصواب، بدل الاكتفاء برفض الخطأ.', '', 'المالية والإدارة', 'off'],
+      ['RM1', 'التخطيط والمتابعة حتى النهاية', 'يحوّل الخطط إلى خطوات واضحة، لكل منها مسؤول وموعد.\nيتابع حتى يكتمل العمل، ويعدّل حين تتغير الظروف.', '', 'الإدارة العليا', 'off'],
+      ['RM2', 'حسن استخدام الموارد', 'يستخدم المال والوقت والناس بحكمة.\nتوازن قراراته بين التكلفة والنفع لمن نخدمهم.', '', 'الإدارة العليا', 'off'],
+      ['RV1', 'الالتزام والاعتمادية', 'يحضر المناوبات والمهام المتفق عليها في موعدها، أو ينبّه مبكرًا إن تعذّر عليه ذلك.\nيُكمل ما التزم به.', '', 'المتطوعون', 'off'],
+      ['RV2', 'تمثيلنا بصورة طيبة', 'يلتزم بمدونة السلوك وقواعد الحماية لدينا.\nيتكلم ويتصرف بطريقة تبني الثقة في المؤسسة.', '', 'المتطوعون', 'off']
+    ],
     SELF_OPEN: [
       ['S_EXPECT', 'ما المطلوب منك منذ بداية الفترة كما فهمته؟', 'من الوصف الوظيفي، أو مما طلبه رئيسك، أو من خطة الفريق. إن لم يكن لديك مطلوب مكتوب أو واضح فاكتب ذلك بوضوح.', 'yes'],
       ['S_ACH', 'أهم 3 أشياء أنجزتها مما كان مطلوبًا منك', 'واحدًا تحت الآخر. لكل إنجاز: ماذا عملت؟ ما النتيجة بالأرقام إن أمكن (مثل عدد المستفيدين)؟ وما الذي يثبته (صور، ملف، تقرير، تاريخ)؟', 'yes'],
@@ -145,19 +166,20 @@ var DEFAULT_BANK = {
   }
 };
 
-/** Turns a raw question row [id, title, help, required, depts] into a question object. */
+/** Turns a raw question row [id, title, help, required, depts, 'off'] into a question object. */
 function makeQuestion_(section, row) {
   var id = String(row[0]).trim(), req = String(row[3] == null ? '' : row[3]).trim();
-  var q = { id: id, title: String(row[1] || '').trim(), help: String(row[2] || ''), section: section,
+  var q = { id: id, title: String(row[1] || '').trim(), help: String(row[2] || ''), section: section, off: row[5] === 'off',
     required: RATING_SECTIONS.indexOf(section) >= 0 || yes_(req), requiredIfLow: reqLow_(req),
     depts: String(row[4] || '').split(/[,،]/).map(function (s) { return s.trim(); }).filter(String) };
   q.kind = RATING_SECTIONS.indexOf(section) >= 0 ? 'rating' : CHOICE_OPTIONS[id] ? 'choice' : 'text';
   if (q.kind === 'choice') q.options = CHOICE_OPTIONS[id];
   return q;
 }
-function defaultBank_(lang) {
+/** withOff: also the ready-made questions that start switched off (the role questions), for writing the Questions tab. */
+function defaultBank_(lang, withOff) {
   var src = DEFAULT_BANK[lang] || DEFAULT_BANK.en, out = {};
-  SECTIONS.forEach(function (s) { out[s] = (src[s] || []).map(function (r) { return makeQuestion_(s, r); }); });
+  SECTIONS.forEach(function (s) { out[s] = (src[s] || []).map(function (r) { return makeQuestion_(s, r); }).filter(function (q) { return withOff || !q.off; }); });
   return out;
 }
 /** The question bank in use: the «Questions» tab if it exists and is valid, else the default bank of the chosen language. */

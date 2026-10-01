@@ -15,6 +15,7 @@ function onOpen() {
   ui.createMenu(t_('menu.title'))
     .addItem(t_('menu.setup'), 'openSetup')
     .addItem(t_('menu.check'), 'checkSetup')
+    .addItem(t_('menu.askManagers'), 'askManagers')
     .addItem(t_('menu.pairs'), 'makePairings')
     .addItem(t_('menu.publish'), 'publishGuide')
     .addSeparator()
@@ -26,6 +27,8 @@ function onOpen() {
     .addItem(t_('menu.reports'), 'makeReports')
     .addItem(t_('menu.paper'), 'makePaperForms')
     .addItem(t_('menu.paperEntry'), 'enterPaperAnswers')
+    .addSeparator()
+    .addItem(t_('menu.followUp'), 'followUpActions')
     .addSeparator()
     .addItem(t_('menu.testRun'), 'runTest')
     .addItem(t_('menu.testClear'), 'clearTest')
@@ -161,9 +164,9 @@ function buildTabs_(loadExample) {
   }
   if (!sheet_('QUESTIONS') || sheet_('QUESTIONS').getLastRow() < 2) {
     resetBank_();
-    writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_()));
+    writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_(), true));
     resetBank_();
-  }
+  } else { addMissingRoleRows_(); resetBank_(); }
   readDecisions_();
   responsesSheet_();
   draftSheet_();
@@ -182,16 +185,26 @@ function fit_(r, n) { r = (r || []).slice(0, n); while (r.length < n) r.push('')
 function exampleTeamRows_() {
   return exampleTeam_(lang_()).map(function (p) { return [p.name, isNoEmail_(p.email) ? '' : p.email, p.dept, p.title, p.manager, t_('word.yes'), isNoEmail_(p.email) ? t_('note.paperPerson') : '']; });
 }
-/** Seed questions arrive as rows [code, section, question, help, required, depts]. */
+/** Seed questions arrive as rows [code, section, question, help, required, depts, in use]. Role questions start off unless marked in use. */
 function seedBank_(rows) {
   var out = {}; SECTIONS.forEach(function (s) { out[s] = []; });
   var seen = {};
   rows.forEach(function (r) {
     var id = String(r[0] || '').trim().toUpperCase(), sec = sectionOf_(r[1]);
     if (!sec || seen[id] || !/^[A-Z][A-Z0-9_]{0,15}$/.test(id)) return;
-    seen[id] = 1; out[sec].push(makeQuestion_(sec, [id, r[2], r[3], r[4], r[5]]));
+    var off = no_(r[6]) || (sec === 'ROLE' && !yes_(r[6]));
+    seen[id] = 1; out[sec].push(makeQuestion_(sec, [id, r[2], r[3], r[4], r[5], off ? 'off' : '']));
   });
-  return out.CORE.length ? out : defaultBank_(lang_());
+  return out.CORE.length ? out : defaultBank_(lang_(), true);
+}
+/** Sheets set up before the role questions existed get the ready-made ones added, switched off. */
+function addMissingRoleRows_() {
+  var sh = sheet_('QUESTIONS'); if (!sh || sh.getLastRow() < 2) return;
+  var have = {}; sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().forEach(function (r) { have[String(r[0]).trim().toUpperCase()] = 1; });
+  var rows = defaultBank_(lang_(), true).ROLE.filter(function (q) { return !have[q.id]; }).map(function (q) {
+    return [q.id, t_('section.ROLE'), q.title, q.help, t_('word.yes'), (q.depts || []).join(', '), t_('word.no')];
+  });
+  if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, 7).setValues(safeRows_(rows));
 }
 /** After a language change, tabs take their names in the new language. */
 function renameTabs_() {
@@ -208,7 +221,7 @@ function guideTab_() {
   var g = sheet_('GUIDE', true);
   g.clear();
   var lines = [[t_('guide.title', { org: orgName_() })], [t_('guide.private')], ['']];
-  for (var i = 1; i <= 12; i++) { var s = t_('guide.step' + i); if (s !== 'guide.step' + i) lines.push([s]); }
+  for (var i = 1; i <= 13; i++) { var s = t_('guide.step' + i); if (s !== 'guide.step' + i) lines.push([s]); }
   lines.push(['']); lines.push([t_('guide.help')]);
   g.getRange(1, 1, lines.length, 1).setValues(lines).setWrap(true);
   g.getRange(1, 1).setFontSize(16).setFontWeight('bold').setFontColor(colors_().primary);

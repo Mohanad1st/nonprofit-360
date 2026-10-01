@@ -219,8 +219,28 @@ for (const L of ['en', 'ar']) {
   ctx.REPORT_BUDGET_MS = -1; state.alerts = []; ctx.makeReports();
   ok(state.alerts[0].indexOf(ctx.tr_(L, 'reports.partial', { d: 0, n: 12, folder: '' }).slice(0, 20)) === 0, tag + 'reports stop safely before the time limit and say how far they got');
   const foldersAfterFirst = state.folders.length;
-  ctx.REPORT_BUDGET_MS = 270000; state.alerts = []; ctx.makeReports();
-  ok(state.alerts[0].indexOf(ctx.tr_(L, 'reports.done', { folder: '' }).slice(0, 15)) === 0 && state.folders.length === foldersAfterFirst, tag + 'the next run continues in the same folder and finishes');
+  ctx.REPORT_BUDGET_MS = 270000; state.alerts = []; state.dialog = false; ctx.makeReports();
+  ok(state.dialog && state.lastHtml.indexOf(ctx.esc_(ctx.tr_(L, 'reports.done', { folder: '' }).slice(0, 15))) >= 0 && state.folders.length === foldersAfterFirst, tag + 'the next run continues in the same folder and finishes');
+  ok(/calendar\.google\.com\/calendar\/render\?action=TEMPLATE/.test(state.lastHtml), tag + 'the finished window offers a calendar reminder for the follow-up');
+  const acts = tab('ACTIONS');
+  ok(acts && acts.data.length >= 11 && acts.data[0][3] === ctx.tr_(L, 'col.actions.action'), tag + 'an «Agreed actions» tab is made, one starting row per person');
+  const before = acts.data.length; ctx.actionsTab_(R);
+  ok(acts.data.length === before, tag + '…and making the reports again does not add the same people twice');
+  ctx.setSetting_('CYCLE_NAME', '2027'); ctx.resetCfg_(); ctx.actionsTab_(R);
+  ok(acts.data.length > before && acts.data[acts.data.length - 1][8] === '2027', tag + '…a new round adds its own starting rows');
+  acts.data.splice(before); ctx.setSetting_('CYCLE_NAME', '2026'); ctx.resetCfg_();
+  const withMgr = acts.data.findIndex((r, i) => i > 0 && r[2]);
+  acts.data[withMgr][3] = 'Share the weekly plan every Monday'; acts.data[withMgr][5] = '2027-01-15';
+  state.mail = []; state.alerts = []; ctx.followUpActions();
+  ok(state.mail.length === 1 && state.mail[0].to === acts.data[withMgr][2] && state.mail[0].text.indexOf('Share the weekly plan every Monday') >= 0, tag + 'the follow-up emails the manager the open action of their team, and nobody else');
+  ok(acts.data[withMgr][7], tag + '…and records the date of the follow-up');
+  const kz = team.find(p => p.email === 'karim@example.org');
+  acts.data.push([kz.name, '', '', 'An extra action added by hand', '', '', ctx.tr_(L, 'word.no'), '', '2026']);
+  state.mail = []; state.alerts = []; ctx.followUpActions();
+  ok(state.mail.some(m => m.to === kz.manager && m.text.indexOf('An extra action added by hand') >= 0), tag + 'a row added by hand with only a name still reaches the right manager');
+  acts.data.pop();
+  acts.data[withMgr][6] = ctx.tr_(L, 'word.yes'); state.mail = []; state.alerts = []; ctx.followUpActions();
+  ok(state.mail.length === 0 && state.alerts[0] === ctx.tr_(L, 'followUp.none'), tag + 'an action marked done is not sent again');
   const docs = Object.keys(state.docs);
   const staffDocs = docs.filter(t => t.indexOf(ctx.tr_(L, 'report.staffTitle', { name: '' }).split('–').slice(-1)[0].trim()) >= 0 && !/^TEST|^تجريبي/.test(t));
   const adminDocs = docs.filter(t => /private|سري/.test(t) && !/organisation|للمؤسسة/.test(t));
@@ -281,11 +301,39 @@ for (const L of ['en', 'ar']) {
   P.setProperty('CONTROL_SHEET_ID', 'LAST-YEAR'); P.setProperty('REPORT_JOB', '{"folder":"x"}'); P.setProperty('INVITED', '["a@example.org"]');
   ctx.resetCfg_(); ctx.book_();
   ok(!P.getProperty('REPORT_JOB') && !P.getProperty('INVITED') && P.getProperty('CONTROL_SHEET_ID') !== 'LAST-YEAR', tag + 'a copy of the sheet forgets the file of last year, reports job and invitation list');
+  // asking managers who works with whom
+  const HM = 'hala@example.org', KZ = 'karim@example.org', LZ = 'laila@example.org', MO = 'mona@example.org';
+  state.user = HM; let lp = ctx.linksPageHtml_(HM);
+  ok(lp.indexOf(ctx.tr_(L, 'links.title')) >= 0 && lp.indexOf(team.find(p => p.email === KZ).name) >= 0, tag + 'a manager sees the short page with their own team');
+  const someReason = ctx.readLinks_(team).find(l => l.rater === KZ || l.ratee === KZ).reason;
+  ok(lp.indexOf(someReason) < 0, tag + 'the short page names who is already listed, but never what anyone wrote about them');
+  ok(ctx.linksPageHtml_(KZ).indexOf(ctx.esc_(ctx.tr_(L, 'links.notManager'))) >= 0, tag + 'someone who manages nobody gets a plain message instead');
+  const linksBefore = tab('LINKS').data.length;
+  let lr = ctx.submitLinks([{ member: KZ, colleague: MO, reason: 'Monthly newsletter stories from the field' }]);
+  const added = tab('LINKS').data[tab('LINKS').data.length - 1];
+  ok(lr.ok && lr.added === 1 && tab('LINKS').data.length === linksBefore + 1 && added[2] === 'Monthly newsletter stories from the field' && added[4] === ctx.tr_(L, 'links.fromManager', { name: team.find(p => p.email === HM).name }), tag + 'the answer goes into «Work links», marked with the name of the manager');
+  lr = ctx.submitLinks([{ member: LZ, colleague: KZ, reason: 'Same pair the other way round' }]);
+  ok(!lr.ok, tag + 'a manager cannot add links for someone outside their team');
+  lr = ctx.submitLinks([{ member: KZ, colleague: MO, reason: 'Again' }]);
+  ok(lr.ok && lr.added === 0, tag + 'a pair already listed is not added twice');
+  lr = ctx.submitLinks([{ member: KZ, colleague: MO, reason: '' }]);
+  ok(!lr.ok, tag + 'a link without a reason is refused');
+  state.user = KZ; lr = ctx.submitLinks([{ member: 'yasmin@example.org', colleague: LZ, reason: 'Pretending to be a manager' }]);
+  ok(!lr.ok && tab('LINKS').data.length === linksBefore + 1, tag + 'someone who manages nobody cannot add links');
+  state.user = HM; ctx.doGet({ parameter: { view: 'links' } });
+  ok(state.lastHtml.indexOf(ctx.tr_(L, 'links.title')) >= 0, tag + 'the published page opens the short page for managers with ?view=links');
+  state.user = 'nadia@example.org'; state.mail = []; state.alerts = []; ctx.askManagers();
+  const mgrs = team.filter(p => p.active !== false && p.email && !ctx.isNoEmail_(p.email) && team.some(q => q.manager === p.email && q.active !== false));
+  ok(state.mail.length === mgrs.length && state.mail.every(m => m.text.indexOf('?view=links') >= 0), tag + 'asking managers emails each manager once, with the link to their short page');
+  const qs = tab('QUESTIONS'), qBefore = qs.data.length;
+  qs.data = qs.data.filter(r => !/^R[FAMV][12]$/.test(String(r[0])));
+  ctx.addMissingRoleRows_();
+  ok(qs.data.length === qBefore && qs.data.filter(r => /^R[FAMV][12]$/.test(String(r[0]))).every(r => r[6] === ctx.tr_(L, 'word.no')), tag + 'a sheet from an older version gets the ready-made role questions, switched off');
   ctx.rememberControlSheet_();
 
   // only the admin
   state.user = 'karim@example.org';
-  const adminFns = ['newRound', 'openSetup', 'wizardSave', 'checkSetup', 'makePairings', 'publishGuide', 'savePageUrl', 'sendMyPreview', 'sendInvitations', 'updateResults', 'sendReminders', 'makeReports', 'makePaperForms', 'runTest', 'clearTest'];
+  const adminFns = ['newRound', 'openSetup', 'wizardSave', 'checkSetup', 'makePairings', 'publishGuide', 'savePageUrl', 'sendMyPreview', 'sendInvitations', 'updateResults', 'sendReminders', 'makeReports', 'makePaperForms', 'enterPaperAnswers', 'followUpActions', 'askManagers', 'runTest', 'clearTest'];
   adminFns.forEach(fn => {
     let threw = false; try { ctx[fn]({}); } catch (e) { threw = e.message === ctx.tr_(L, 'err.adminOnly'); }
     ok(threw, tag + fn + ' is refused for a non-admin');
@@ -295,7 +343,7 @@ for (const L of ['en', 'ar']) {
 // every function a page could call: either the three the page needs, or it checks for the admin first
 const publicFns = [];
 ORDER.forEach(f => { const src = read(f); const re = /^function ([A-Za-z0-9]+)\(/gm; let m; while ((m = re.exec(src))) publicFns.push([m[1], f, src]); });
-const PAGE = ['doGet', 'submitEval', 'saveDraft', 'onOpen'];
+const PAGE = ['doGet', 'submitEval', 'saveDraft', 'submitLinks', 'onOpen'];
 publicFns.forEach(([fn, f, src]) => {
   if (PAGE.indexOf(fn) >= 0) return;
   const body = src.slice(src.indexOf('function ' + fn + '('), src.indexOf('\n}', src.indexOf('function ' + fn + '(')));

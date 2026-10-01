@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0 — 2026-10-01
+Easier to start, and more useful after the results.
+
+- **Try-it demo:** the real staff page with a made-up team, in English and Arabic, in any browser, with no sign-in (`docs/demo/`, built by `tools/demo.js`).
+- **Ask managers who works with whom:** one email per manager with a link to a short page; for each person in their team they pick the colleagues they work with outside the team, and on what. Answers go straight into «Work links», marked with the manager's name. Only a manager, only for their own team, only real colleagues.
+- **Role questions:** ready-made questions for field teams, finance and admin, management and volunteers, switched off until the admin turns them on for their departments. They are rated and reported for those people only, and kept apart from the 8 core questions so comparisons stay fair.
+- **After the results:** a conversation guide in each admin copy, an agreed-actions table in each employee copy, an «Agreed actions» tab, a one-click calendar reminder about 3 months later, and «Follow up agreed actions», which emails each manager the open actions of their team.
+
 ## 1.1.0 — 2026-09-30
 Easier for people who are not technical.
 

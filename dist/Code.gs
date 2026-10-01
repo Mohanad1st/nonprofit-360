@@ -96,7 +96,7 @@ var STR_EN = {
   'col.responses.date': 'Date', 'col.responses.kind': 'Kind', 'col.responses.rater': 'Rater', 'col.responses.ratee': 'Rated', 'col.responses.freq': 'How often', 'col.responses.data': 'Answers',
   'col.drafts.saved': 'Last saved', 'col.drafts.rater': 'Rater', 'col.drafts.key': 'Task', 'col.drafts.data': 'Draft',
   'word.yes': 'yes', 'word.no': 'no', 'word.ifLow': 'if low', 'word.keep': 'keep', 'word.exclude': 'exclude',
-  'section.CORE': 'Core — everyone', 'section.LEAD': 'Leadership — managers', 'section.DEPT': 'Department → department', 'section.HEAD_ITEMS': 'Rated by the manager only',
+  'section.CORE': 'Core — everyone', 'section.LEAD': 'Leadership — managers', 'section.DEPT': 'Department → department', 'section.HEAD_ITEMS': 'Rated by the manager only', 'section.ROLE': 'Role — only for the departments listed',
   'section.SELF_OPEN': 'Self-evaluation — open', 'section.SELF_HEAD': 'Self-evaluation — managers', 'section.HEAD_OPEN': 'Manager\'s own part', 'section.MEMBER_OPEN': 'Member about their manager',
   'section.PERSON_OPEN': 'Notes when rating anyone',
 
@@ -105,7 +105,7 @@ var STR_EN = {
   'guide.private': 'Private: this file and every result in it are for the admin only. Do not share it.',
   'guide.step1': '1) Menu «360 evaluation» → «1) Setup and settings»: your name, language, values, deadline. You can change them any time.',
   'guide.step2': '2) Tab «Team»: one row per person with their department and manager. Write "no" under Included for anyone who should not take part.',
-  'guide.step3': '3) Tab «Work links»: who else works closely with whom, and why. Managers and teams are added automatically.',
+  'guide.step3': '3) Tab «Work links»: who else works closely with whom, and why. Managers and teams are added automatically. Or let managers fill it in: menu «Ask managers who works with whom».',
   'guide.step4': '4) Menu «2) Check my team and links»: fixes are explained in plain words.',
   'guide.step5': '5) Menu «3) Make the pairings»: then read the «Who rates whom» tab; every pair has its reason.',
   'guide.step6': '6) Menu «4) Publish the personal page»: follow the steps once. Then menu «5) Send me a preview» to see the email.',
@@ -133,6 +133,9 @@ var STR_EN = {
   'check.linkSelf': 'Work links row {row}: a person cannot rate themselves.',
   'check.linkNoReason': 'Work links row {row}: add a reason; the rater sees it.',
   'check.neverUnknown': 'Never pair row {row}: someone is not in the Team tab.',
+  'col.actions.round': 'Round',
+  'check.roleNoDept': 'Questions tab: the role question «{q}» is in use but lists no department, so nobody gets it. Write the departments it is for.',
+  'check.roleDeptUnknown': 'Questions tab: «{q}» is for the department «{dept}», but nobody in the Team tab is in it. Write the department name exactly as in the Team tab.',
   'check.deptUnknown': 'Department links: "{dept}" is not a department in the Team tab.',
   'check.adminNotInTeam': 'The admin ({email}) is not in the Team tab. That is fine if the admin is not being evaluated.',
   'check.noDeadline': 'No deadline yet (Settings → Deadline).',
@@ -251,7 +254,7 @@ var STR_EN = {
   'col.people.name': 'Name', 'col.people.dept': 'Department', 'col.people.manages': 'Manages a team', 'col.people.raters': 'Raters',
   'col.people.head': 'Manager', 'col.people.team': 'Team', 'col.people.peers': 'Colleagues', 'col.people.others': 'Others\' average (core)',
   'col.people.self': 'Self', 'col.people.gap': 'Gap', 'col.people.lead': 'Team\'s view of leadership', 'col.people.strengths': 'Strengths',
-  'col.people.dev': 'To develop', 'col.people.blind': 'Blind spots', 'col.people.releasable': 'Can be shared with the person',
+  'col.people.dev': 'To develop', 'col.people.blind': 'Blind spots', 'col.people.releasable': 'Can be shared with the person', 'col.people.role': 'Role questions (others)',
   'col.summary.name': 'Name', 'col.summary.dept': 'Department', 'col.summary.title': 'Job title', 'col.summary.raters': 'Raters', 'col.summary.excluded': 'Excluded',
   'col.summary.others': 'Others\' rating', 'col.summary.self': 'Self-rating', 'col.summary.lead': 'Team\'s view of leadership', 'col.summary.recog': 'Recognition',
   'col.summary.x1': 'Achieved what was expected (manager)', 'col.summary.set': 'Were expectations set?', 'col.summary.completion': 'Finished their ratings',
@@ -350,7 +353,7 @@ var STR_EN = {
   'report.recogYou': 'Recognition from colleagues', 'report.recogYouText': '{n} colleague(s) named you as someone whose effort helped them or deserves recognition. Thank you.',
   'report.expectedYou': 'What was achieved against what was expected (in your words)', 'report.expectYou': 'What was expected of you, as you understood it:', 'report.achYou': 'Your achievements:', 'report.contribYou': 'Your share of the team\'s numbers:',
   'report.plan': 'Agreed development plan', 'report.planYou': 'Your plan, as you proposed it:',
-  'report.agreed': 'What we agreed in our conversation (goal – action – date – support needed):', 'report.reply': 'Your response or comments on this report:',
+  'report.agreed': 'What we agreed in our conversation:', 'report.reply': 'Your response or comments on this report:',
   'report.signatures': 'Employee: ____________    Direct manager: ____________    Admin: ____________    Date: ________',
   'report.adminOnly': 'Private — for the admin\'s review only — not yet shown to the employee.',
   'report.releasable': 'Can be shared with the employee after your review: yes ({n} raters).',
@@ -380,7 +383,7 @@ var STR_EN = {
   'report.notes': 'Raters\' notes: start / stop / keep', 'report.recog': 'Recognition from colleagues', 'report.recogText': '{n} colleague(s) named them as someone whose effort helped them or deserves recognition.',
   'report.selfWords': 'The self-evaluation in their own words', 'report.noSelf': 'Did not send a self-evaluation.',
   'report.next': 'Next steps (after the conversation)', 'report.nextSession': 'Notes from the one-to-one conversation:', 'report.nextReply': 'The employee\'s written response:',
-  'report.nextPlan': 'Agreed development plan (goal – action – date – support needed):',
+  'report.nextPlan': 'Agreed actions (also write them in the «Agreed actions» tab):',
   'report.readWith': 'This evaluation covers the period since the start and is read together with other evidence of the work.',
   'report.signaturesAdmin': 'Employee: ____________    Direct manager: ____________    Admin approval: ____________    Date: ________',
   'report.orgTitleDoc': '360 report – organisation and departments – private', 'report.orgTitle': '360-degree evaluation – organisation report – {cycle}',
@@ -445,6 +448,7 @@ var STR_EN = {
   'ui.rating': 'Rating: {name}', 'ui.whyShown': 'Why you see this person:', 'ui.whyShownHelp': 'They appear because you work together.',
   'ui.describesOther': 'The lines under each item describe the person you are rating.', 'ui.conflict': 'If there is a personal disagreement between you, rate the work only.',
   'ui.freqQ': 'How often do you work with them?', 'ui.freqHelp': 'This helps us understand how well you know their work.',
+  'ui.roleTitle': 'About this kind of work', 'ui.roleSub': 'Questions about this kind of work. If you have not seen it, choose «{na}».',
   'ui.leadTitle': 'Leadership', 'ui.leadSub': 'How they lead their team, as you see it.', 'ui.leadNa': 'If you have not seen how they lead their team, choose "I don\'t know".',
   'ui.headTitle': 'Achieving what was expected, and your part as their manager',
   'ui.headIntro': 'An evaluation is shared between a manager and the team. These questions help us see the whole picture, and we may compare them with the team\'s answers. Answer honestly: the goal is to support improvement, not to blame.',
@@ -460,7 +464,56 @@ var STR_EN = {
   'ui.deptSkipConfirm': 'You have not dealt with {name}? That will be recorded instead of a rating.',
   'ui.deptExample': 'A real example from your dealings with this department', 'ui.deptExampleHelp': 'What happened? When? What was the result?',
   'ui.deptSugg': 'What one change by this department would improve the work between you?',
-  'ui.needDeptFreq': 'Choose how often you deal with this department', 'ui.needDeptExample': 'Write a real example ({n} characters or more)'
+  'ui.needDeptFreq': 'Choose how often you deal with this department', 'ui.needDeptExample': 'Write a real example ({n} characters or more)',
+  // after the results: the conversation, agreed actions and the follow-up
+  'tab.ACTIONS': 'Agreed actions',
+  'col.actions.name': 'Name', 'col.actions.email': 'Email', 'col.actions.manager': 'Manager (email)', 'col.actions.action': 'Agreed action',
+  'col.actions.support': 'Support needed', 'col.actions.due': 'By when', 'col.actions.done': 'Done (yes/no)', 'col.actions.checked': 'Last follow-up',
+  'note.actions': 'After each conversation, write what you agreed: one row per action (add rows as needed). About 3 months later, «Follow up agreed actions» emails each manager the actions that are not done yet.',
+  'menu.followUp': 'Follow up agreed actions (emails managers)',
+  'followUp.none': 'There are no open actions in the «Agreed actions» tab. Write the agreed actions there first.',
+  'followUp.confirm': 'Email {n} manager(s) the agreed actions of their team that are not done yet?',
+  'followUp.subject': '{org}: agreed actions to follow up',
+  'followUp.intro': 'After the 360 evaluation we agreed these actions with your team. Please check in with each person: what is done, what is stuck, and what support they need from you.',
+  'followUp.by': 'by {date}',
+  'followUp.ask': 'Reply to this email with a one-line update for each, so they can be marked done.',
+  'followUp.sent': 'Follow-up sent to {n} manager(s).',
+  'reports.doneNext': 'Next: hold one conversation with each person, and write what you agree in the «Agreed actions» tab.',
+  'reports.calendar': 'Add a reminder to my Google Calendar for {date}: follow up the agreed actions',
+  'reports.calendarTitle': '{org}: follow up the agreed actions from the 360 evaluation',
+  'reports.calendarDetails': 'In the evaluation sheet: menu «360 evaluation» → «Follow up agreed actions».',
+  'report.convTitle': 'Preparing the conversation',
+  'report.conv1': 'Meet in private, with enough time (about 45 minutes). Start with the purpose: to help them grow, not to judge.',
+  'report.conv2': 'Ask first how they see their own year, and listen before you share the results.',
+  'report.conv3': 'Go through the employee copy together: strengths first, then one or two areas to develop, with the examples.',
+  'report.conv4': 'Never guess or reveal who wrote what, even if they ask.',
+  'report.conv5': 'Agree two or three concrete actions: what, the support they need, and by when. Write them in the «Agreed actions» tab.',
+  'report.actAction': 'Action', 'report.actSupport': 'Support needed', 'report.actWhen': 'By when',
+  'guide.step13': '13) After the conversations: write what you agreed in the «Agreed actions» tab. About 3 months later, «Follow up agreed actions» reminds each manager.',
+  // asking managers who works with whom
+  'menu.askManagers': 'Ask managers who works with whom (optional)',
+  'ask.noPage': 'Publish the personal page first: menu «4) Publish the personal page». It sends nothing to anyone, and managers use the same page.',
+  'ask.noManagers': 'Nobody in the Team tab manages anyone yet. Fill in the Manager column first.',
+  'ask.confirm': 'Email {n} manager(s) a short page where they list who each member of their team works with outside the team?',
+  'ask.subject': '{org}: who does your team work with?',
+  'ask.intro': 'We are preparing our 360 evaluation. Each person will be rated by the colleagues they really work with, so we need your help: for each person in your team, who outside the team do they work with closely, and on what?',
+  'ask.how': 'It takes about 5 minutes. Your team:',
+  'ask.button': 'Open the short page',
+  'ask.sent': 'Sent to {n} manager(s). Their answers appear in the «Work links» tab, marked with their name. When they have answered: «2) Check my team and links», then «3) Make the pairings».',
+  'links.title': 'Who does your team work with?',
+  'links.intro': 'For each person, add the colleagues outside your team they work with closely, and what they work on together. This decides who rates whom, so add only real, regular work. You and their teammates are included automatically.',
+  'links.already': 'Already listed:',
+  'links.pick': 'Choose a colleague',
+  'links.reason': 'What they work on together (the colleague will see this)',
+  'links.add': 'Add another colleague',
+  'links.send': 'Send',
+  'links.sending': 'Sending…',
+  'links.sent': 'Thank you. {n} new work link(s) added. You can open this page again later to add more.',
+  'links.none': 'Nothing to send yet: choose a colleague and write what they work on together.',
+  'links.needReason': 'Write what they work on together for every colleague you chose.',
+  'links.error': 'Something went wrong. Please reload the page and try again.',
+  'links.notManager': 'This page is for people who manage a team. If you think this is wrong, contact the evaluation admin.',
+  'links.fromManager': 'Suggested by {name}'
 };
 
 // ===== Strings.ar.gs =====
@@ -551,7 +604,7 @@ var STR_AR = {
   'col.responses.date': 'التاريخ', 'col.responses.kind': 'النوع', 'col.responses.rater': 'المقيِّم', 'col.responses.ratee': 'المقيَّم', 'col.responses.freq': 'مدى التعامل', 'col.responses.data': 'الإجابات',
   'col.drafts.saved': 'آخر حفظ', 'col.drafts.rater': 'المقيِّم', 'col.drafts.key': 'المهمة', 'col.drafts.data': 'المسودة',
   'word.yes': 'نعم', 'word.no': 'لا', 'word.ifLow': 'عند الضعف', 'word.keep': 'إبقاء', 'word.exclude': 'استبعاد',
-  'section.CORE': 'أساسي — للجميع', 'section.LEAD': 'قيادة — للرؤساء', 'section.DEPT': 'إدارة ← إدارة', 'section.HEAD_ITEMS': 'يقيّمه الرئيس فقط',
+  'section.CORE': 'أساسي — للجميع', 'section.LEAD': 'قيادة — للرؤساء', 'section.DEPT': 'إدارة ← إدارة', 'section.HEAD_ITEMS': 'يقيّمه الرئيس فقط', 'section.ROLE': 'حسب الدور — للإدارات المذكورة فقط',
   'section.SELF_OPEN': 'تقييم ذاتي — مفتوح', 'section.SELF_HEAD': 'تقييم ذاتي — للرؤساء', 'section.HEAD_OPEN': 'دور الرئيس', 'section.MEMBER_OPEN': 'العضو عن رئيسه',
   'section.PERSON_OPEN': 'ملاحظات عند تقييم أي شخص',
 
@@ -559,7 +612,7 @@ var STR_AR = {
   'guide.private': 'سري: هذا الملف وكل نتائجه لمسؤول التقييم فقط. لا تشاركه مع أحد.',
   'guide.step1': '1) قائمة «تقييم 360» ← «1) الإعداد والإعدادات»: اسم المؤسسة واللغة والقيم وآخر موعد. يمكنك تغييرها في أي وقت.',
   'guide.step2': '2) تبويب «الفريق»: صف لكل شخص بإدارته ورئيسه المباشر. اكتب «لا» تحت «مشمول» لمن لا يشارك.',
-  'guide.step3': '3) تبويب «روابط العمل»: من يعمل مع من عن قرب، ولماذا. الرؤساء وفرقهم يُضافون تلقائيًا.',
+  'guide.step3': '3) تبويب «روابط العمل»: من يعمل مع من عن قرب، ولماذا. الرؤساء وفرقهم يُضافون تلقائيًا. أو دعوا الرؤساء يملؤونه: القائمة «اسأل الرؤساء: من يعمل مع من؟».',
   'guide.step4': '4) القائمة «2) افحص الفريق والروابط»: أي تصحيح يُشرح بكلمات بسيطة.',
   'guide.step5': '5) القائمة «3) توليد قائمة من يقيّم من»: ثم راجع تبويب «من يقيّم من»؛ لكل زوج سببه.',
   'guide.step6': '6) القائمة «4) نشر الصفحة الشخصية»: اتبع الخطوات مرة واحدة. ثم «5) أرسل لي معاينة» لترى الرسالة.',
@@ -586,6 +639,9 @@ var STR_AR = {
   'check.linkSelf': 'روابط العمل، الصف {row}: لا يقيّم الشخص نفسه.',
   'check.linkNoReason': 'روابط العمل، الصف {row}: أضف السبب؛ فالمقيّم يراه.',
   'check.neverUnknown': 'تبويب «لا يقيّم أحدهما الآخر»، الصف {row}: أحد الشخصين غير موجود في «الفريق».',
+  'col.actions.round': 'الدورة',
+  'check.roleNoDept': 'تبويب «الأسئلة»: سؤال الدور «{q}» مستخدم لكنه لا يذكر أي إدارة، فلن يصل إلى أحد. اكتبوا الإدارات المقصودة.',
+  'check.roleDeptUnknown': 'تبويب «الأسئلة»: السؤال «{q}» مخصص لإدارة «{dept}»، لكن لا أحد في تبويب «الفريق» ينتمي إليها. اكتبوا اسم الإدارة كما هو في تبويب «الفريق» تمامًا.',
   'check.deptUnknown': 'روابط الإدارات: «{dept}» ليست إدارة في تبويب «الفريق».',
   'check.adminNotInTeam': 'مسؤول التقييم ({email}) غير موجود في «الفريق». لا مشكلة إن لم يكن مشمولًا في التقييم.',
   'check.noDeadline': 'لا يوجد آخر موعد بعد (الإعدادات ← آخر موعد).',
@@ -698,7 +754,7 @@ var STR_AR = {
   'col.people.name': 'الاسم', 'col.people.dept': 'الإدارة', 'col.people.manages': 'يدير فريقًا', 'col.people.raters': 'عدد المقيّمين',
   'col.people.head': 'الرئيس', 'col.people.team': 'الفريق', 'col.people.peers': 'الزملاء', 'col.people.others': 'متوسط الآخرين (أساسي)',
   'col.people.self': 'التقييم الذاتي', 'col.people.gap': 'الفجوة', 'col.people.lead': 'تقييم الفريق لقيادته', 'col.people.strengths': 'نقاط القوة',
-  'col.people.dev': 'مجالات التطوير', 'col.people.blind': 'نقاط عمياء', 'col.people.releasable': 'قابل للعرض على الموظف',
+  'col.people.dev': 'مجالات التطوير', 'col.people.blind': 'نقاط عمياء', 'col.people.releasable': 'قابل للعرض على الموظف', 'col.people.role': 'أسئلة الدور (الآخرون)',
   'col.summary.name': 'الاسم', 'col.summary.dept': 'الإدارة', 'col.summary.title': 'المسمى', 'col.summary.raters': 'عدد المقيّمين', 'col.summary.excluded': 'مستبعد',
   'col.summary.others': 'تقييم الآخرين', 'col.summary.self': 'تقييمه لنفسه', 'col.summary.lead': 'تقييم فريقه لقيادته', 'col.summary.recog': 'تقدير الزملاء',
   'col.summary.x1': 'تحقيق المطلوب (رأي رئيسه)', 'col.summary.set': 'حُدد له المطلوب؟', 'col.summary.completion': 'إكمال تقييماته',
@@ -793,7 +849,7 @@ var STR_AR = {
   'report.recogYou': 'تقدير الزملاء لك', 'report.recogYouText': 'ذكرك {n} من زملائك كشخص ساعدتهم جهوده أو يستحق عمله تقديرًا. شكرًا لك.',
   'report.expectedYou': 'ما تحقق مقابل المطلوب (كما كتبته أنت)', 'report.expectYou': 'المطلوب منك كما فهمته:', 'report.achYou': 'إنجازاتك:', 'report.contribYou': 'مساهمتك في أرقام الفريق:',
   'report.plan': 'خطة التطوير المتفق عليها', 'report.planYou': 'خطتك كما اقترحتها:',
-  'report.agreed': 'ما اتفقنا عليه في جلسة المناقشة (الهدف – الإجراء – الموعد – الدعم المطلوب):', 'report.reply': 'ردك أو تعليقك على هذا التقرير:',
+  'report.agreed': 'ما اتفقنا عليه في جلسة المناقشة:', 'report.reply': 'ردك أو تعليقك على هذا التقرير:',
   'report.signatures': 'توقيع الموظف: ____________    الرئيس المباشر: ____________    مسؤول التقييم: ____________    التاريخ: ________',
   'report.adminOnly': 'سري – لمراجعة مسؤول التقييم فقط – لم يُعرض على الموظف بعد.',
   'report.releasable': 'قابل للعرض على الموظف بعد مراجعتك: نعم (عدد المقيّمين {n}).',
@@ -823,7 +879,7 @@ var STR_AR = {
   'report.notes': 'ملاحظات المقيّمين: ابدأ / توقف / استمر', 'report.recog': 'تقدير الزملاء', 'report.recogText': 'ذكره {n} من زملائه كشخص ساعدتهم جهوده أو يستحق عمله تقديرًا.',
   'report.selfWords': 'التقييم الذاتي بكلماته', 'report.noSelf': 'لم يقدّم تقييمه الذاتي.',
   'report.next': 'الخطوات التالية (تُستكمل بعد جلسة المناقشة)', 'report.nextSession': 'ملاحظات جلسة المناقشة الفردية:', 'report.nextReply': 'رد الموظف المكتوب على التقرير:',
-  'report.nextPlan': 'خطة التطوير المتفق عليها (الهدف – الإجراء – الموعد – الدعم المطلوب):',
+  'report.nextPlan': 'الإجراءات المتفق عليها (واكتبوها أيضًا في تبويب «الإجراءات المتفق عليها»):',
   'report.readWith': 'هذا التقييم لأداء الفترة منذ بدايتها، ويُقرأ إلى جانب الشواهد الأخرى على العمل.',
   'report.signaturesAdmin': 'توقيع الموظف: ____________    الرئيس المباشر: ____________    اعتماد مسؤول التقييم: ____________    التاريخ: ________',
   'report.orgTitleDoc': 'تقرير 360 للمؤسسة والإدارات – سري', 'report.orgTitle': 'تقرير تقييم 360 درجة للمؤسسة – {cycle}',
@@ -886,6 +942,7 @@ var STR_AR = {
   'ui.rating': 'تقييم: {name}', 'ui.whyShown': 'سبب ظهوره لك:', 'ui.whyShownHelp': 'ظهر لك لأنكما تعملان معًا.',
   'ui.describesOther': 'الجمل تحت كل بند تصف الشخص الذي تقيّمه.', 'ui.conflict': 'إن كان بينكما خلاف شخصي فقيّم العمل فقط.',
   'ui.freqQ': 'كم مرة تعمل معه أو تتعامل معه؟', 'ui.freqHelp': 'يساعدنا هذا على فهم مدى معرفتك بعمله.',
+  'ui.roleTitle': 'عن طبيعة هذا العمل', 'ui.roleSub': 'أسئلة خاصة بهذا النوع من العمل. إن لم تره، فاختر «{na}».',
   'ui.leadTitle': 'القيادة', 'ui.leadSub': 'كيف يقود فريقه كما تراه أنت.', 'ui.leadNa': 'إن لم ترَ طريقته في قيادة فريقه فاختر «لا أعرف».',
   'ui.headTitle': 'تحقيق المطلوب ودورك كرئيس',
   'ui.headIntro': 'التقييم مسؤولية مشتركة بين الرئيس وفريقه. هذه الأسئلة تساعدنا على رؤية الصورة كاملة، وقد نقارنها بإجابات الفريق. أجب بصراحة، فالهدف دعم التحسن لا المحاسبة.',
@@ -901,7 +958,56 @@ var STR_AR = {
   'ui.deptSkipConfirm': 'لم تتعامل مع {name}؟ سيُسجَّل ذلك بدل التقييم.',
   'ui.deptExample': 'مثال حقيقي من تعاملك مع هذه الإدارة', 'ui.deptExampleHelp': 'ماذا حدث؟ متى؟ وما النتيجة؟',
   'ui.deptSugg': 'ما الذي لو غيّرته هذه الإدارة سيحسّن العمل بينكم؟',
-  'ui.needDeptFreq': 'اختر كم مرة تتعامل مع هذه الإدارة', 'ui.needDeptExample': 'اكتب مثالًا حقيقيًا ({n} حرفًا على الأقل)'
+  'ui.needDeptFreq': 'اختر كم مرة تتعامل مع هذه الإدارة', 'ui.needDeptExample': 'اكتب مثالًا حقيقيًا ({n} حرفًا على الأقل)',
+  // بعد النتائج: جلسة المناقشة، والإجراءات المتفق عليها، والمتابعة
+  'tab.ACTIONS': 'الإجراءات المتفق عليها',
+  'col.actions.name': 'الاسم', 'col.actions.email': 'البريد', 'col.actions.manager': 'الرئيس المباشر (بريد)', 'col.actions.action': 'الإجراء المتفق عليه',
+  'col.actions.support': 'الدعم المطلوب', 'col.actions.due': 'الموعد', 'col.actions.done': 'تم (نعم/لا)', 'col.actions.checked': 'آخر متابعة',
+  'note.actions': 'بعد كل جلسة مناقشة، اكتبوا ما اتفقتم عليه: صف لكل إجراء (أضيفوا صفوفًا عند الحاجة). وبعد نحو 3 أشهر، يرسل «متابعة الإجراءات المتفق عليها» لكل رئيس الإجراءات التي لم تكتمل بعد.',
+  'menu.followUp': 'متابعة الإجراءات المتفق عليها (رسالة للرؤساء)',
+  'followUp.none': 'لا توجد إجراءات مفتوحة في تبويب «الإجراءات المتفق عليها». اكتبوا الإجراءات المتفق عليها هناك أولًا.',
+  'followUp.confirm': 'هل نرسل إلى {n} من الرؤساء الإجراءات المتفق عليها مع فرقهم والتي لم تكتمل بعد؟',
+  'followUp.subject': '{org}: إجراءات متفق عليها تحتاج إلى متابعة',
+  'followUp.intro': 'بعد تقييم 360 اتفقنا مع فريقك على هذه الإجراءات. من فضلك تابِع مع كل شخص: ما الذي اكتمل، وما الذي تعثّر، وما الدعم الذي يحتاجه منك.',
+  'followUp.by': 'قبل {date}',
+  'followUp.ask': 'رُدّ على هذه الرسالة بسطر واحد عن كل إجراء، حتى نعلّمه بأنه تم.',
+  'followUp.sent': 'أُرسلت المتابعة إلى {n} من الرؤساء.',
+  'reports.doneNext': 'التالي: اعقدوا جلسة مناقشة مع كل شخص، واكتبوا ما تتفقون عليه في تبويب «الإجراءات المتفق عليها».',
+  'reports.calendar': 'أضف تذكيرًا إلى تقويم Google في {date}: متابعة الإجراءات المتفق عليها',
+  'reports.calendarTitle': '{org}: متابعة الإجراءات المتفق عليها بعد تقييم 360',
+  'reports.calendarDetails': 'في ملف التقييم: القائمة «تقييم 360» ← «متابعة الإجراءات المتفق عليها».',
+  'report.convTitle': 'التحضير لجلسة المناقشة',
+  'report.conv1': 'التقوا على انفراد، مع وقت كافٍ (نحو 45 دقيقة). ابدؤوا بالهدف: أن نساعده على النمو، لا أن نحكم عليه.',
+  'report.conv2': 'اسألوه أولًا كيف يرى عامه، واستمعوا قبل أن تعرضوا النتائج.',
+  'report.conv3': 'اقرؤوا نسخة الموظف معًا: نقاط القوة أولًا، ثم مجال أو مجالان للتطوير، مع الأمثلة.',
+  'report.conv4': 'لا تخمّنوا أبدًا من كتب ماذا ولا تكشفوه، حتى لو سألكم.',
+  'report.conv5': 'اتفقوا على إجراءين أو ثلاثة واضحة: ماذا، والدعم الذي يحتاجه، والموعد. واكتبوها في تبويب «الإجراءات المتفق عليها».',
+  'report.actAction': 'الإجراء', 'report.actSupport': 'الدعم المطلوب', 'report.actWhen': 'الموعد',
+  'guide.step13': '13) بعد جلسات المناقشة: اكتبوا ما اتفقتم عليه في تبويب «الإجراءات المتفق عليها». وبعد نحو 3 أشهر، يذكّر «متابعة الإجراءات المتفق عليها» كل رئيس.',
+  // سؤال الرؤساء عمّن يعمل مع من
+  'menu.askManagers': 'اسأل الرؤساء: من يعمل مع من؟ (اختياري)',
+  'ask.noPage': 'انشروا الصفحة الشخصية أولًا: القائمة «4) نشر الصفحة الشخصية». لا يُرسل النشر شيئًا لأحد، ويستخدم الرؤساء الصفحة نفسها.',
+  'ask.noManagers': 'لا أحد في تبويب «الفريق» يرأس أحدًا بعد. املؤوا عمود الرئيس المباشر أولًا.',
+  'ask.confirm': 'هل نرسل إلى {n} من الرؤساء صفحة قصيرة يكتبون فيها مع من يعمل كل فرد من فرقهم خارج الفريق؟',
+  'ask.subject': '{org}: مع من يعمل فريقك؟',
+  'ask.intro': 'نستعد لتقييم 360. سيُقيَّم كل شخص من الزملاء الذين يعمل معهم فعلًا، ولذلك نحتاج إلى مساعدتك: لكل فرد في فريقك، مع من يعمل عن قرب خارج الفريق، وفي أي عمل؟',
+  'ask.how': 'يستغرق ذلك نحو 5 دقائق. فريقك:',
+  'ask.button': 'افتح الصفحة القصيرة',
+  'ask.sent': 'أُرسلت إلى {n} من الرؤساء. تظهر إجاباتهم في تبويب «روابط العمل» مع أسمائهم. وبعد أن يجيبوا: «2) افحص الفريق والروابط» ثم «3) توليد قائمة من يقيّم من».',
+  'links.title': 'مع من يعمل فريقك؟',
+  'links.intro': 'لكل شخص، أضف الزملاء من خارج فريقك الذين يعمل معهم عن قرب، وما العمل الذي يجمعهم. هذا يحدد من يقيّم من، فأضف العمل الحقيقي المنتظم فقط. أنت وزملاؤه في الفريق مشمولون تلقائيًا.',
+  'links.already': 'مسجّل من قبل:',
+  'links.pick': 'اختر زميلًا',
+  'links.reason': 'ما العمل الذي يجمعهما (سيراه الزميل)',
+  'links.add': 'أضف زميلًا آخر',
+  'links.send': 'إرسال',
+  'links.sending': 'جارٍ الإرسال…',
+  'links.sent': 'شكرًا لك. أُضيف {n} رابط عمل جديد. يمكنك فتح هذه الصفحة لاحقًا لإضافة المزيد.',
+  'links.none': 'لا شيء لإرساله بعد: اختر زميلًا واكتب ما العمل الذي يجمعهما.',
+  'links.needReason': 'اكتب ما العمل الذي يجمعهما لكل زميل اخترته.',
+  'links.error': 'حدث خطأ. من فضلك أعد تحميل الصفحة وحاول مرة أخرى.',
+  'links.notManager': 'هذه الصفحة لمن يرأس فريقًا. إن كنت ترى أن هذا خطأ، فتواصل مع مسؤول التقييم.',
+  'links.fromManager': 'اقترحه {name}'
 };
 
 // ===== I18n.gs =====
@@ -972,7 +1078,8 @@ var SETTING_DEFAULT_KEY = { CYCLE_NAME: 'default.cycle', TAGLINE: 'default.tagli
 
 /** Tabs by stable id. Their shown names follow the language; the tool finds them by an internal id, so renaming a tab is safe. */
 var TABS = ['GUIDE', 'SETTINGS', 'TEAM', 'LINKS', 'NEVER', 'DEPTLINKS', 'QUESTIONS', 'ASSIGN', 'DECISIONS', 'RESPONSES', 'DRAFTS',
-  'COMPLETION', 'FLAGS', 'PEOPLE', 'HEAT', 'DEPTS', 'STARS', 'BLAME', 'ACCOUNT', 'SUMMARY', 'DASH'];
+  'COMPLETION', 'FLAGS', 'PEOPLE', 'HEAT', 'DEPTS', 'STARS', 'BLAME', 'ACCOUNT', 'SUMMARY', 'DASH', 'ACTIONS'];
+var ACTION_COLS = ['name', 'email', 'manager', 'action', 'support', 'due', 'done', 'checked', 'round'];
 
 var __CFG = null;       // settings of this run (read once)
 var __BOOK = null;      // the control spreadsheet
@@ -1132,11 +1239,12 @@ function requireOwner_() {
  *   SELF_OPEN   open questions of the self-evaluation         SELF_HEAD   extra open question for managers about themselves
  *   HEAD_OPEN   the manager's own part, when rating a member  MEMBER_OPEN the mirror questions, when a member rates the manager
  *   PERSON_OPEN open notes when rating anyone
+ *   ROLE        rated only for people in the departments listed (off until the admin switches them on)
  * In the Questions tab: Required = yes / no / low (required only after a score of 1 or 2).
  * Departments (optional): limit a question to some departments, separated by commas.
  */
-var SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS', 'SELF_OPEN', 'SELF_HEAD', 'HEAD_OPEN', 'MEMBER_OPEN', 'PERSON_OPEN'];
-var RATING_SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS'];
+var SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS', 'ROLE', 'SELF_OPEN', 'SELF_HEAD', 'HEAD_OPEN', 'MEMBER_OPEN', 'PERSON_OPEN'];
+var RATING_SECTIONS = ['CORE', 'LEAD', 'DEPT', 'HEAD_ITEMS', 'ROLE'];
 
 var DEFAULT_BANK = {
   en: {
@@ -1168,6 +1276,16 @@ var DEFAULT_BANK = {
     ],
     HEAD_ITEMS: [
       ['X1', 'Achieving what was expected', 'Delivered what was expected since the start of the period, in the agreed quantity and quality.\nIf nothing clear was expected of them, choose "I don\'t know" — that is not their fault.']
+    ],
+    ROLE: [
+      ['RF1', 'Respect for the people we serve', 'Treats community members and the people we serve with dignity and patience.\nListens before deciding, and keeps the promises made to them.', '', 'Field team', 'off'],
+      ['RF2', 'Safety and care in the field', 'Follows the safety and safeguarding rules, and reports incidents and risks straight away.\nLooks after equipment, supplies and records in the field.', '', 'Field team', 'off'],
+      ['RA1', 'Accurate, complete records', 'Financial and administrative records are correct, complete and on time.\nEvery payment and decision has the documents to support it.', '', 'Finance and admin', 'off'],
+      ['RA2', 'Helpful service to colleagues', 'Explains procedures clearly and answers requests on time.\nHelps colleagues get it right, instead of only refusing what is wrong.', '', 'Finance and admin', 'off'],
+      ['RM1', 'Planning and follow-through', 'Turns plans into clear steps, owners and dates.\nFollows up until the work is done, and adjusts when things change.', '', 'Management', 'off'],
+      ['RM2', 'Responsible use of resources', 'Uses money, time and people wisely.\nDecisions weigh the cost against the benefit to the people we serve.', '', 'Management', 'off'],
+      ['RV1', 'Reliability', 'Comes to agreed shifts and tasks on time, or warns early when they cannot.\nFinishes what they took on.', '', 'Volunteers', 'off'],
+      ['RV2', 'Representing us well', 'Follows our code of conduct and safeguarding rules.\nSpeaks and acts in a way that builds trust in the organisation.', '', 'Volunteers', 'off']
     ],
     SELF_OPEN: [
       ['S_EXPECT', 'What was expected of you since the start of the period, as you understood it?', 'From your job description, what your manager asked, or your team plan. If nothing was written or clear, say so plainly.', 'yes'],
@@ -1232,6 +1350,16 @@ var DEFAULT_BANK = {
     HEAD_ITEMS: [
       ['X1', 'تحقيق المطلوب منه', 'سلّم ما طُلب منه منذ بداية الفترة بالكمية والجودة المتفق عليها.\nإن لم يكن له مطلوب واضح فاختر «لا أعرف»، فهذا ليس تقصيرًا منه.']
     ],
+    ROLE: [
+      ['RF1', 'احترام من نخدمهم', 'يعامل أفراد المجتمع ومن نخدمهم بكرامة وصبر.\nيستمع قبل أن يقرر، ويفي بما وعدهم به.', '', 'الفريق الميداني', 'off'],
+      ['RF2', 'السلامة والعناية في الميدان', 'يلتزم بقواعد السلامة والحماية، ويبلّغ عن الحوادث والمخاطر فورًا.\nيعتني بالمعدات والمستلزمات والسجلات في الميدان.', '', 'الفريق الميداني', 'off'],
+      ['RA1', 'دقة السجلات واكتمالها', 'السجلات المالية والإدارية صحيحة وكاملة وفي موعدها.\nلكل دفعة وكل قرار مستنداته.', '', 'المالية والإدارة', 'off'],
+      ['RA2', 'خدمة الزملاء بروح المساعدة', 'يشرح الإجراءات بوضوح ويرد على الطلبات في موعدها.\nيساعد الزملاء على الوصول إلى الصواب، بدل الاكتفاء برفض الخطأ.', '', 'المالية والإدارة', 'off'],
+      ['RM1', 'التخطيط والمتابعة حتى النهاية', 'يحوّل الخطط إلى خطوات واضحة، لكل منها مسؤول وموعد.\nيتابع حتى يكتمل العمل، ويعدّل حين تتغير الظروف.', '', 'الإدارة العليا', 'off'],
+      ['RM2', 'حسن استخدام الموارد', 'يستخدم المال والوقت والناس بحكمة.\nتوازن قراراته بين التكلفة والنفع لمن نخدمهم.', '', 'الإدارة العليا', 'off'],
+      ['RV1', 'الالتزام والاعتمادية', 'يحضر المناوبات والمهام المتفق عليها في موعدها، أو ينبّه مبكرًا إن تعذّر عليه ذلك.\nيُكمل ما التزم به.', '', 'المتطوعون', 'off'],
+      ['RV2', 'تمثيلنا بصورة طيبة', 'يلتزم بمدونة السلوك وقواعد الحماية لدينا.\nيتكلم ويتصرف بطريقة تبني الثقة في المؤسسة.', '', 'المتطوعون', 'off']
+    ],
     SELF_OPEN: [
       ['S_EXPECT', 'ما المطلوب منك منذ بداية الفترة كما فهمته؟', 'من الوصف الوظيفي، أو مما طلبه رئيسك، أو من خطة الفريق. إن لم يكن لديك مطلوب مكتوب أو واضح فاكتب ذلك بوضوح.', 'yes'],
       ['S_ACH', 'أهم 3 أشياء أنجزتها مما كان مطلوبًا منك', 'واحدًا تحت الآخر. لكل إنجاز: ماذا عملت؟ ما النتيجة بالأرقام إن أمكن (مثل عدد المستفيدين)؟ وما الذي يثبته (صور، ملف، تقرير، تاريخ)؟', 'yes'],
@@ -1267,19 +1395,20 @@ var DEFAULT_BANK = {
   }
 };
 
-/** Turns a raw question row [id, title, help, required, depts] into a question object. */
+/** Turns a raw question row [id, title, help, required, depts, 'off'] into a question object. */
 function makeQuestion_(section, row) {
   var id = String(row[0]).trim(), req = String(row[3] == null ? '' : row[3]).trim();
-  var q = { id: id, title: String(row[1] || '').trim(), help: String(row[2] || ''), section: section,
+  var q = { id: id, title: String(row[1] || '').trim(), help: String(row[2] || ''), section: section, off: row[5] === 'off',
     required: RATING_SECTIONS.indexOf(section) >= 0 || yes_(req), requiredIfLow: reqLow_(req),
     depts: String(row[4] || '').split(/[,،]/).map(function (s) { return s.trim(); }).filter(String) };
   q.kind = RATING_SECTIONS.indexOf(section) >= 0 ? 'rating' : CHOICE_OPTIONS[id] ? 'choice' : 'text';
   if (q.kind === 'choice') q.options = CHOICE_OPTIONS[id];
   return q;
 }
-function defaultBank_(lang) {
+/** withOff: also the ready-made questions that start switched off (the role questions), for writing the Questions tab. */
+function defaultBank_(lang, withOff) {
   var src = DEFAULT_BANK[lang] || DEFAULT_BANK.en, out = {};
-  SECTIONS.forEach(function (s) { out[s] = (src[s] || []).map(function (r) { return makeQuestion_(s, r); }); });
+  SECTIONS.forEach(function (s) { out[s] = (src[s] || []).map(function (r) { return makeQuestion_(s, r); }).filter(function (q) { return withOff || !q.off; }); });
   return out;
 }
 /** The question bank in use: the «Questions» tab if it exists and is valid, else the default bank of the chosen language. */
@@ -1421,8 +1550,9 @@ function coreIds_() { return ids_('CORE'); }
 function leadIds_() { return ids_('LEAD'); }
 function deptIds_() { return ids_('DEPT'); }
 function headIds_() { return ids_('HEAD_ITEMS'); }
+function roleIds_() { return ids_('ROLE'); }
 function titleOf_(qid) {
-  var B = Q_(), all = B.CORE.concat(B.LEAD, B.DEPT, B.HEAD_ITEMS);
+  var B = Q_(), all = B.CORE.concat(B.LEAD, B.DEPT, B.HEAD_ITEMS, B.ROLE);
   for (var i = 0; i < all.length; i++) if (all[i].id === qid) return all[i].title;
   return qid;
 }
@@ -1430,6 +1560,9 @@ function titleOf_(qid) {
 function openFor_(section, dept) {
   return Q_()[section].filter(function (q) { return !q.depts || !q.depts.length || q.depts.indexOf(dept) >= 0; });
 }
+/** Role questions that apply to someone in this department (rated by everyone who rates them, and by themselves). */
+function roleFor_(dept) { return Q_().ROLE.filter(function (q) { return q.depts && q.depts.length && q.depts.indexOf(dept) >= 0; }); }
+function roleIdsFor_(dept) { return roleFor_(dept).map(function (q) { return q.id; }); }
 
 function indexTeam_(team) {
   var byEmail = {};
@@ -1573,7 +1706,7 @@ function validateSubmission_(kind, p, email, team, assignments, paper, ctx) {
     if (!assigned || !byEmail[ratee] || byEmail[ratee].active === false) return { error: t_('err.notInList') };
     if (FREQ_CODES.indexOf(p.freq) < 0) return { error: t_('err.freq') };
     var rel = deriveRel_(email, ratee, byEmail);
-    var ids = CI.concat(leadAllowed_(email, ratee, byEmail) ? LI : [], rel === 'HEAD_TO_MEMBER' ? headIds_() : []);
+    var ids = CI.concat(leadAllowed_(email, ratee, byEmail) ? LI : [], rel === 'HEAD_TO_MEMBER' ? headIds_() : [], roleIdsFor_(byEmail[ratee].dept));
     var s = cleanScores(ids, p.scores); if (s.error) return s;
     var e = cleanEvidence(s.scores, p.evidence); if (e.error) return e;
     var pt = p.texts || {}, texts = {};
@@ -1598,7 +1731,7 @@ function validateSubmission_(kind, p, email, team, assignments, paper, ctx) {
   }
   if (kind === 'SELF') {
     var lead = hasReports_(email, byEmail);
-    var s2 = cleanScores(CI.concat(lead ? LI : []), p.scores); if (s2.error) return s2;
+    var s2 = cleanScores(CI.concat(lead ? LI : [], roleIdsFor_(me.dept)), p.scores); if (s2.error) return s2;
     var e2 = cleanEvidence(s2.scores, p.evidence); if (e2.error) return e2;
     var texts2 = {};
     var bad2 = openAnswers(openFor_('SELF_OPEN', me.dept), p.texts, texts2); if (bad2) return bad2;
@@ -1639,7 +1772,7 @@ function analyze_(team, assignments, rawRecords, decisionList, cfg) {
   var dd = dedupe_(rawRecords);
   var recs = dd.records, flags = [], assignSet = {};
   (assignments || []).forEach(function (a) { assignSet[lower_(a.rater) + '>' + lower_(a.ratee)] = 1; });
-  var CI = coreIds_(), LI = leadIds_(), DI = deptIds_(), HI = headIds_();
+  var CI = coreIds_(), LI = leadIds_(), DI = deptIds_(), HI = headIds_(), RI = roleIds_();
 
   function flag(type, severity, who, about, detail, rater) {
     flags.push({ type: type, severity: severity, person: who, about: about || '', detail: detail, rater: rater || '' });
@@ -1714,7 +1847,7 @@ function analyze_(team, assignments, rawRecords, decisionList, cfg) {
     P.nByGroup = { HEAD: 0, TEAM: 0, PEERS: 0 };
     others.forEach(function (x) { P.nByGroup[groupOf_(x.rel)]++; });
     P.scores = {};
-    CI.concat(LI, HI).forEach(function (q) {
+    CI.concat(LI, HI, RI).forEach(function (q) {
       var g = { HEAD: [], TEAM: [], PEERS: [] }, all = [];
       others.forEach(function (x) { var v = x.scores[q]; if (v == null) return; g[groupOf_(x.rel)].push([v, x.w]); all.push([v, x.w]); });
       P.scores[q] = { self: P.self[q] != null ? P.self[q] : null, head: round2_(wmean_(g.HEAD)), team: round2_(wmean_(g.TEAM)),
@@ -1726,6 +1859,8 @@ function analyze_(team, assignments, rawRecords, decisionList, cfg) {
     P.leadOthers = round2_(mean_(LI.map(function (q) { return P.scores[q].others; })));
     P.leadTeam = round2_(mean_(LI.map(function (q) { return P.scores[q].team; })));
     P.leadSelf = round2_(mean_(LI.map(function (q) { return P.scores[q].self; })));
+    P.roleItems = roleIdsFor_(P.dept); // kept apart from the core items, so everyone is still compared on the same questions
+    P.roleOthers = round2_(mean_(P.roleItems.map(function (q) { return P.scores[q].others; })));
     // confidentiality: a group is shown on its own only with MIN_GROUP people or more
     P.showTeamSeparately = P.nByGroup.TEAM >= cfg.MIN_GROUP;
     P.showPeersSeparately = P.nByGroup.PEERS >= cfg.MIN_GROUP;
@@ -2009,6 +2144,8 @@ function checkOrg_(team, links, never, deptLinks, opts) {
     if (!depts[d]) warn('deptUnknown', { dept: d });
     (deptLinks[d] || []).forEach(function (x) { if (!depts[x]) warn('deptUnknown', { dept: x }); });
   });
+  // a role question switched on for a department that nobody is in reaches nobody
+  try { Q_().ROLE.forEach(function (q) { if (!(q.depts || []).length) warn('roleNoDept', { q: q.title }); (q.depts || []).forEach(function (d) { if (!depts[d]) warn('roleDeptUnknown', { q: q.title, dept: d }); }); }); } catch (e) {}
   if (opts.admin && !by[lower_(opts.admin)]) warn('adminNotInTeam', { email: opts.admin });
   if (!opts.deadline) warn('noDeadline');
   // how many ratings each person gets and gives (a fair evaluation needs enough raters; a heavy list tires people)
@@ -2209,7 +2346,7 @@ function writeQuestionsTab_(bank) {
   SECTIONS.forEach(function (s) {
     bank[s].forEach(function (q) {
       rows.push([q.id, t_('section.' + s), q.title, q.help, q.kind === 'rating' ? t_('word.yes') : q.requiredIfLow ? t_('word.ifLow') : q.required ? t_('word.yes') : t_('word.no'),
-        (q.depts || []).join(', '), t_('word.yes')]);
+        (q.depts || []).join(', '), q.off ? t_('word.no') : t_('word.yes')]);
     });
   });
   sh.getRange(1, 1, rows.length, head.length).setValues(safeRows_(rows)).setWrap(true).setVerticalAlignment('top');
@@ -2320,6 +2457,7 @@ function onOpen() {
   ui.createMenu(t_('menu.title'))
     .addItem(t_('menu.setup'), 'openSetup')
     .addItem(t_('menu.check'), 'checkSetup')
+    .addItem(t_('menu.askManagers'), 'askManagers')
     .addItem(t_('menu.pairs'), 'makePairings')
     .addItem(t_('menu.publish'), 'publishGuide')
     .addSeparator()
@@ -2331,6 +2469,8 @@ function onOpen() {
     .addItem(t_('menu.reports'), 'makeReports')
     .addItem(t_('menu.paper'), 'makePaperForms')
     .addItem(t_('menu.paperEntry'), 'enterPaperAnswers')
+    .addSeparator()
+    .addItem(t_('menu.followUp'), 'followUpActions')
     .addSeparator()
     .addItem(t_('menu.testRun'), 'runTest')
     .addItem(t_('menu.testClear'), 'clearTest')
@@ -2466,9 +2606,9 @@ function buildTabs_(loadExample) {
   }
   if (!sheet_('QUESTIONS') || sheet_('QUESTIONS').getLastRow() < 2) {
     resetBank_();
-    writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_()));
+    writeQuestionsTab_(seed.questions ? seedBank_(seed.questions) : defaultBank_(lang_(), true));
     resetBank_();
-  }
+  } else { addMissingRoleRows_(); resetBank_(); }
   readDecisions_();
   responsesSheet_();
   draftSheet_();
@@ -2487,16 +2627,26 @@ function fit_(r, n) { r = (r || []).slice(0, n); while (r.length < n) r.push('')
 function exampleTeamRows_() {
   return exampleTeam_(lang_()).map(function (p) { return [p.name, isNoEmail_(p.email) ? '' : p.email, p.dept, p.title, p.manager, t_('word.yes'), isNoEmail_(p.email) ? t_('note.paperPerson') : '']; });
 }
-/** Seed questions arrive as rows [code, section, question, help, required, depts]. */
+/** Seed questions arrive as rows [code, section, question, help, required, depts, in use]. Role questions start off unless marked in use. */
 function seedBank_(rows) {
   var out = {}; SECTIONS.forEach(function (s) { out[s] = []; });
   var seen = {};
   rows.forEach(function (r) {
     var id = String(r[0] || '').trim().toUpperCase(), sec = sectionOf_(r[1]);
     if (!sec || seen[id] || !/^[A-Z][A-Z0-9_]{0,15}$/.test(id)) return;
-    seen[id] = 1; out[sec].push(makeQuestion_(sec, [id, r[2], r[3], r[4], r[5]]));
+    var off = no_(r[6]) || (sec === 'ROLE' && !yes_(r[6]));
+    seen[id] = 1; out[sec].push(makeQuestion_(sec, [id, r[2], r[3], r[4], r[5], off ? 'off' : '']));
   });
-  return out.CORE.length ? out : defaultBank_(lang_());
+  return out.CORE.length ? out : defaultBank_(lang_(), true);
+}
+/** Sheets set up before the role questions existed get the ready-made ones added, switched off. */
+function addMissingRoleRows_() {
+  var sh = sheet_('QUESTIONS'); if (!sh || sh.getLastRow() < 2) return;
+  var have = {}; sh.getRange(2, 1, sh.getLastRow() - 1, 1).getValues().forEach(function (r) { have[String(r[0]).trim().toUpperCase()] = 1; });
+  var rows = defaultBank_(lang_(), true).ROLE.filter(function (q) { return !have[q.id]; }).map(function (q) {
+    return [q.id, t_('section.ROLE'), q.title, q.help, t_('word.yes'), (q.depts || []).join(', '), t_('word.no')];
+  });
+  if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, 7).setValues(safeRows_(rows));
 }
 /** After a language change, tabs take their names in the new language. */
 function renameTabs_() {
@@ -2513,7 +2663,7 @@ function guideTab_() {
   var g = sheet_('GUIDE', true);
   g.clear();
   var lines = [[t_('guide.title', { org: orgName_() })], [t_('guide.private')], ['']];
-  for (var i = 1; i <= 12; i++) { var s = t_('guide.step' + i); if (s !== 'guide.step' + i) lines.push([s]); }
+  for (var i = 1; i <= 13; i++) { var s = t_('guide.step' + i); if (s !== 'guide.step' + i) lines.push([s]); }
   lines.push(['']); lines.push([t_('guide.help')]);
   g.getRange(1, 1, lines.length, 1).setValues(lines).setWrap(true);
   g.getRange(1, 1).setFontSize(16).setFontWeight('bold').setFontColor(colors_().primary);
@@ -2692,12 +2842,12 @@ function writeResults_(R, isTest) {
   writeTab_('FLAGS', f, isTest, [70, 200, 150, 150, 520, 220, 220]);
 
   // people
-  var rows = [cols_('people', ['name', 'dept', 'manages', 'raters', 'head', 'team', 'peers', 'others', 'self', 'gap', 'lead', 'strengths', 'dev', 'blind', 'releasable'])];
+  var rows = [cols_('people', ['name', 'dept', 'manages', 'raters', 'head', 'team', 'peers', 'others', 'self', 'gap', 'lead', 'strengths', 'dev', 'blind', 'releasable', 'role'])];
   emails.forEach(function (e) {
     var p = P[e];
     rows.push([p.name, p.dept, p.isHead ? yes : '', p.nRaters, p.nByGroup.HEAD, p.nByGroup.TEAM, p.nByGroup.PEERS,
       v_(p.coreOthers), v_(p.coreSelf), p.coreSelf != null && p.coreOthers != null ? round2_(p.coreSelf - p.coreOthers) : '',
-      v_(p.leadTeam), titles_(p.strengths), titles_(p.devAreas), titles_(p.blindOver), p.releasable ? yes : C('results.notReleasable', { n: min })]);
+      v_(p.leadTeam), titles_(p.strengths), titles_(p.devAreas), titles_(p.blindOver), p.releasable ? yes : C('results.notReleasable', { n: min }), v_(p.roleOthers)]);
   });
   var sh = writeTab_('PEOPLE', rows, isTest, [150, 130]);
   if (rows.length > 1) { colorScale_(sh.getRange(3, 8, rows.length - 1, 2)); colorScale_(sh.getRange(3, 11, rows.length - 1, 1)); }
@@ -2967,6 +3117,53 @@ function sendReminders() {
   ui.alert(sent < pending.length ? t_('remind.partial', { n: sent, left: pending.length - sent }) : t_('remind.sent', { n: sent }));
 }
 
+/** A plain message: greeting, paragraphs, a list, and an optional button — { text, html }, right-to-left in Arabic. */
+function listEmail_(p, paras, items, button) {
+  var col = colors_(), dir = isRtl_() ? 'rtl' : 'ltr', align = isRtl_() ? 'right' : 'left';
+  var pad = isRtl_() ? 'padding-right:22px;padding-left:0' : 'padding-left:22px;padding-right:0';
+  var text = t_('email.hello', { name: p.name || '' }) + '\n\n' + paras.join('\n\n') + '\n\n' + items.map(function (t) { return '- ' + t; }).join('\n') +
+    (button ? '\n\n' + button.label + ':\n' + button.url : '') + '\n\n' + t_('intro.closing') + '\n' + setting_('SIGNATURE');
+  var html = '<div dir="' + dir + '" lang="' + lang_() + '" style="direction:' + dir + ';text-align:' + align + ';font-family:Tahoma,Arial,sans-serif;font-size:15px;line-height:1.8;color:' + col.ink + ';max-width:600px;margin:0 auto">' +
+    '<div style="font-weight:bold;font-size:17px;color:' + col.primary + ';margin-bottom:10px">' + esc_(orgName_()) + '</div>' +
+    '<p style="margin:0 0 10px">' + esc_(t_('email.hello', { name: p.name || '' })) + '</p>' +
+    paras.map(function (t) { return '<p style="margin:0 0 10px">' + esc_(t) + '</p>'; }).join('') +
+    (items.length ? '<ul style="margin:0 0 12px;' + pad + '">' + items.map(function (t) { return '<li style="margin:4px 0">' + esc_(t) + '</li>'; }).join('') + '</ul>' : '') +
+    (button ? '<p style="margin:20px 0;text-align:center"><a href="' + esc_(button.url) + '" style="background:' + col.primary + ';color:#fff;text-decoration:none;padding:12px 26px;border-radius:8px;font-weight:bold;display:inline-block">' + esc_(button.label) + '</a></p>' : '') +
+    '<p>' + esc_(t_('intro.closing')) + '<br>' + esc_(setting_('SIGNATURE')) + '</p></div>';
+  return { text: text, html: html };
+}
+/** Emails each manager the agreed actions of their team that are not done yet — asks first. */
+function followUpActions() {
+  requireOwner_();
+  var sh = sheet_('ACTIONS');
+  if (!sh || sh.getLastRow() < 2) { uiAlert_(t_('followUp.none')); return; }
+  var team = readTeam_(), byEmail = indexTeam_(team), admin = adminEmail_(), groups = {}, rowsFor = {};
+  var data = sh.getRange(2, 1, sh.getLastRow() - 1, ACTION_COLS.length).getValues();
+  data.forEach(function (r, i) {
+    var action = String(r[3] || '').trim();
+    if (!action || yes_(r[6])) return;
+    var person = byEmail[resolvePerson_(r[1], team)] || byEmail[resolvePerson_(r[0], team)];
+    var mgr = resolvePerson_(r[2], team);
+    if (!byEmail[mgr] || isNoEmail_(mgr)) mgr = person && person.manager ? lower_(person.manager) : '';
+    if (!mgr || isNoEmail_(mgr) || !byEmail[mgr]) mgr = admin;
+    var due = r[5] instanceof Date ? Utilities.formatDate(r[5], tz_(), 'yyyy-MM-dd') : String(r[5] || '').trim();
+    (groups[mgr] = groups[mgr] || []).push(String(r[0]).trim() + ': ' + action + (due ? ' (' + t_('followUp.by', { date: due }) + ')' : ''));
+    (rowsFor[mgr] = rowsFor[mgr] || []).push(i + 2);
+  });
+  var managers = Object.keys(groups);
+  if (!managers.length) { uiAlert_(t_('followUp.none')); return; }
+  var ui = SpreadsheetApp.getUi();
+  if (ui.alert(t_('followUp.confirm', { n: managers.length }), ui.ButtonSet.YES_NO) !== ui.Button.YES) return;
+  var sent = 0, today = Utilities.formatDate(new Date(), tz_(), 'yyyy-MM-dd');
+  managers.forEach(function (m) {
+    var p = byEmail[m] || { name: '', email: m };
+    if (send_(m, t_('followUp.subject', { org: orgName_() }), listEmail_(p, [t_('followUp.intro'), t_('followUp.ask')], groups[m], null))) {
+      sent++; rowsFor[m].forEach(function (row) { sh.getRange(row, 8).setValue(today); });
+    }
+  });
+  uiAlert_(t_('followUp.sent', { n: sent }));
+}
+
 // ===== Reports.gs =====
 /**
  * nonprofit-360 — reports and paper forms as Google Docs.
@@ -2979,7 +3176,40 @@ function makeReports() {
   var started = Date.now(), R = analyzeNow_();
   writeResults_(R, false);
   var res = makeReportsFrom_(R, false, started);
-  uiAlert_(res.complete ? t_('reports.done', { folder: res.folder.getName() }) : t_('reports.partial', { d: res.done, n: res.total, folder: res.folder.getName() }));
+  if (!res.complete) { uiAlert_(t_('reports.partial', { d: res.done, n: res.total, folder: res.folder.getName() })); return; }
+  actionsTab_(R);
+  reportsDoneDialog_(res.folder);
+}
+/** When the reports are ready: what to do next, and a one-click reminder in the admin's calendar about 3 months later. */
+function reportsDoneDialog_(folder) {
+  var when = new Date(Date.now() + 90 * 86400000), day = function (d) { return Utilities.formatDate(d, tz_(), 'yyyyMMdd'); };
+  var url = 'https://calendar.google.com/calendar/render?action=TEMPLATE&text=' + encodeURIComponent(t_('reports.calendarTitle', { org: orgName_() })) +
+    '&dates=' + day(when) + '/' + day(new Date(when.getTime() + 86400000)) + '&details=' + encodeURIComponent(t_('reports.calendarDetails'));
+  var html = '<div dir="' + (isRtl_() ? 'rtl' : 'ltr') + '" style="font-family:Arial,sans-serif;font-size:14px;line-height:1.7">' +
+    '<p>' + esc_(t_('reports.done', { folder: folder.getName() })) + '</p><p>' + esc_(t_('reports.doneNext')) + '</p>' +
+    '<p><a target="_blank" href="' + esc_(url) + '">📅 ' + esc_(t_('reports.calendar', { date: Utilities.formatDate(when, tz_(), 'yyyy-MM-dd') })) + '</a></p></div>';
+  try { SpreadsheetApp.getUi().showModalDialog(HtmlService.createHtmlOutput(html).setWidth(480).setHeight(280), t_('menu.reports')); }
+  catch (e) { uiAlert_(t_('reports.done', { folder: folder.getName() })); }
+}
+/** The «Agreed actions» tab: one starting row per person, never overwriting what the admin already wrote. */
+function actionsTab_(R) {
+  var sh = sheet_('ACTIONS', true), head = cols_('actions', ACTION_COLS);
+  if (sh.getLastRow() < 1) { writeHeader_(sh, head); sh.getRange(1, 1).setNote(t_('note.actions')); sh.setColumnWidths(1, head.length, 170); }
+  var round = String(setting_('CYCLE_NAME') || ''), key = function (email, name, rnd) { return (lower_(email) || String(name).trim()) + '|' + String(rnd).trim(); };
+  var have = {};
+  if (sh.getLastRow() > 1) sh.getRange(2, 1, sh.getLastRow() - 1, head.length).getValues().forEach(function (r) { have[key(r[1], r[0], r[8])] = 1; });
+  var byEmail = indexTeam_(readTeam_()), no = t_('word.no');
+  var rows = Object.keys(R.persons).filter(function (e) { return R.persons[e].nRaters || R.persons[e].hasSelf; }).map(function (e) {
+    var p = byEmail[e] || { name: R.persons[e].name, manager: '' };
+    return [p.name, isNoEmail_(e) ? '' : e, p.manager && !isNoEmail_(p.manager) ? p.manager : '', '', '', '', no, '', round];
+  }).filter(function (r) { return !have[key(r[1], r[0], r[8])]; });
+  if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, head.length).setValues(safeRows_(rows));
+  var yn = SpreadsheetApp.newDataValidation().requireValueInList([t_('word.yes'), t_('word.no')], true).setAllowInvalid(true).build();
+  sh.getRange(2, 7, Math.max(sh.getLastRow() - 1, 1), 1).setDataValidation(yn);
+  return sh;
+}
+function actionsTable_(b) {
+  table_(b, [[t_('report.actAction'), t_('report.actSupport'), t_('report.actWhen')], ['\n', '', ''], ['\n', '', ''], ['\n', '', '']], []);
 }
 /**
  * Google stops any single run after 6 minutes, and each person's two reports take several seconds.
@@ -3130,9 +3360,10 @@ function employeeReport_(R, p, folder, isTest) {
   p_(b, C('report.scale'), null, { size: 9, muted: true });
   p_(b, '2. ' + C('report.byItem'), H1_());
   var rows = [[C('report.item'), C('report.yourSelf'), C('report.others')]];
-  B.CORE.forEach(function (q) { rows.push([q.title, fmt_(p.scores[q.id].self), fmt_(others(q.id))]); });
+  var mineCore = B.CORE.concat(roleOf_(p));
+  mineCore.forEach(function (q) { rows.push([q.title, fmt_(p.scores[q.id].self), fmt_(others(q.id))]); });
   table_(b, rows, [1, 2]);
-  if (B.CORE.some(function (q) { return !enough(q.id) && p.scores[q.id].n > 0; })) p_(b, C('report.itemTooFew', { n: min }), null, { size: 9, muted: true });
+  if (mineCore.some(function (q) { return !enough(q.id) && p.scores[q.id].n > 0; })) p_(b, C('report.itemTooFew', { n: min }), null, { size: 9, muted: true });
   p_(b, '3. ' + C('report.strengthsDev'), H1_());
   p_(b, C('report.strengthsYou'), null, { bold: true });
   p.strengths.filter(enough).forEach(function (q) { li_(b, titleOf_(q) + ' – ' + fmt_(p.scores[q].others)); });
@@ -3163,7 +3394,7 @@ function employeeReport_(R, p, folder, isTest) {
     texts.forEach(function (t) { li_(b, t); });
   });
   var ex = [];
-  B.CORE.concat(leadRaters >= min ? B.LEAD : []).forEach(function (q) { p.ratings.forEach(function (x) { var t = String(x.evidence[q.id] || '').trim(); if (t) ex.push(q.title + ': «' + t + '»'); }); });
+  B.CORE.concat(roleOf_(p).filter(function (q) { return enough(q.id); }), leadRaters >= min ? B.LEAD : []).forEach(function (q) { p.ratings.forEach(function (x) { var t = String(x.evidence[q.id] || '').trim(); if (t) ex.push(q.title + ': «' + t + '»'); }); });
   if (ex.length) { p_(b, C('report.examples'), null, { bold: true }); sortedTexts_(ex).forEach(function (t) { li_(b, t); }); }
   if (p.recogFrom.length) {
     p_(b, (n++) + '. ' + C('report.recogYou'), H1_());
@@ -3179,7 +3410,8 @@ function employeeReport_(R, p, folder, isTest) {
   }
   p_(b, (n++) + '. ' + C('report.plan'), H1_());
   if (p.selfTexts.S_PLAN) { p_(b, C('report.planYou'), null, { bold: true }); p_(b, p.selfTexts.S_PLAN); }
-  [C('report.agreed'), C('report.reply')].forEach(function (t) { p_(b, t, null, { bold: true }); p_(b, '\n\n\n'); });
+  p_(b, C('report.agreed'), null, { bold: true }); actionsTable_(b);
+  p_(b, C('report.reply'), null, { bold: true }); p_(b, '\n\n\n');
   p_(b, C('report.signatures'));
   p_(b, C('intro.closing') + ' — ' + setting_('SIGNATURE'), null, { size: 10 });
   doc.saveAndClose();
@@ -3204,7 +3436,7 @@ function personReport_(R, p, folder, isTest) {
   p_(b, '2. ' + C('report.byItemWho'), H1_());
   var merged = C('report.merged');
   var rows = [[C('report.item'), C('report.self'), C('report.manager'), C('report.team'), C('report.peers'), C('report.others'), C('report.gap')]];
-  B.CORE.forEach(function (q) {
+  B.CORE.concat(roleOf_(p)).forEach(function (q) {
     var s = p.scores[q.id];
     rows.push([q.title, fmt_(s.self), fmt_(s.head), p.showTeamSeparately ? fmt_(s.team) : (s.team != null ? merged : '—'),
       p.showPeersSeparately ? fmt_(s.peers) : (s.peers != null ? merged : '—'), fmt_(s.others), fmt_(s.gap)]);
@@ -3264,7 +3496,7 @@ function personReport_(R, p, folder, isTest) {
 
   p_(b, '5. ' + C('report.evidence'), H1_());
   var any = false;
-  B.CORE.concat(B.LEAD, B.HEAD_ITEMS).forEach(function (q) {
+  B.CORE.concat(B.LEAD, B.HEAD_ITEMS, roleOf_(p)).forEach(function (q) {
     var ex = p.ratings.filter(function (x) { return x.evidence[q.id] && String(x.evidence[q.id]).trim(); });
     if (!ex.length) return;
     any = true;
@@ -3295,8 +3527,11 @@ function personReport_(R, p, folder, isTest) {
     var t = p.selfTexts[q.id]; if (!t) return;
     p_(b, q.title, null, { bold: true }); p_(b, t);
   });
-  p_(b, '9. ' + C('report.next'), H1_());
-  [C('report.nextSession'), C('report.nextReply'), C('report.nextPlan')].forEach(function (t) { p_(b, t); p_(b, '\n\n'); });
+  p_(b, '9. ' + C('report.convTitle'), H1_());
+  [1, 2, 3, 4, 5].forEach(function (i) { li_(b, C('report.conv' + i)); });
+  p_(b, '10. ' + C('report.next'), H1_());
+  [C('report.nextSession'), C('report.nextReply')].forEach(function (t) { p_(b, t); p_(b, '\n\n'); });
+  p_(b, C('report.nextPlan')); actionsTable_(b);
   p_(b, C('report.readWith'));
   p_(b, C('report.signaturesAdmin'));
   doc.saveAndClose();
@@ -3363,6 +3598,8 @@ function orgReport_(R, folder, isTest) {
 
 // ——— paper forms for people without an email ———
 /** One printable Google Doc per person without an email: their self-evaluation and everyone they are assigned to rate. */
+/** The role questions that apply to this person, as question objects. */
+function roleOf_(p) { var ids = p.roleItems || []; return Q_().ROLE.filter(function (q) { return ids.indexOf(q.id) >= 0; }); }
 function makePaperForms() {
   requireOwner_();
   var team = readTeam_(), byEmail = indexTeam_(team), asg = readAssignments_();
@@ -3408,7 +3645,7 @@ function paperForm_(p, mine, byEmail, folder) {
   p_(b, C('paper.part1'), H1_());
   p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
   p_(b, C('ui.describesSelf'), null, { size: 9, muted: true });
-  ratingTable(B.CORE);
+  ratingTable(B.CORE.concat(roleFor_(p.dept)));
   if (hasReports_(p.email, byEmail)) { ratingTable(B.LEAD); B.SELF_HEAD.forEach(function (q) { lines(q, 3); }); }
   openFor_('SELF_OPEN', p.dept).forEach(function (q) { lines(q, 3); });
   p_(b, C('paper.recog'), null, { bold: true }); lines({ title: C('ui.recogWhy'), help: '' }, 2);
@@ -3420,7 +3657,7 @@ function paperForm_(p, mine, byEmail, folder) {
     if (a.reason) p_(b, C('ui.whyShown') + ' ' + a.reason, null, { size: 9, muted: true });
     p_(b, C('ui.freqQ') + ' — ' + C('paper.circleOne') + '   ' + FREQ_CODES.map(function (f) { return C('freq.' + f); }).join('   ·   '), null, { bold: true });
     p_(b, C('ui.scaleMeaning'), null, { size: 9, muted: true });
-    ratingTable(B.CORE);
+    ratingTable(B.CORE.concat(roleFor_(t.dept)));
     if (leadAllowed_(p.email, t.email, byEmail)) { p_(b, C('ui.leadTitle') + ' — ' + C('ui.leadNa'), null, { bold: true }); ratingTable(B.LEAD); }
     if (rel === 'HEAD_TO_MEMBER') { ratingTable(B.HEAD_ITEMS); B.HEAD_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }
     if (rel === 'MEMBER_TO_HEAD') { p_(b, C('ui.memberTitle') + ': ' + C('ui.memberIntro'), null, { bold: true }); B.MEMBER_OPEN.forEach(function (q) { if (q.kind === 'choice') choice(q); else lines(q, 2); }); }
@@ -3433,6 +3670,140 @@ function paperForm_(p, mine, byEmail, folder) {
   doc.saveAndClose();
 }
 
+// ===== Managers.gs =====
+/**
+ * nonprofit-360 — asking managers who works with whom.
+ * The slowest part of a first setup is finding out who works closely with whom outside their own team. Instead of
+ * chasing managers one by one, the admin sends each manager one email; the manager opens a short page (the same
+ * published page, with ?view=links), and for each person in their team picks the colleagues they work with and on what.
+ * The answers go straight into the «Work links» tab, marked with the manager's name, for the admin to review.
+ */
+
+/** Admin menu: emails every manager the link to their short page — asks first. */
+function askManagers() {
+  requireOwner_();
+  var url = portalUrl_();
+  if (!url) { uiAlert_(t_('ask.noPage')); return; }
+  var team = readTeam_(), byEmail = indexTeam_(team);
+  var managers = team.filter(function (p) { return p.active !== false && p.email && !isNoEmail_(p.email) && teamOf_(p.email, team).length; });
+  if (!managers.length) { uiAlert_(t_('ask.noManagers')); return; }
+  var ui = SpreadsheetApp.getUi();
+  if (ui.alert(t_('ask.confirm', { n: managers.length }), ui.ButtonSet.YES_NO) !== ui.Button.YES) return;
+  var sent = 0;
+  managers.forEach(function (m) {
+    var names = teamOf_(m.email, team).map(function (p) { return p.name; });
+    var body = listEmail_(m, [t_('ask.intro'), t_('ask.how')], names, { label: t_('ask.button'), url: url + '?view=links' });
+    if (send_(m.email, t_('ask.subject', { org: orgName_() }), body)) sent++;
+  });
+  Logger.log('asked ' + sent + ' managers'); // counts only
+  uiAlert_(t_('ask.sent', { n: sent }));
+}
+
+/** The active people whose direct manager is this person. */
+function teamOf_(email, team) {
+  email = lower_(email);
+  return team.filter(function (p) { return p.active !== false && lower_(p.manager) === email && p.email !== email; });
+}
+
+/** The manager's short page. Anyone who manages nobody gets a plain message. */
+function linksPageHtml_(email) {
+  var team = readTeam_(), byEmail = indexTeam_(team), me = byEmail[lower_(email)];
+  var mine = me && me.active !== false ? teamOf_(me.email, team) : [];
+  if (!mine.length) return messagePageHtml_(t_('links.notManager'));
+  var links = readLinks_(team);
+  var members = mine.map(function (p) {
+    var already = [];
+    links.forEach(function (l) {
+      var other = l.rater === p.email ? l.ratee : l.ratee === p.email ? l.rater : '';
+      if (other && byEmail[other] && already.indexOf(byEmail[other].name) < 0) already.push(byEmail[other].name);
+    });
+    // teammates and their manager are paired automatically, so they are not offered
+    var auto = {}; auto[p.email] = 1; auto[lower_(p.manager)] = 1;
+    team.forEach(function (q) { if (lower_(q.manager) === lower_(p.manager)) auto[q.email] = 1; });
+    var options = team.filter(function (q) { return q.active !== false && !auto[q.email]; })
+      .sort(function (a, b) { return (a.dept + a.name) < (b.dept + b.name) ? -1 : 1; })
+      .map(function (q) { return { key: q.email, label: q.name + (q.dept ? ' — ' + q.dept : '') }; });
+    return { key: p.email, name: p.name, sub: [p.title, p.dept].filter(String).join(' · '), already: already, options: options };
+  });
+  var labels = {};
+  Object.keys(STR_EN).forEach(function (k) { if (k.indexOf('links.') === 0) labels[k] = t_(k); });
+  var data = JSON.stringify({ dir: isRtl_() ? 'rtl' : 'ltr', org: orgName_(), me: me.name, members: members, s: labels, colors: colors_() }).replace(/</g, '\\u003c');
+  var col = colors_();
+  return '<!DOCTYPE html><html lang="' + lang_() + '" dir="' + (isRtl_() ? 'rtl' : 'ltr') + '"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>' +
+    'body{margin:0;background:#f4f8fb;font-family:Tahoma,Arial,sans-serif;color:#14283a;line-height:1.6}.wrap{max-width:720px;margin:0 auto;padding:16px}' +
+    'h1{color:' + col.primary + ';font-size:22px;margin:8px 0}h2{font-size:17px;margin:0}.sub,.mute{color:#5b6b7a;font-size:13px}' +
+    '.card{background:#fff;border-radius:12px;box-shadow:0 1px 6px rgba(0,0,0,.07);padding:14px 16px;margin:12px 0}.row{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}' +
+    'select,input{font:inherit;padding:8px;border:1px solid #c9d6e2;border-radius:8px;box-sizing:border-box}select{flex:1 1 220px;min-width:0}input{flex:2 1 260px;min-width:0}' +
+    '.bad{border-color:#b00020;background:#fff5f5}.btn{background:' + col.primary + ';color:#fff;border:0;border-radius:10px;padding:13px;font:inherit;font-weight:bold;width:100%;cursor:pointer}' +
+    '.soft{background:none;color:' + col.primary + ';border:1px dashed #9fb6c8;border-radius:8px;padding:6px 12px;font:inherit;cursor:pointer}.msg{padding:12px;border-radius:10px;background:#e8f5ec;margin:12px 0}' +
+    '</style></head><body><div class="wrap" id="app"></div><script>var D=' + data + ';</script><script>' + LINKS_JS + '</script></body></html>';
+}
+
+var LINKS_JS = [
+  'function T(k, v) { var s = D.s[k] || k; Object.keys(v || {}).forEach(function (x) { s = s.split("{" + x + "}").join(v[x]); }); return s; }',
+  'function el(t, a, kids) { var e = document.createElement(t); Object.keys(a || {}).forEach(function (k) { if (k === "text") e.textContent = a[k]; else if (k === "cls") e.className = a[k]; else if (k.indexOf("on") === 0) e.addEventListener(k.slice(2), a[k]); else e.setAttribute(k, a[k]); });',
+  '  (kids || []).forEach(function (c) { if (c) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); }); return e; }',
+  'var app = document.getElementById("app");',
+  'app.appendChild(el("div", { cls: "sub", text: D.org })); app.appendChild(el("h1", { text: T("links.title") })); app.appendChild(el("div", { cls: "mute", text: T("links.intro") }));',
+  'var boxes = [];',
+  'function addRow(box, m) { var s = el("select", {}, [el("option", { value: "", text: T("links.pick") })]); m.options.forEach(function (o) { s.appendChild(el("option", { value: o.key, text: o.label })); });',
+  '  var r = el("input", { type: "text", maxlength: "200", placeholder: T("links.reason") }); box.appendChild(el("div", { cls: "row" }, [s, r])); }',
+  'D.members.forEach(function (m) { var c = el("div", { cls: "card" }, [el("h2", { text: m.name }), m.sub ? el("div", { cls: "sub", text: m.sub }) : null]);',
+  '  if (m.already.length) c.appendChild(el("div", { cls: "mute", text: T("links.already") + " " + m.already.join(" · ") }));',
+  '  var box = el("div"); addRow(box, m); addRow(box, m); c.appendChild(box);',
+  '  c.appendChild(el("button", { cls: "soft", type: "button", text: "+ " + T("links.add"), onclick: function () { addRow(box, m); } })); boxes.push({ m: m, box: box }); app.appendChild(c); });',
+  'var out = el("div"); app.appendChild(out);',
+  'var btn = el("button", { cls: "btn", text: T("links.send"), onclick: function () { var items = [], bad = false;',
+  '  boxes.forEach(function (b) { [].forEach.call(b.box.querySelectorAll(".row"), function (row) { var s = row.querySelector("select"), r = row.querySelector("input"); r.classList.remove("bad");',
+  '    if (!s.value) return; if (r.value.trim().length < 3) { r.classList.add("bad"); bad = true; return; } items.push({ member: b.m.key, colleague: s.value, reason: r.value.trim() }); }); });',
+  '  if (bad) { out.innerHTML = ""; out.appendChild(el("div", { cls: "msg", style: "background:#fff5f5", text: T("links.needReason") })); return; }',
+  '  if (!items.length) { out.innerHTML = ""; out.appendChild(el("div", { cls: "msg", style: "background:#fff5f5", text: T("links.none") })); return; }',
+  '  btn.disabled = true; btn.textContent = T("links.sending");',
+  '  google.script.run.withSuccessHandler(function (res) { btn.disabled = false; btn.textContent = T("links.send"); out.innerHTML = "";',
+  '    out.appendChild(el("div", { cls: "msg", style: res && res.ok ? "" : "background:#fff5f5", text: res && res.ok ? T("links.sent", { n: res.added }) : (res && res.error) || T("links.error") }));',
+  '    if (res && res.ok) boxes.forEach(function (b) { [].forEach.call(b.box.querySelectorAll("select"), function (s) { s.value = ""; }); [].forEach.call(b.box.querySelectorAll("input"), function (r) { r.value = ""; }); }); })',
+  '  .withFailureHandler(function () { btn.disabled = false; btn.textContent = T("links.send"); out.innerHTML = ""; out.appendChild(el("div", { cls: "msg", style: "background:#fff5f5", text: T("links.error") })); }).submitLinks(items); } });',
+  'app.appendChild(btn);'
+].join('\n');
+
+/**
+ * Called by the manager's page. Only a manager, only for their own team, only real colleagues: anything else is refused.
+ * Adds each new pair to «Work links» (both directions), marked with the manager's name; a pair already listed is skipped.
+ */
+function submitLinks(items) {
+  var active = lower_(Session.getActiveUser().getEmail());
+  var team = readTeam_(), byEmail = indexTeam_(team), me = byEmail[active];
+  var mine = me && me.active !== false ? teamOf_(active, team).map(function (p) { return p.email; }) : [];
+  if (!mine.length) return { ok: false, error: t_('links.notManager') };
+  if (!Array.isArray(items) || items.length > 80) return { ok: false, error: t_('links.error') };
+  var clean = [];
+  for (var i = 0; i < items.length; i++) {
+    var it = items[i] || {}, m = lower_(it.member), c = lower_(it.colleague), reason = String(it.reason || '').trim().slice(0, 200);
+    if (mine.indexOf(m) < 0 || !byEmail[c] || byEmail[c].active === false || c === m) return { ok: false, error: t_('links.error') };
+    if (reason.length < 3) return { ok: false, error: t_('links.needReason') };
+    clean.push({ m: m, c: c, reason: reason });
+  }
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000);
+  var added = 0;
+  try {
+    var have = {};
+    readLinks_(team).forEach(function (l) { have[l.rater + '>' + l.ratee] = 1; have[l.ratee + '>' + l.rater] = 1; });
+    var show = function (e) { return isNoEmail_(e) ? byEmail[e].name : e; };
+    var sh = sheet_('LINKS', true), rows = [];
+    if (sh.getLastRow() < 1) writeHeader_(sh, cols_('links', ['rater', 'ratee', 'reason', 'both', 'note']));
+    clean.forEach(function (x) {
+      if (have[x.m + '>' + x.c]) return;
+      have[x.m + '>' + x.c] = have[x.c + '>' + x.m] = 1;
+      rows.push([show(x.m), show(x.c), x.reason, t_('word.yes'), t_('links.fromManager', { name: me.name })]);
+    });
+    if (rows.length) sh.getRange(sh.getLastRow() + 1, 1, rows.length, 5).setValues(safeRows_(rows));
+    added = rows.length;
+    SpreadsheetApp.flush();
+  } finally { lock.releaseLock(); }
+  return { ok: true, added: added };
+}
+
 // ===== WebApp.gs =====
 /**
  * nonprofit-360 — the personal page. All rating happens here: one screen per person, tap 1–5, answers save as you go.
@@ -3442,6 +3813,7 @@ function paperForm_(p, mine, byEmail, folder) {
 
 function doGet(e) {
   var email = lower_(Session.getActiveUser().getEmail());
+  if (e && e.parameter && e.parameter.view === 'links') return page_(linksPageHtml_(email)); // a manager listing who their team works with
   var asParam = e && e.parameter ? e.parameter.as : '';
   var as = paperTarget_(email, asParam);
   if (asParam && !as) return page_(messagePageHtml_(t_('err.notAllowed')));
@@ -3529,11 +3901,11 @@ function clientData_(email, paper) {
     me: { name: T.me.name, dept: T.me.dept }, deadline: deadlineText_(), drafts: drafts, done: T.done, total: T.total, as: paper ? email : null,
     selfDone: T.selfDone, selfPrev: T.selfPrev, isHead: T.isHead,
     persons: T.persons.map(function (x) {
-      return { key: x.person.email, name: x.person.name, dept: x.person.dept, relCode: x.rel, reason: x.reason || '', showLead: x.showLead, done: x.done, prev: x.prev };
+      return { key: x.person.email, name: x.person.name, dept: x.person.dept, relCode: x.rel, reason: x.reason || '', showLead: x.showLead, role: roleIdsFor_(x.person.dept), done: x.done, prev: x.prev };
     }),
     depts: T.depts.map(function (x) { return { name: x.dept, done: x.done, prev: x.prev }; }),
     colleagues: team.filter(function (p) { return p.active !== false && p.email !== email; }).map(function (p) { return { key: p.email, name: p.name, dept: p.dept }; }),
-    core: B.CORE.map(item), lead: B.LEAD.map(item), dept: B.DEPT.map(item), headItems: B.HEAD_ITEMS.map(item),
+    core: B.CORE.map(item), lead: B.LEAD.map(item), dept: B.DEPT.map(item), headItems: B.HEAD_ITEMS.map(item), role: B.ROLE.map(item), myRole: roleIdsFor_(T.me.dept),
     selfOpen: openFor_('SELF_OPEN', T.me.dept).map(open), selfHead: B.SELF_HEAD.map(open), personOpen: B.PERSON_OPEN.map(open),
     headOpen: B.HEAD_OPEN.map(open), memberOpen: B.MEMBER_OPEN.map(open),
     freq: FREQ_CODES, minEv: Number(cfg_().EVIDENCE_MIN_CHARS)
@@ -3706,19 +4078,24 @@ var APP_JS = [
   '  var c0 = el("div", { cls: "card" }, [el("div", { cls: "field", "data-t": "freq" }, [el("label", { text: T("ui.freqQ") + " *" }), el("div", { cls: "mute", text: T("ui.freqHelp") }), freqChips(F)])]); w.appendChild(c0);',
   '  var c1 = el("div", { cls: "card" }); DATA.core.forEach(function (it) { c1.appendChild(ratingBlock(it, F)); }); w.appendChild(c1);',
   '  if (p.showLead) { var c2 = el("div", { cls: "card" }, [el("h2", { text: T("ui.leadTitle") }), el("div", { cls: "mute", text: T("ui.leadSub") + " " + T("ui.leadNa") })]); DATA.lead.forEach(function (it) { c2.appendChild(ratingBlock(it, F)); }); w.appendChild(c2); }',
+  '  roleCard(w, p.role, F);',
   '  if (isHeadOf) { var ch = el("div", { cls: "card" }, [el("h2", { text: T("ui.headTitle") }), el("div", { cls: "mute", text: T("ui.headIntro") })]);',
   '    DATA.headItems.forEach(function (it) { ch.appendChild(ratingBlock(it, F)); }); extraFields(extra, F, ch); w.appendChild(ch); }',
   '  if (isMemberOf) { var cm = el("div", { cls: "card" }, [el("h2", { text: T("ui.memberTitle") }), el("div", { cls: "mute", text: T("ui.memberIntro") })]); extraFields(extra, F, cm); w.appendChild(cm); }',
   '  var c3 = el("div", { cls: "card" }, [el("h2", { text: T("ui.notesTitle") })]); DATA.personOpen.forEach(function (q) { c3.appendChild(textField(q.id, q.title, q.help, q.required, F, 2)); }); w.appendChild(c3);',
-  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(p.showLead ? DATA.lead.map(function (x) { return x.id; }) : [], isHeadOf ? DATA.headItems.map(function (x) { return x.id; }) : []);',
+  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(p.showLead ? DATA.lead.map(function (x) { return x.id; }) : [], isHeadOf ? DATA.headItems.map(function (x) { return x.id; }) : [], p.role || []);',
   '    if (!F.freq) { c0.classList.add("bad"); c0.scrollIntoView({ behavior: "smooth", block: "center" }); toast(T("ui.needFreq")); return; } c0.classList.remove("bad");',
   '    if (!check(w, F, ids, reqIds(DATA.personOpen)) || !checkExtra(w, F, extra)) return; send("PERSON", { ratee: p.key, freq: F.freq, scores: F.scores, evidence: F.evidence, texts: F.texts }, btn); }); }',
+  // questions for the kind of work this person does (only when the admin switched them on for their department)
+  'function roleCard(w, ids, F) { var qs = (DATA.role || []).filter(function (q) { return (ids || []).indexOf(q.id) >= 0; }); if (!qs.length) return;',
+  '  var c = el("div", { cls: "card" }, [el("h2", { text: T("ui.roleTitle") }), el("div", { cls: "mute", text: T("ui.roleSub", { na: T("ui.na") }) })]); qs.forEach(function (it) { c.appendChild(ratingBlock(it, F)); }); w.appendChild(c); }',
   // self-evaluation
   'function selfView(a) { var F = startForm("SELF", DATA.selfPrev); var w = el("div", { cls: "wrap" }); a.appendChild(w);',
   '  header(w, T("ui.selfRow"), T("ui.describesSelf")); restoredNote(w);',
   '  var c1 = el("div", { cls: "card" }); DATA.core.forEach(function (it) { c1.appendChild(ratingBlock(it, F)); }); w.appendChild(c1);',
   '  if (DATA.isHead) { var c2 = el("div", { cls: "card" }, [el("h2", { text: T("ui.selfLead") })]); DATA.lead.forEach(function (it) { c2.appendChild(ratingBlock(it, F)); });',
   '    DATA.selfHead.forEach(function (q) { c2.appendChild(textField(q.id, q.title, q.help, q.required, F, 3)); }); w.appendChild(c2); }',
+  '  roleCard(w, DATA.myRole, F);',
   '  var c3 = el("div", { cls: "card" }, [el("h2", { text: T("ui.selfReview") }), el("div", { cls: "mute", text: T("ui.selfReviewSub") })]);',
   '  DATA.selfOpen.forEach(function (q) { c3.appendChild(textField(q.id, q.title, q.help, q.required, F, 3)); }); w.appendChild(c3);',
   '  var c4 = el("div", { cls: "card" }, [el("h2", { text: T("ui.recogTitle") }), el("div", { cls: "mute", text: T("ui.recogSub") })]);',
@@ -3726,7 +4103,7 @@ var APP_JS = [
   '    DATA.colleagues.forEach(function (c) { var o = el("option", { value: c.key, text: c.name + " — " + c.dept }); if (F.recog[i] === c.key) o.selected = true; s.appendChild(o); });',
   '    s.addEventListener("change", function () { F.recog[i] = s.value; S.dirty = true; }); c4.appendChild(el("div", { cls: "field" }, [s])); });',
   '  c4.appendChild(textField("R_WHY", T("ui.recogWhy"), T("ui.recogWhyHelp"), false, F, 2)); w.appendChild(c4);',
-  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(DATA.isHead ? DATA.lead.map(function (x) { return x.id; }) : []);',
+  '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(DATA.isHead ? DATA.lead.map(function (x) { return x.id; }) : [], DATA.myRole || []);',
   '    var req = reqIds(DATA.selfOpen).concat(DATA.isHead ? reqIds(DATA.selfHead) : []);',
   '    if (!check(w, F, ids, req)) return; send("SELF", { scores: F.scores, evidence: F.evidence, texts: F.texts, recog: F.recog.filter(Boolean) }, btn); }); }',
   // rating a department

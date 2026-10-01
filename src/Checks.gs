@@ -43,6 +43,8 @@ function checkOrg_(team, links, never, deptLinks, opts) {
     if (!depts[d]) warn('deptUnknown', { dept: d });
     (deptLinks[d] || []).forEach(function (x) { if (!depts[x]) warn('deptUnknown', { dept: x }); });
   });
+  // a role question switched on for a department that nobody is in reaches nobody
+  try { Q_().ROLE.forEach(function (q) { if (!(q.depts || []).length) warn('roleNoDept', { q: q.title }); (q.depts || []).forEach(function (d) { if (!depts[d]) warn('roleDeptUnknown', { q: q.title, dept: d }); }); }); } catch (e) {}
   if (opts.admin && !by[lower_(opts.admin)]) warn('adminNotInTeam', { email: opts.admin });
   if (!opts.deadline) warn('noDeadline');
   // how many ratings each person gets and gives (a fair evaluation needs enough raters; a heavy list tires people)

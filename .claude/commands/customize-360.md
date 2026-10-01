@@ -17,7 +17,10 @@ Follow `CLAUDE.md`. Ask what they want to change, in plain words, then do it and
   - Keep the codes: the analysis uses them. C1 is responsiveness, C2 communication, L4 owning the team's results, X1
     achieving what was expected, and H_*/M_* are the manager-accountability questions.
   - New questions get new codes (C9, L8, S_X1…).
-  - Rating sections: CORE, LEAD, DEPT, HEAD_ITEMS. Open sections: SELF_OPEN, SELF_HEAD, HEAD_OPEN, MEMBER_OPEN,
+  - **Role questions** (field team, finance and admin, management, volunteers) are already in the «Questions» tab,
+    switched off. To use a set: write their real department names in the departments column (exactly as in the Team
+    tab) and set In use = yes, then menu 2 checks the names.
+  - Rating sections: CORE, LEAD, DEPT, HEAD_ITEMS, ROLE. Open sections: SELF_OPEN, SELF_HEAD, HEAD_OPEN, MEMBER_OPEN,
     PERSON_OPEN. Required = yes, no, or "if low".
 - **Who rates whom:** edit `org/work-links.csv` / `org/never-pair.csv`, or the sheet's «Work links» and «Never pair» tabs,
   then menu 2 and menu 3 again. Always keep a reason on every pair.

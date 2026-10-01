@@ -28,6 +28,7 @@ the database, Google accounts are the sign-in, and Google Docs are the reports.
 | `Setup.gs` | Menu, setup side panel, `ORG_SEED`, checks, pairings, publishing help | yes |
 | `Process.gs` | Results tabs, dashboard charts, emails, invitations, reminders, test run | yes |
 | `Reports.gs` | Google Docs reports (admin copy, employee copy, organisation) and paper forms | yes |
+| `Managers.gs` | `askManagers`, the managers' short page (`?view=links`) and `submitLinks` | yes |
 | `WebApp.gs` | `doGet`, `submitEval`, `saveDraft`, the page's HTML, CSS and JavaScript | yes |
 
 Everything in `Logic.gs`, `Checks.gs`, `Bank.gs` and the string files runs in Node: that is what the tests exercise.
@@ -37,7 +38,7 @@ Everything in `Logic.gs`, `Checks.gs`, `Bank.gs` and the string files runs in No
   `SET_NO`, `DISC_DOC`, `KEEP`, `HIGH`). Labels come from the word lists only when shown. Switching language never breaks data.
 - **Tabs are found by a remembered id.** Their names follow the language, and renaming a tab by hand is safe.
 - **The personal page runs as the admin.** Google lets a page call any public function, so every public function except
-  `doGet`, `submitEval`, `saveDraft` and `onOpen` (which only builds the menu) begins with `requireOwner_()`. A test enforces this.
+  `doGet`, `submitEval`, `saveDraft`, `submitLinks` and `onOpen` (which only builds the menu) begins with `requireOwner_()`. A test enforces this.
   - `submitEval` and `saveDraft` accept only the signed-in person's own tasks. The one exception is a paper entry by the admin.
 - **Validation happens on the server.** Nothing the browser sends is trusted: people, frequency, choices, scores and
   example lengths are all checked again.

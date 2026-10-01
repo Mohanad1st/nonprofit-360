@@ -49,6 +49,6 @@ The person you are talking to is usually **not technical**: an executive directo
 
 ## If you change the code
 - Keep both languages in step: add every new key to `Strings.en.gs` and `Strings.ar.gs` in the same change; `node test/i18n.js` must pass.
-- Every public function (no trailing `_`) must start with `requireOwner_()` unless it is one of `doGet`, `submitEval`, `saveDraft`, `onOpen` — the page runs with the owner's rights, so anything else must be admin-only. `test/smoke.js` checks this.
+- Every public function (no trailing `_`) must start with `requireOwner_()` unless it is one of `doGet`, `submitEval`, `saveDraft`, `submitLinks`, `onOpen` — the page runs with the owner's rights, so anything else must be admin-only. `test/smoke.js` checks this.
 - Values the analysis compares against are codes (`WEEKLY`, `SET_NO`, `KEEP`…), never translated labels.
 - After changing `src/`, rebuild, run the tests, and for a live copy run `node tools/push.js update`, then publish a new version of the page (see `docs/en/admin-guide.md`).

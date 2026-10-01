@@ -6,6 +6,8 @@
 
 **A free, open-source 360-degree performance evaluation for nonprofits — in English and Arabic, running in your own Google account.**
 
+**[▶ Try the demo](https://mohanad1st.github.io/nonprofit-360/demo/)**: the page your staff would see, with a made-up team. No sign-in, nothing saved.
+
 [العربية](README.ar.md) · [Setup guide](docs/en/setup-guide.md) · [Admin guide](docs/en/admin-guide.md) · [Ethics and privacy](docs/en/ethics-and-privacy.md) · [FAQ](docs/en/faq.md)
 
 | At a glance | |
@@ -49,6 +51,12 @@ no IT staff and no budget for HR software.
   - Per person: the admin's full copy and an employee copy to hand over in a conversation.
   - An organisation report.
   - Charts in all of them.
+- **Managers list who works with whom** from one email: each opens a short page, picks the colleagues each person works
+  with outside the team and says on what. The answers go straight into the sheet.
+- **Ready questions for different kinds of work:** field staff, finance and admin, management, and volunteers. They are
+  switched off until you turn them on for your departments.
+- **After the results:** a conversation guide in the admin's copy, an agreed-actions table in the employee's copy, an
+  «Agreed actions» tab, a one-click calendar reminder, and a follow-up email to managers about 3 months later.
 - **Paper forms** for staff without email.
 - **English and Arabic, fully right-to-left.** Your values, logo and colours throughout.
 - **Free to run.** No server and no subscription: it runs in your own Google Workspace, which is free for registered

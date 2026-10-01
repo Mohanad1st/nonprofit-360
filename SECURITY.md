@@ -14,9 +14,11 @@ data never leaves the organisation's own Google account.
   - The page is published "Execute as: me" with "Who has access: anyone within the organisation".
   - It identifies each person from their Google account; people cannot choose who they are.
 - **The admin check.**
-  - Google lets a published page call any public function, so every public function except `doGet`, `submitEval` and
-    `saveDraft` and `onOpen` (which only builds the menu) starts with `requireOwner_()`. A test enforces this.
+  - Google lets a published page call any public function, so every public function except `doGet`, `submitEval`,
+    `saveDraft`, `submitLinks` and `onOpen` (which only builds the menu) starts with `requireOwner_()`. A test enforces this.
   - `submitEval` and `saveDraft` accept only the signed-in person's own tasks. They validate everything on the server.
+  - `submitLinks` (the managers' short page) accepts links only from someone who manages a team, only for their own team
+    members, only to real colleagues, and only with a reason. It can add rows to «Work links», never change or delete them.
 - **Confidentiality.**
   - Each person's page receives only their own tasks and answers.
   - Employee reports contain no names, emails or warnings; a test checks this.

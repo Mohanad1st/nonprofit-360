@@ -42,7 +42,8 @@ var SETTING_DEFAULT_KEY = { CYCLE_NAME: 'default.cycle', TAGLINE: 'default.tagli
 
 /** Tabs by stable id. Their shown names follow the language; the tool finds them by an internal id, so renaming a tab is safe. */
 var TABS = ['GUIDE', 'SETTINGS', 'TEAM', 'LINKS', 'NEVER', 'DEPTLINKS', 'QUESTIONS', 'ASSIGN', 'DECISIONS', 'RESPONSES', 'DRAFTS',
-  'COMPLETION', 'FLAGS', 'PEOPLE', 'HEAT', 'DEPTS', 'STARS', 'BLAME', 'ACCOUNT', 'SUMMARY', 'DASH'];
+  'COMPLETION', 'FLAGS', 'PEOPLE', 'HEAT', 'DEPTS', 'STARS', 'BLAME', 'ACCOUNT', 'SUMMARY', 'DASH', 'ACTIONS'];
+var ACTION_COLS = ['name', 'email', 'manager', 'action', 'support', 'due', 'done', 'checked', 'round'];
 
 var __CFG = null;       // settings of this run (read once)
 var __BOOK = null;      // the control spreadsheet

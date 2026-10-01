@@ -40,8 +40,9 @@ function coreIds_() { return ids_('CORE'); }
 function leadIds_() { return ids_('LEAD'); }
 function deptIds_() { return ids_('DEPT'); }
 function headIds_() { return ids_('HEAD_ITEMS'); }
+function roleIds_() { return ids_('ROLE'); }
 function titleOf_(qid) {
-  var B = Q_(), all = B.CORE.concat(B.LEAD, B.DEPT, B.HEAD_ITEMS);
+  var B = Q_(), all = B.CORE.concat(B.LEAD, B.DEPT, B.HEAD_ITEMS, B.ROLE);
   for (var i = 0; i < all.length; i++) if (all[i].id === qid) return all[i].title;
   return qid;
 }
@@ -49,6 +50,9 @@ function titleOf_(qid) {
 function openFor_(section, dept) {
   return Q_()[section].filter(function (q) { return !q.depts || !q.depts.length || q.depts.indexOf(dept) >= 0; });
 }
+/** Role questions that apply to someone in this department (rated by everyone who rates them, and by themselves). */
+function roleFor_(dept) { return Q_().ROLE.filter(function (q) { return q.depts && q.depts.length && q.depts.indexOf(dept) >= 0; }); }
+function roleIdsFor_(dept) { return roleFor_(dept).map(function (q) { return q.id; }); }
 
 function indexTeam_(team) {
   var byEmail = {};
@@ -192,7 +196,7 @@ function validateSubmission_(kind, p, email, team, assignments, paper, ctx) {
     if (!assigned || !byEmail[ratee] || byEmail[ratee].active === false) return { error: t_('err.notInList') };
     if (FREQ_CODES.indexOf(p.freq) < 0) return { error: t_('err.freq') };
     var rel = deriveRel_(email, ratee, byEmail);
-    var ids = CI.concat(leadAllowed_(email, ratee, byEmail) ? LI : [], rel === 'HEAD_TO_MEMBER' ? headIds_() : []);
+    var ids = CI.concat(leadAllowed_(email, ratee, byEmail) ? LI : [], rel === 'HEAD_TO_MEMBER' ? headIds_() : [], roleIdsFor_(byEmail[ratee].dept));
     var s = cleanScores(ids, p.scores); if (s.error) return s;
     var e = cleanEvidence(s.scores, p.evidence); if (e.error) return e;
     var pt = p.texts || {}, texts = {};
@@ -217,7 +221,7 @@ function validateSubmission_(kind, p, email, team, assignments, paper, ctx) {
   }
   if (kind === 'SELF') {
     var lead = hasReports_(email, byEmail);
-    var s2 = cleanScores(CI.concat(lead ? LI : []), p.scores); if (s2.error) return s2;
+    var s2 = cleanScores(CI.concat(lead ? LI : [], roleIdsFor_(me.dept)), p.scores); if (s2.error) return s2;
     var e2 = cleanEvidence(s2.scores, p.evidence); if (e2.error) return e2;
     var texts2 = {};
     var bad2 = openAnswers(openFor_('SELF_OPEN', me.dept), p.texts, texts2); if (bad2) return bad2;
@@ -258,7 +262,7 @@ function analyze_(team, assignments, rawRecords, decisionList, cfg) {
   var dd = dedupe_(rawRecords);
   var recs = dd.records, flags = [], assignSet = {};
   (assignments || []).forEach(function (a) { assignSet[lower_(a.rater) + '>' + lower_(a.ratee)] = 1; });
-  var CI = coreIds_(), LI = leadIds_(), DI = deptIds_(), HI = headIds_();
+  var CI = coreIds_(), LI = leadIds_(), DI = deptIds_(), HI = headIds_(), RI = roleIds_();
 
   function flag(type, severity, who, about, detail, rater) {
     flags.push({ type: type, severity: severity, person: who, about: about || '', detail: detail, rater: rater || '' });
@@ -333,7 +337,7 @@ function analyze_(team, assignments, rawRecords, decisionList, cfg) {
     P.nByGroup = { HEAD: 0, TEAM: 0, PEERS: 0 };
     others.forEach(function (x) { P.nByGroup[groupOf_(x.rel)]++; });
     P.scores = {};
-    CI.concat(LI, HI).forEach(function (q) {
+    CI.concat(LI, HI, RI).forEach(function (q) {
       var g = { HEAD: [], TEAM: [], PEERS: [] }, all = [];
       others.forEach(function (x) { var v = x.scores[q]; if (v == null) return; g[groupOf_(x.rel)].push([v, x.w]); all.push([v, x.w]); });
       P.scores[q] = { self: P.self[q] != null ? P.self[q] : null, head: round2_(wmean_(g.HEAD)), team: round2_(wmean_(g.TEAM)),
@@ -345,6 +349,8 @@ function analyze_(team, assignments, rawRecords, decisionList, cfg) {
     P.leadOthers = round2_(mean_(LI.map(function (q) { return P.scores[q].others; })));
     P.leadTeam = round2_(mean_(LI.map(function (q) { return P.scores[q].team; })));
     P.leadSelf = round2_(mean_(LI.map(function (q) { return P.scores[q].self; })));
+    P.roleItems = roleIdsFor_(P.dept); // kept apart from the core items, so everyone is still compared on the same questions
+    P.roleOthers = round2_(mean_(P.roleItems.map(function (q) { return P.scores[q].others; })));
     // confidentiality: a group is shown on its own only with MIN_GROUP people or more
     P.showTeamSeparately = P.nByGroup.TEAM >= cfg.MIN_GROUP;
     P.showPeersSeparately = P.nByGroup.PEERS >= cfg.MIN_GROUP;
