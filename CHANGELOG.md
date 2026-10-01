@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0 — 2026-09-30
+## 1.2.0 — 2026-10-01
 Easier to start, and more useful after the results.
 
 - **Try-it demo:** the real staff page with a made-up team, in English and Arabic, in any browser, with no sign-in (`docs/demo/`, built by `tools/demo.js`).
