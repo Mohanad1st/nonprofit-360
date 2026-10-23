@@ -60,6 +60,39 @@ function indexTeam_(team) {
   return byEmail;
 }
 
+/**
+ * The recognition picker never sees an email. Each active colleague gets an opaque id: a salted hash of their email.
+ * The salt is a secret kept on the server, so the id cannot be reversed or checked against a guessed email.
+ * (A hash that is only used to hide a value from the page, not to protect a password, so a small pure-JS one is enough.)
+ */
+function opaqueId_(salt, value) {
+  var s = String(salt) + '|' + String(value), h = [0x9e3779b9, 0x243f6a88, 0xb7e15162, 0xdeadbeef], i, c;
+  for (i = 0; i < s.length; i++) {
+    c = s.charCodeAt(i);
+    h[0] = Math.imul(h[0] ^ c, 597399067); h[1] = Math.imul(h[1] ^ c, 2869860233);
+    h[2] = Math.imul(h[2] ^ c, 951274213); h[3] = Math.imul(h[3] ^ c, 2716044179);
+  }
+  h[0] = Math.imul(h[2] ^ (h[0] >>> 18), 597399067); h[1] = Math.imul(h[3] ^ (h[1] >>> 22), 2869860233);
+  h[2] = Math.imul(h[0] ^ (h[2] >>> 17), 951274213); h[3] = Math.imul(h[1] ^ (h[3] >>> 19), 2716044179);
+  return h.map(function (x) { return ('00000000' + (x >>> 0).toString(16)).slice(-8); }).join('');
+}
+/** Active colleagues the person may recognise (never themselves): [{ id, name, dept, email }] — email stays on the server. */
+function colleagueList_(team, email, salt) {
+  email = lower_(email);
+  return team.filter(function (p) { return p.active !== false && lower_(p.email) !== email; })
+    .map(function (p) { return { id: opaqueId_(salt, lower_(p.email)), name: p.name, dept: p.dept, email: lower_(p.email) }; });
+}
+/** Turns the ids the page sent back into emails. Unknown ids, inactive people and the person themselves are dropped; at most 3. */
+function resolveRecog_(ids, team, email, salt) {
+  var byId = {}; colleagueList_(team, email, salt).forEach(function (c) { byId[c.id] = c.email; });
+  var out = [];
+  (Array.isArray(ids) ? ids : []).forEach(function (id) {
+    var e = Object.prototype.hasOwnProperty.call(byId, String(id)) ? byId[String(id)] : '';
+    if (e && out.indexOf(e) < 0 && out.length < 3) out.push(e);
+  });
+  return out;
+}
+
 /** The real relationship comes from the team structure, never from what the rater claims. */
 function deriveRel_(rater, ratee, byEmail) {
   var a = byEmail[rater], b = byEmail[ratee];

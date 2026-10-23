@@ -18,10 +18,14 @@ data never leaves the organisation's own Google account.
   - Google lets a published page call any public function, so every public function except `doGet`, `submitEval`,
     `saveDraft`, `submitLinks` and `onOpen` (which only builds the menu) starts with `requireOwner_()`. A test enforces this.
   - `submitEval` and `saveDraft` accept only the signed-in person's own tasks. They validate everything on the server.
+  - Each person can call `submitEval` once every 5 seconds and `saveDraft` once every 2 seconds (a short-lived cache entry
+    per person), so one signed-in person cannot fill the sheet in a loop. A draft is one row per person and task.
   - `submitLinks` (the managers' short page) accepts links only from someone who manages a team, only for their own team
     members, only to real colleagues, and only with a reason. It can add rows to «Work links», never change or delete them.
 - **Confidentiality.**
   - Each person's page receives only their own tasks and answers.
+  - The recognition list on the page holds each colleague's name and department and an opaque id, never their email. The
+    server turns the ids back into emails, only for active colleagues other than the person themselves.
   - Employee reports contain no names, emails or warnings; a test checks this.
   - Groups below the minimum size are merged.
   - Written comments are shown to the person as written, without a name. Writing style or details can still reveal

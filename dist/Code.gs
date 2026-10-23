@@ -195,6 +195,7 @@ var STR_EN = {
   'err.adminOnly': 'Not allowed: only the evaluation admin can do this.',
   'err.notAllowed': 'Not allowed.',
   'err.pageTeamOnly': 'This page is for the team of {org} only. Open the link with your work account.',
+  'err.tooFast': 'Too many requests too quickly. Please wait a few seconds and try again.',
   'err.draftTooLong': 'The draft is longer than allowed.',
   'err.noUrl': 'The personal page is not published yet. Choose «4) Publish the personal page» first.',
   'err.noPairs': 'Make the pairings first (menu 3).',
@@ -697,6 +698,7 @@ var STR_AR = {
   'err.adminOnly': 'غير مسموح: هذا الأمر لمسؤول التقييم فقط.',
   'err.notAllowed': 'غير مسموح.',
   'err.pageTeamOnly': 'هذه الصفحة لفريق {org} فقط. افتح الرابط من حساب بريد العمل.',
+  'err.tooFast': 'طلبات كثيرة في وقت قصير. يرجى الانتظار بضع ثوانٍ ثم المحاولة مرة أخرى.',
   'err.draftTooLong': 'المسودة أطول من المسموح.',
   'err.noUrl': 'الصفحة الشخصية لم تُنشر بعد. اختر «4) نشر الصفحة الشخصية» أولًا.',
   'err.noPairs': 'ولّد قائمة من يقيّم من أولًا (القائمة 3).',
@@ -1568,6 +1570,39 @@ function indexTeam_(team) {
   var byEmail = {};
   team.forEach(function (p) { p.email = lower_(p.email); p.manager = lower_(p.manager); byEmail[p.email] = p; });
   return byEmail;
+}
+
+/**
+ * The recognition picker never sees an email. Each active colleague gets an opaque id: a salted hash of their email.
+ * The salt is a secret kept on the server, so the id cannot be reversed or checked against a guessed email.
+ * (A hash that is only used to hide a value from the page, not to protect a password, so a small pure-JS one is enough.)
+ */
+function opaqueId_(salt, value) {
+  var s = String(salt) + '|' + String(value), h = [0x9e3779b9, 0x243f6a88, 0xb7e15162, 0xdeadbeef], i, c;
+  for (i = 0; i < s.length; i++) {
+    c = s.charCodeAt(i);
+    h[0] = Math.imul(h[0] ^ c, 597399067); h[1] = Math.imul(h[1] ^ c, 2869860233);
+    h[2] = Math.imul(h[2] ^ c, 951274213); h[3] = Math.imul(h[3] ^ c, 2716044179);
+  }
+  h[0] = Math.imul(h[2] ^ (h[0] >>> 18), 597399067); h[1] = Math.imul(h[3] ^ (h[1] >>> 22), 2869860233);
+  h[2] = Math.imul(h[0] ^ (h[2] >>> 17), 951274213); h[3] = Math.imul(h[1] ^ (h[3] >>> 19), 2716044179);
+  return h.map(function (x) { return ('00000000' + (x >>> 0).toString(16)).slice(-8); }).join('');
+}
+/** Active colleagues the person may recognise (never themselves): [{ id, name, dept, email }] — email stays on the server. */
+function colleagueList_(team, email, salt) {
+  email = lower_(email);
+  return team.filter(function (p) { return p.active !== false && lower_(p.email) !== email; })
+    .map(function (p) { return { id: opaqueId_(salt, lower_(p.email)), name: p.name, dept: p.dept, email: lower_(p.email) }; });
+}
+/** Turns the ids the page sent back into emails. Unknown ids, inactive people and the person themselves are dropped; at most 3. */
+function resolveRecog_(ids, team, email, salt) {
+  var byId = {}; colleagueList_(team, email, salt).forEach(function (c) { byId[c.id] = c.email; });
+  var out = [];
+  (Array.isArray(ids) ? ids : []).forEach(function (id) {
+    var e = Object.prototype.hasOwnProperty.call(byId, String(id)) ? byId[String(id)] : '';
+    if (e && out.indexOf(e) < 0 && out.length < 3) out.push(e);
+  });
+  return out;
 }
 
 /** The real relationship comes from the team structure, never from what the rater claims. */
@@ -3839,6 +3874,9 @@ function submitEval(kind, payload, asParam) {
   var as = paperTarget_(active, asParam);
   if (asParam && !as) return { ok: false, error: t_('err.notAllowed') };
   var email = as || active;
+  if (tooFast_('submit', active, 5)) return { ok: false, error: t_('err.tooFast') };
+  // the page names colleagues by an opaque id: turn it back into an email here, on the server, for active colleagues only
+  if (kind === 'SELF' && payload) payload = Object.assign({}, payload, { recog: resolveRecog_(payload.recog, readTeam_(), email, recogSalt_()) });
   var lock = LockService.getScriptLock();
   lock.waitLock(20000);
   try {
@@ -3860,6 +3898,7 @@ function saveDraft(key, payload, asParam) {
   var as = paperTarget_(active, asParam);
   if (asParam && !as) return { ok: false, error: t_('err.notAllowed') };
   var email = as || active;
+  if (tooFast_('draft', active, 2)) return { ok: false, busy: true, error: t_('err.tooFast') }; // the page simply tries again on its next save
   if (!draftKeyAllowed_(key, email, readTeam_(), readAssignments_(), !!as, deptCtx_())) return { ok: false, error: t_('err.notAllowed') };
   var json = JSON.stringify(cleanDraft_(payload));
   if (json.length > 45000) return { ok: false, error: t_('err.draftTooLong') };
@@ -3876,6 +3915,36 @@ function saveDraft(key, payload, asParam) {
     SpreadsheetApp.flush();
   } finally { lock.releaseLock(); }
   return { ok: true, ts: now.getTime() };
+}
+
+/**
+ * A signed-in person cannot fill the sheet by calling the page's functions in a loop: one call of each kind per few seconds.
+ * Uses the script cache (entries expire by themselves). If the cache is unavailable it lets the call through rather than blocking people.
+ */
+function tooFast_(what, email, seconds) {
+  try {
+    var cache = CacheService.getScriptCache(), key = 'rate|' + what + '|' + email;
+    if (cache.get(key)) return true;
+    cache.put(key, '1', seconds);
+  } catch (e) {}
+  return false;
+}
+
+/** The secret that makes the recognition ids unguessable. Created the first time a page opens, then kept. */
+function recogSalt_() {
+  var props = null, salt = '';
+  try { props = PropertiesService.getScriptProperties(); salt = props.getProperty('RECOG_SALT') || ''; } catch (e) { return ''; }
+  if (salt) return salt;
+  var lock = null;
+  try { lock = LockService.getScriptLock(); lock.waitLock(10000); } catch (e) { lock = null; }
+  try {
+    salt = props.getProperty('RECOG_SALT') || ''; // another page may have created it while we waited
+    if (!salt) {
+      salt = (typeof Utilities !== 'undefined' && Utilities.getUuid) ? Utilities.getUuid() + Utilities.getUuid() : String(Math.random()) + String(Math.random());
+      props.setProperty('RECOG_SALT', salt);
+    }
+  } catch (e) { salt = ''; } finally { if (lock) { try { lock.releaseLock(); } catch (e2) {} } }
+  return salt;
 }
 
 /** What the page needs for this one person only. */
@@ -3904,7 +3973,7 @@ function clientData_(email, paper) {
       return { key: x.person.email, name: x.person.name, dept: x.person.dept, relCode: x.rel, reason: x.reason || '', showLead: x.showLead, role: roleIdsFor_(x.person.dept), done: x.done, prev: x.prev };
     }),
     depts: T.depts.map(function (x) { return { name: x.dept, done: x.done, prev: x.prev }; }),
-    colleagues: team.filter(function (p) { return p.active !== false && p.email !== email; }).map(function (p) { return { key: p.email, name: p.name, dept: p.dept }; }),
+    colleagues: colleagueList_(team, email, recogSalt_()).map(function (c) { return { id: c.id, name: c.name, dept: c.dept }; }), // an opaque id, never the email
     core: B.CORE.map(item), lead: B.LEAD.map(item), dept: B.DEPT.map(item), headItems: B.HEAD_ITEMS.map(item), role: B.ROLE.map(item), myRole: roleIdsFor_(T.me.dept),
     selfOpen: openFor_('SELF_OPEN', T.me.dept).map(open), selfHead: B.SELF_HEAD.map(open), personOpen: B.PERSON_OPEN.map(open),
     headOpen: B.HEAD_OPEN.map(open), memberOpen: B.MEMBER_OPEN.map(open),
@@ -4024,7 +4093,7 @@ var APP_JS = [
   'function svText(t) { var s = document.getElementById("sv"); if (s) s.textContent = t; }',
   'function autosave() { if (!S.form || !S.dkey || S.sending) return; var j = JSON.stringify(S.form); if (j === S.savedJ) return;',
   '  var key = S.dkey, data = JSON.parse(j), ts = Date.now(); lsSet(key, { ts: ts, data: data }); S.savedJ = j; svText(T("ui.saving"));',
-  '  google.script.run.withSuccessHandler(function (r) { if (r && r.ok) { DATA.drafts = DATA.drafts || {}; DATA.drafts[key] = { ts: r.ts, data: data }; if (S.dkey === key) svText(T("ui.saved")); } else svText(T("ui.savedLocal")); })',
+  '  google.script.run.withSuccessHandler(function (r) { if (r && r.ok) { DATA.drafts = DATA.drafts || {}; DATA.drafts[key] = { ts: r.ts, data: data }; if (S.dkey === key) svText(T("ui.saved")); } else { svText(T("ui.savedLocal")); if (r && r.busy && S.dkey === key) S.savedJ = ""; } })',
   '    .withFailureHandler(function () { svText(T("ui.savedLocalRetry")); if (S.dkey === key) S.savedJ = ""; }).saveDraft(key, data, DATA.as || null); }',
   'setInterval(autosave, 4000);',
   'function restoredNote(w) { if (S.restored) w.appendChild(el("div", { cls: "note", style: "margin-bottom:12px;background:#eef5fa", text: T("ui.restored") })); }',
@@ -4100,12 +4169,12 @@ var APP_JS = [
   '  DATA.selfOpen.forEach(function (q) { c3.appendChild(textField(q.id, q.title, q.help, q.required, F, 3)); }); w.appendChild(c3);',
   '  var c4 = el("div", { cls: "card" }, [el("h2", { text: T("ui.recogTitle") }), el("div", { cls: "mute", text: T("ui.recogSub") })]);',
   '  [0, 1, 2].forEach(function (i) { var s = el("select"); s.appendChild(el("option", { value: "", text: T("ui.pickColleague") }));',
-  '    DATA.colleagues.forEach(function (c) { var o = el("option", { value: c.key, text: c.name + " — " + c.dept }); if (F.recog[i] === c.key) o.selected = true; s.appendChild(o); });',
+  '    DATA.colleagues.forEach(function (c) { var o = el("option", { value: c.id, text: c.name + " — " + c.dept }); if (F.recog[i] === c.id) o.selected = true; s.appendChild(o); });',
   '    s.addEventListener("change", function () { F.recog[i] = s.value; S.dirty = true; }); c4.appendChild(el("div", { cls: "field" }, [s])); });',
   '  c4.appendChild(textField("R_WHY", T("ui.recogWhy"), T("ui.recogWhyHelp"), false, F, 2)); w.appendChild(c4);',
   '  var btn = footer(T("ui.send"), function () { var ids = DATA.core.map(function (x) { return x.id; }).concat(DATA.isHead ? DATA.lead.map(function (x) { return x.id; }) : [], DATA.myRole || []);',
   '    var req = reqIds(DATA.selfOpen).concat(DATA.isHead ? reqIds(DATA.selfHead) : []);',
-  '    if (!check(w, F, ids, req)) return; send("SELF", { scores: F.scores, evidence: F.evidence, texts: F.texts, recog: F.recog.filter(Boolean) }, btn); }); }',
+  '    if (!check(w, F, ids, req)) return; send("SELF", { scores: F.scores, evidence: F.evidence, texts: F.texts, recog: F.recog.filter(function (r) { return r && DATA.colleagues.some(function (c) { return c.id === r; }); }) }, btn); }); }',
   // rating a department
   'function deptView(a) { var d = DATA.depts.filter(function (x) { return x.name === S.key; })[0]; if (!d) return go("home");',
   '  var F = startForm("DEPT|" + d.name, d.prev); var w = el("div", { cls: "wrap" }); a.appendChild(w);',

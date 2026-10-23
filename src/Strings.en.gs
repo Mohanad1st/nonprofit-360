@@ -190,6 +190,7 @@ var STR_EN = {
   'err.adminOnly': 'Not allowed: only the evaluation admin can do this.',
   'err.notAllowed': 'Not allowed.',
   'err.pageTeamOnly': 'This page is for the team of {org} only. Open the link with your work account.',
+  'err.tooFast': 'Too many requests too quickly. Please wait a few seconds and try again.',
   'err.draftTooLong': 'The draft is longer than allowed.',
   'err.noUrl': 'The personal page is not published yet. Choose «4) Publish the personal page» first.',
   'err.noPairs': 'Make the pairings first (menu 3).',

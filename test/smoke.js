@@ -80,6 +80,7 @@ function fakeGoogle(state) {
     }, { get: (t, p) => p in t ? t[p] : any('SpreadsheetApp.' + String(p)) }),
     PropertiesService: { getScriptProperties: () => ({ getProperties: () => Object.assign({}, props), getProperty: (k) => props[k] || null, setProperty: (k, v) => { props[k] = v; }, deleteProperty: (k) => { delete props[k]; } }) },
     Session: { getActiveUser: () => ({ getEmail: () => state.user }), getEffectiveUser: () => ({ getEmail: () => state.owner }) },
+    CacheService: { getScriptCache: () => { const c = state.cache = state.cache || {}; return { get: (k) => (state.rateLimit && c[k] && c[k] > state.clock()) ? '1' : null, put: (k, v, sec) => { c[k] = state.clock() + sec * 1000; } }; } },
     LockService: { getScriptLock: () => ({ waitLock: () => {}, releaseLock: () => {} }) },
     Utilities: { formatDate: (d) => new Date(d).toISOString().slice(0, 16).replace('T', ' '), base64Encode: () => 'AAAA', base64Decode: () => [], newBlob: () => any('blob') },
     Logger: { log: () => {} },
@@ -112,7 +113,7 @@ function fakeGoogle(state) {
 }
 
 for (const L of ['en', 'ar']) {
-  const tag = '[' + L + '] ', state = { user: 'nadia@example.org', owner: 'nadia@example.org' };
+  const tag = '[' + L + '] ', state = { user: 'nadia@example.org', owner: 'nadia@example.org', rateLimit: false, clock: () => Date.now() };
   const ctx = load(ORDER, fakeGoogle(state));
   const run = (code) => vm.runInContext(code, ctx);
   const tabs = () => state.book.sheets.map(s => s.name);
@@ -185,7 +186,16 @@ for (const L of ['en', 'ar']) {
   const r2 = ctx.submitEval('PERSON', { ratee: 'omar@example.org', freq: 'WEEKLY', scores: core, texts: notes });
   ok(!r2.ok && r2.error === ctx.tr_(L, 'err.notInList'), tag + 'rating someone not on your list is refused in the right language');
   const selfTexts = {}; ctx.openFor_('SELF_OPEN', 'x').forEach(q => selfTexts[q.id] = 'A clear honest answer ' + q.id);
-  ok(ctx.submitEval('SELF', { scores: core, texts: Object.assign({ R_WHY: 'RECOGLEAK Yasmin and Rami covered my site visits' }, selfTexts), recog: ['yasmin@example.org', 'rami@example.org'] }).ok, tag + 'a self-evaluation is stored');
+  // the recognition picker: the page gets name, department and an opaque id, never an email; the server turns ids back into emails
+  const cd = JSON.parse(JSON.stringify(ctx.clientData_('karim@example.org'))), colleagueJson = JSON.stringify(cd.colleagues);
+  const idOf = (email) => (cd.colleagues.find(c => c.name === team.find(p => p.email === email).name) || {}).id;
+  ok(cd.colleagues.length > 5 && cd.colleagues.every(c => Object.keys(c).sort().join() === 'dept,id,name') && !/@/.test(colleagueJson), tag + 'the recognition list carries only id, name and department, no emails');
+  ok(!cd.colleagues.some(c => c.name === team.find(p => p.email === 'karim@example.org').name), tag + 'you cannot pick yourself');
+  ok(new Set(cd.colleagues.map(c => c.id)).size === cd.colleagues.length && /^[0-9a-f]{32}$/.test(cd.colleagues[0].id), tag + 'ids are unique and opaque');
+  ok(ctx.clientData_('yasmin@example.org').colleagues.find(c => c.name === cd.colleagues.find(x => x.id === idOf('rami@example.org')).name).id === idOf('rami@example.org'), tag + 'a colleague has the same id on every page (drafts stay valid)');
+  ok(ctx.submitEval('SELF', { scores: core, texts: Object.assign({ R_WHY: 'RECOGLEAK Yasmin and Rami covered my site visits' }, selfTexts), recog: [idOf('yasmin@example.org'), idOf('rami@example.org'), 'yasmin@example.org', 'made-up-id', ''] }).ok, tag + 'a self-evaluation is stored');
+  const storedRecog = JSON.parse(tab('RESPONSES').data[tab('RESPONSES').data.length - 1][5]).recog;
+  ok(storedRecog.join() === 'yasmin@example.org,rami@example.org', tag + 'the server turned ids into emails and dropped a raw email and a made-up id: ' + storedRecog.join());
   state.user = 'nadia@example.org';
   const samir = team.find(p => ctx.isNoEmail_(p.email));
   const sp = ctx.submitEval('SELF', { scores: core, texts: selfTexts }, samir.name);
@@ -196,6 +206,17 @@ for (const L of ['en', 'ar']) {
   ok(state.lastHtml.indexOf('Share the weekly plan') < 0, tag + 'what Karim wrote about Rami is never sent to Rami\'s page');
   state.user = 'karim@example.org'; ctx.doGet({ parameter: {} });
   ok(state.lastHtml.indexOf('Share the weekly plan') > 0, tag + '…but Karim sees his own sent answer, to edit it');
+
+  // the rate limit: one send / one draft save per few seconds for each signed-in person
+  { let now = Date.now(); state.cache = {}; state.rateLimit = true; state.clock = () => now; state.user = 'karim@example.org';
+    const first = ctx.saveDraft('PERSON|rami@example.org', { scores: { C1: 3 } }), second = ctx.saveDraft('PERSON|rami@example.org', { scores: { C1: 4 } });
+    ok(first.ok && !second.ok && second.busy, tag + 'a second draft save within two seconds is turned away');
+    now += 2500; ok(ctx.saveDraft('PERSON|rami@example.org', { scores: { C1: 4 } }).ok, tag + '…and accepted again after the pause');
+    now += 6000; const rows0 = tab('RESPONSES').data.length;
+    const s1 = ctx.submitEval('SELF', { scores: core, texts: selfTexts }), s2 = ctx.submitEval('SELF', { scores: core, texts: selfTexts });
+    ok(s1.ok && !s2.ok && s2.error === ctx.tr_(L, 'err.tooFast') && tab('RESPONSES').data.length === rows0 + 1, tag + 'sending twice within five seconds stores one row and says why, in the right language');
+    state.user = 'laila@example.org'; ok(ctx.saveDraft('SELF', { scores: {} }).ok, tag + 'the limit is per person: someone else is not slowed down');
+    state.rateLimit = false; state.clock = () => Date.now(); state.user = 'karim@example.org'; }
 
   step("answers done");
   // fill everybody ratings so reports have content

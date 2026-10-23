@@ -116,6 +116,16 @@ for (const L of ['en', 'ar']) {
   v = ctx.validateSubmission_('SELF', { scores: allFive, texts: selfTexts, recog: [Y, KA, 'ghost@example.org'] }, KA, team, asg, false);
   ok(v.rec && v.rec.recog.length === 1 && v.rec.recog[0] === Y, tag + 'self accepted; recognition keeps only real colleagues, never yourself');
 
+  // recognition ids: opaque, salted, resolved on the server to active colleagues only, never yourself
+  { const salt = 'test-salt', list = ctx.colleagueList_(team, KA, salt), idY = ctx.opaqueId_(salt, Y);
+    ok(list.length === team.filter(p => p.active !== false).length - 1 && !list.some(c => c.email === KA), tag + 'colleague list: every active person except you');
+    ok(/^[0-9a-f]{32}$/.test(idY) && idY.indexOf('yasmin') < 0 && idY !== ctx.opaqueId_('other-salt', Y), tag + 'recognition ids look nothing like the email and depend on the secret salt');
+    ok(ctx.resolveRecog_([idY, idY, ctx.opaqueId_(salt, KA), Y, 'x', null], team, KA, salt).join() === Y, tag + 'ids resolve to emails; duplicates, yourself, raw emails and unknown ids are dropped');
+    const off = team.map(p => Object.assign({}, p)); off.find(p => p.email === Y).active = false;
+    ok(ctx.resolveRecog_([idY], off, KA, salt).length === 0, tag + 'an inactive colleague cannot be recognised');
+    ok(ctx.resolveRecog_(list.map(c => c.id).slice(0, 5), team, KA, salt).length === 3, tag + 'at most three recognitions');
+    ok(ctx.resolveRecog_('not-a-list', team, KA, salt).length === 0 && ctx.resolveRecog_([ '__proto__', 'constructor' ], team, KA, salt).length === 0, tag + 'odd input resolves to nothing'); }
+
   // drafts
   ok(ctx.draftKeyAllowed_('PERSON|rami@example.org', KA, team, asg, false) && !ctx.draftKeyAllowed_('PERSON|omar@example.org', KA, team, asg, false), tag + 'drafts only for your own tasks');
   const cd = ctx.cleanDraft_({ scores: { C1: 9, C2: 3, 'bad key': 1 }, texts: { O_START: 'x'.repeat(5000) } });

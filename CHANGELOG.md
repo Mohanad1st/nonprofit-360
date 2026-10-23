@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- **Privacy:** the recognition picker on the staff page no longer receives colleagues' work emails, only name, department and an opaque id; the server resolves the id.
+- **Abuse limit:** one answer sent per 5 seconds and one draft save per 2 seconds for each signed-in person.
+
 ## 1.2.0 — 2026-10-01
 Easier to start, and more useful after the results.
 
