@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node tools/check-org.js*)",
+      "Bash(node tools/build.js*)",
+      "Bash(node tools/make-examples.js*)",
+      "Bash(node test/*)",
+      "Bash(npm test*)",
+      "Bash(npm run test:fast*)",
+      "Bash(npm run build*)"
+    ],
+    "deny": [
+      "Bash(git add org*)",
+      "Bash(git add -f org*)"
+    ]
+  }
+}

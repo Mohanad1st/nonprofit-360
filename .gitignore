@@ -1,0 +1,34 @@
+# Your organisation's private data and builds — never commit these
+org/
+org-*/
+*/build/
+.clasp.json
+.clasprc.json
+
+# Secrets and local files
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.db
+*.sqlite
+*-shm
+*-wal
+*.denylist*
+denylist*.txt
+
+# Generated outputs
+*.docx
+*.pdf
+preview/
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Personal editor and assistant settings
+.claude/settings.local.json
+CLAUDE.local.md
+.vscode/
+.idea/
+*.log
